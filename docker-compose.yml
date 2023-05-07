@@ -1,0 +1,14 @@
+
+services:
+  mySql:
+    image: mysql:latest
+    restart: always
+    container_name: CRMDB
+    environment:
+      - MYSQL_DATABASE=crm
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - '3306:3306'
+    volumes:
+      - C:\Users\Pablo\Desktop\mysql-data:/var/liv/mysql
+
