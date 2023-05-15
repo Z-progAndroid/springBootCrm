@@ -1,23 +1,30 @@
 package com.inmozara.crm.inmueble.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
-@Entity(name = Pais.TABLA_PAIS)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "PAISES")
 public class Pais {
-    protected static final String TABLA_PAIS = "PAISES";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "CODIGO_PAIS")
-    private String codigo;
-    @Column(name = "NOMBRE_PAIS")
-    private String nombre;
+    @Column(name = "ID_PAIS")
+    private String idPais;
+    @Column(name = "PAIS")
+    private String pais;
     //Relaciones
     @OneToMany(mappedBy = "pais")
-    private Set<Provincia> provincias = new HashSet<>();
+    private List<Inmueble> inmuebles;
+    @OneToMany(mappedBy = "pais")
+    private List<Provincia> provincias;
 }

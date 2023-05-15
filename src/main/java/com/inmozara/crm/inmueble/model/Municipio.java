@@ -1,26 +1,30 @@
 package com.inmozara.crm.inmueble.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
-@Entity(name = Municipio.TABLA_MUNICIPIO)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "MUNICIPIOS")
 public class Municipio {
-    protected static final String TABLA_MUNICIPIO = "MUNICIPIOS";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "CODIGO_MUNICIPIO")
-    private String codigo;
-    @Column(name = "NOMBRE_MUNICIPIO")
-    private String nombre;
+    @Column(name = "ID_MUNICIPIO")
+    private int idMunicipio;
+    @Column(name = "MUNICIPIO")
+    private String municipio;
     //Relaciones
-    @ManyToOne
-    @JoinColumn(name = "CODIGO_PROVINCIA")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PROVINCIA")
     private Provincia provincia;
     @OneToMany(mappedBy = "municipio")
-    private Set<Inmueble> inmuebles = new HashSet<>();
+    private java.util.List<Inmueble> inmuebles;
+    @OneToMany(mappedBy = "municipio")
+    private List<Barrio> barrios;
 }
