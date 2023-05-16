@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -22,6 +23,12 @@ public class Pais {
     private String idPais;
     @Column(name = "PAIS")
     private String pais;
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+    @Column(name = "FECHA_MODIFICACION")
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
     //Relaciones
     @OneToMany(mappedBy = "pais")
     private List<Inmueble> inmuebles;

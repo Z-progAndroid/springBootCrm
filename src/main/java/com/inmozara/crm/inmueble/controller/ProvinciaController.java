@@ -17,8 +17,8 @@ public class ProvinciaController implements IProvincia {
 
     @Override
     @GetMapping("/provinciasByPais")
-    public List<ProvinciaDTO> findbyPais(String idPais) {
-        return provinciaService.findbyPais(idPais);
+    public List<ProvinciaDTO> findAllByPais(@RequestParam String idPais) {
+        return provinciaService.findAllByPais(idPais);
     }
 
     @Override

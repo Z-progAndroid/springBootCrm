@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.inmueble.model.Pais;
 import com.inmozara.crm.inmueble.model.Provincia;
 import com.inmozara.crm.inmueble.model.dto.ProvinciaDTO;
 import com.inmozara.crm.inmueble.model.repository.ProvinciaRepository;
@@ -17,13 +18,15 @@ public class ProvinciaService implements IProvincia {
     ProvinciaRepository provinciaRepository;
 
     @Override
-    public List<ProvinciaDTO> findbyPais(String idPais) {
-//        List<Provincia> provincias = provinciaRepository.filterbyPais(idPais);
-//        if (provincias.isEmpty()) {
-//            throw new RuntimeException("no se ha encontrado provincias por el id de pais: " + idPais);
-//        }
-//        return ObjectMapperUtils.mapAll(provincias, ProvinciaDTO.class);
-        return null;
+    public List<ProvinciaDTO> findAllByPais(String idPais) {
+        List<Provincia> provincias = provinciaRepository.findAllByPais(Pais
+                .builder()
+                .idPais(idPais)
+                .build());
+        if (provincias.isEmpty()) {
+            throw new RuntimeException("no se ha encontrado provincias");
+        }
+        return ObjectMapperUtils.mapAll(provincias, ProvinciaDTO.class);
     }
 
     @Override

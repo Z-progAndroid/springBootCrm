@@ -18,9 +18,9 @@ public class TipoInmuebleDTO {
     private Long id;
     @NotEmpty(message = "El tipo de inmueble no puede estar vacio")
     private String tipo;
-    @NotEmpty(message = "La fecha de creacion no puede estar vacio")
+    @NotNull(message = "La fecha de creacion no puede estar vacio")
     private Date fechaCreacion;
-    @NotEmpty(message = "La fecha de modificacion no puede estar vacio")
+    @NotNull(message = "La fecha de modificacion no puede estar vacio")
     private Date fechaModificacion;
     @NotEmpty(message = "El usuario que ha modificado no puede estar vacio")
     private String modificado;

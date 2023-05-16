@@ -30,20 +30,19 @@ public class TipoInmuebleService implements ITipoInmueble {
     }
 
     @Override
-    public TipoInmuebleDTO delete(Long aLong) {
-        TipoInmuebleDTO tipoInmuebleDTO = this.find(aLong);
+    public TipoInmuebleDTO delete(Long idTipoInmueble) {
+        TipoInmuebleDTO tipoInmuebleDTO = this.find(idTipoInmueble);
         tipoInmuebleRespository.delete(ObjectMapperUtils.map(tipoInmuebleDTO, TipoInmueble.class));
         return tipoInmuebleDTO;
     }
 
     @Override
-    public TipoInmuebleDTO find(Long aLong) {
-        TipoInmueble inmueble = tipoInmuebleRespository.findById(aLong).
-                orElseThrow(() -> new RuntimeException("No se encontro el tipo de inmueblepor id: " + aLong));
+    public TipoInmuebleDTO find(Long idTipoInmueble) {
+        TipoInmueble inmueble = tipoInmuebleRespository.findById(idTipoInmueble).
+                orElseThrow(() -> new RuntimeException("No se encontro el tipo de inmueblepor id: " + idTipoInmueble));
         return ObjectMapperUtils.map(inmueble, TipoInmuebleDTO.class);
     }
 
-    @Override
     public List<TipoInmuebleDTO> findAll() {
         List<TipoInmueble> inmuebles = tipoInmuebleRespository.findAll();
         if (inmuebles.isEmpty())

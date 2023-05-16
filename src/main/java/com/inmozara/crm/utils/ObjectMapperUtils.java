@@ -1,8 +1,7 @@
 package com.inmozara.crm.utils;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.convention.NamingConventions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -13,14 +12,12 @@ public class ObjectMapperUtils {
     @Autowired
     private static final ModelMapper modelMapper;
 
-    /**
-     * Model mapper property setting are specified in the following block.
-     * Default property matching strategy is set to Strict see {@link MatchingStrategies}
-     * Custom mappings are added using {@link ModelMapper#addMappings(PropertyMap)}
-     */
     static {
         modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+                .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
     }
 
     /**

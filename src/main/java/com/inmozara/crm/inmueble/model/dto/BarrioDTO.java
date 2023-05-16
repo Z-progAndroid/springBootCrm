@@ -1,7 +1,6 @@
 package com.inmozara.crm.inmueble.model.dto;
 
 import com.inmozara.crm.inmueble.model.Inmueble;
-import com.inmozara.crm.inmueble.model.Provincia;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,18 +15,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaisDTO {
-    @NotEmpty(message = "El id del pais no puede estar vacio")
-    private String idPais;
-    @NotNull(message = "El pais no puede ser nulo")
-    @NotEmpty(message = "El pais no puede estar vacio")
-    private String pais;
+public class BarrioDTO {
+    @NotNull(message = "El id del barrio no puede ser nulo")
+    private int idBarrio;
+    @NotEmpty(message = "El nombre del barrio no puede ser vacio")
+    private String barrio;
     @NotNull(message = "La fecha de creacion no puede ser nula")
     private Date fechaCreacion;
     @NotNull(message = "La fecha de modificacion no puede ser nula")
     private Date fechaModificacion;
-    @NotEmpty(message = "El campo modificado no puede estar vacio")
+    @NotEmpty(message = "El campo modificado no puede ser vacio")
     private String modificado;
+    @NotNull(message = "El id del municipio no puede ser nulo")
+    private int idMunicipio;
     private List<Inmueble> inmuebles;
-    private List<Provincia> provincias;
+
 }

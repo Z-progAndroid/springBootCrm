@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,12 +20,18 @@ public class Municipio {
     private int idMunicipio;
     @Column(name = "MUNICIPIO")
     private String municipio;
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+    @Column(name = "FECHA_MODIFICACION")
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
     //Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PROVINCIA")
     private Provincia provincia;
     @OneToMany(mappedBy = "municipio")
-    private java.util.List<Inmueble> inmuebles;
+    private List<Inmueble> inmuebles;
     @OneToMany(mappedBy = "municipio")
     private List<Barrio> barrios;
 }
