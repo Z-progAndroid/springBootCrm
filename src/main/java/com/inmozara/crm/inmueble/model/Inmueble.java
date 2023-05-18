@@ -1,6 +1,7 @@
 package com.inmozara.crm.inmueble.model;
 
 import com.inmozara.crm.contrato.model.Contrato;
+import com.inmozara.crm.seguimiento.model.Seguimiento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,6 +65,8 @@ public class Inmueble {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_BARRIO")
     private Barrio barrio;
+    @OneToMany(mappedBy = "inmueble")
+    private List<Seguimiento> seguimientos;
     @OneToMany(mappedBy = "inmueble")
     private List<Contrato> contratos;
 }
