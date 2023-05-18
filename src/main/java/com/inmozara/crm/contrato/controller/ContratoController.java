@@ -3,6 +3,7 @@ package com.inmozara.crm.contrato.controller;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.contrato.service.ContratoService;
 import com.inmozara.crm.contrato.service.interfaces.IContrato;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +17,13 @@ public class ContratoController implements IContrato {
 
     @Override
     @PostMapping
-    public ContratoDTO save(@RequestBody ContratoDTO contratoDTO) {
+    public ContratoDTO save(@Valid  @RequestBody ContratoDTO contratoDTO) {
         return contratoService.save(contratoDTO);
     }
 
     @Override
     @PutMapping
-    public ContratoDTO update(@RequestBody ContratoDTO contratoDTO) {
+    public ContratoDTO update(@Valid @RequestBody ContratoDTO contratoDTO) {
         return contratoService.update(contratoDTO);
     }
 

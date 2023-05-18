@@ -3,6 +3,7 @@ package com.inmozara.crm.contrato.controller;
 import com.inmozara.crm.contrato.model.dto.TipoPagoDTO;
 import com.inmozara.crm.contrato.service.TipoPagoService;
 import com.inmozara.crm.contrato.service.interfaces.ITipoPago;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +17,13 @@ public class TipoPagoController implements ITipoPago {
 
     @Override
     @PostMapping
-    public TipoPagoDTO save(@RequestBody TipoPagoDTO tipoPagoDTO) {
+    public TipoPagoDTO save(@Valid @RequestBody TipoPagoDTO tipoPagoDTO) {
         return tipoPagoService.save(tipoPagoDTO);
     }
 
     @Override
     @PutMapping
-    public TipoPagoDTO update(@RequestBody TipoPagoDTO tipoPagoDTO) {
+    public TipoPagoDTO update(@Valid @RequestBody TipoPagoDTO tipoPagoDTO) {
         return tipoPagoService.update(tipoPagoDTO);
     }
 
