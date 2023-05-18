@@ -1,4 +1,4 @@
-package com.inmozara.crm.inmueble.service.interfaces;
+package com.inmozara.crm.utils.comon;
 
 import java.util.List;
 

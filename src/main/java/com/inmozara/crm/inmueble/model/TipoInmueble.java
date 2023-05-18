@@ -19,7 +19,7 @@ import java.util.List;
 @Entity(name = "TIPO_INMUEBLES")
 public class TipoInmueble {
     @Id
-    @Column(name = "ID_TIPO_INMUEBLE")
+    @Column(name = "ID_TIPO_INMUEBLE", nullable = false, unique = true)
     private Long id;
     @Column(name = "TIPO")
     private String tipo;

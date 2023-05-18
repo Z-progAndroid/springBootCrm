@@ -1,4 +1,4 @@
-package com.inmozara.crm.inmueble.model;
+package com.inmozara.crm.contrato.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,13 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "PAISES")
-public class Pais {
+@Entity(name = "TIPO_CONTRATOS")
+public class TipoContrato {
     @Id
-    @Column(name = "ID_PAIS", nullable = false, unique = true)
-    private String idPais;
-    @Column(name = "PAIS")
-    private String pais;
+    @Column(name = "ID_TIPO_CONTRATO", nullable = false, unique = true)
+    private Long idTipoContrato;
+    @Column(name = "TIPO")
+    private String tipo;
     @Column(name = "FECHA_CREACION")
     private Date fechaCreacion;
     @Column(name = "FECHA_MODIFICACION")
@@ -30,8 +30,6 @@ public class Pais {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @OneToMany(mappedBy = "pais")
-    private List<Inmueble> inmuebles;
-    @OneToMany(mappedBy = "pais")
-    private List<Provincia> provincias;
+    @OneToMany(mappedBy = "tipoContrato")
+    private List<Contrato> contratos;
 }

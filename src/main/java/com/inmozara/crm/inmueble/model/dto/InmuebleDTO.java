@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class InmuebleDTO {
-    private Long id;
+    private Long idInmueble;
     private String descripcion;
     @NotEmpty(message = "La dirección no puede estar vacía")
     private String direccion;
@@ -53,4 +53,5 @@ public class InmuebleDTO {
     private int idProvincia;
     @NotNull(message = "El id de  municipio no puede estar vacío")
     private int idMunicipio;
+    private Long idContrato;
 }

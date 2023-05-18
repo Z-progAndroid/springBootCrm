@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.model;
 
+import com.inmozara.crm.contrato.model.Contrato;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class Inmueble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_INMUEBLE")
-    private Long id;
+    private Long idInmueble;
     @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
     @Column(name = "DIRECCION", length = 200)
@@ -62,4 +64,6 @@ public class Inmueble {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_BARRIO")
     private Barrio barrio;
+    @OneToMany(mappedBy = "inmueble")
+    private List<Contrato> contratos;
 }

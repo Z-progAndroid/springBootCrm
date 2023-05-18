@@ -16,7 +16,7 @@ import java.util.List;
 @Entity(name = "BARRIOS")
 public class Barrio {
     @Id
-    @Column(name = "ID_BARRIO")
+    @Column(name = "ID_BARRIO", nullable = false, unique = true)
     private int idBarrio;
     @Column(name = "BARRIO")
     private String barrio;
