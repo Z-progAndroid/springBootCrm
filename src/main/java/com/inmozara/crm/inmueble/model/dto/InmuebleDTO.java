@@ -1,5 +1,8 @@
 package com.inmozara.crm.inmueble.model.dto;
 
+import com.inmozara.crm.cita.model.Cita;
+import com.inmozara.crm.contrato.model.Contrato;
+import com.inmozara.crm.seguimiento.model.Seguimiento;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -53,5 +57,7 @@ public class InmuebleDTO {
     private int idProvincia;
     @NotNull(message = "El id de  municipio no puede estar vacío")
     private int idMunicipio;
-    private Long idContrato;
+    private List<Seguimiento> seguimientos;
+    private List<Contrato> contratos;
+    private List<Cita> citas;
 }
