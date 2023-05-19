@@ -1,5 +1,6 @@
 package com.inmozara.crm.usuario.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import com.inmozara.crm.usuario.service.UsuarioService;
 import com.inmozara.crm.usuario.service.interfaces.IUsuario;
@@ -29,7 +30,7 @@ public class UsuarioController implements IUsuario {
 
     @Override
     @DeleteMapping
-    public UsuarioDTO delete(@RequestParam Integer id) {
+    public MensajeDTO delete(@RequestParam Integer id) {
         return usuarioService.delete(id);
     }
 

@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Pais;
 import com.inmozara.crm.inmueble.model.Provincia;
@@ -7,7 +8,9 @@ import com.inmozara.crm.inmueble.model.dto.ProvinciaDTO;
 import com.inmozara.crm.inmueble.model.repository.ProvinciaRepository;
 import com.inmozara.crm.inmueble.service.interfaces.IProvincia;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,13 +46,17 @@ public class ProvinciaService implements IProvincia {
     }
 
     @Override
-    public ProvinciaDTO delete(Integer idPorvincia) {
+    public MensajeDTO delete(Integer idPorvincia) {
         if (!provinciaRepository.existsById(idPorvincia)) {
             throw new RecursoNoEncontrado("No existe una  provincia con el id:" + idPorvincia);
 
         }
         provinciaRepository.deleteById(idPorvincia);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("La provincia se ha eliminado correctamente con el id: " + idPorvincia)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

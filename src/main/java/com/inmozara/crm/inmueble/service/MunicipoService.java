@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Municipio;
 import com.inmozara.crm.inmueble.model.Provincia;
@@ -7,8 +8,10 @@ import com.inmozara.crm.inmueble.model.dto.MunicipoDTO;
 import com.inmozara.crm.inmueble.model.repository.MunicipoReprository;
 import com.inmozara.crm.inmueble.service.interfaces.IMunicipo;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,13 +50,17 @@ public class MunicipoService implements IMunicipo {
     }
 
     @Override
-    public MunicipoDTO delete(Integer idMunicipio) {
+    public MensajeDTO delete(Integer idMunicipio) {
         if (!municipoReprository.existsById(idMunicipio)) {
             throw new RecursoNoEncontrado("No existe un municipio con el id:" + idMunicipio);
 
         }
         municipoReprository.deleteById(idMunicipio);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("Se elimino el municipio con id: " + idMunicipio)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

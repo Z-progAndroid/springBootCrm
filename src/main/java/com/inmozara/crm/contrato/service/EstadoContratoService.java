@@ -1,12 +1,15 @@
 package com.inmozara.crm.contrato.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.contrato.model.EstadoContrato;
 import com.inmozara.crm.contrato.model.dto.EstadoContratoDTO;
 import com.inmozara.crm.contrato.model.repository.EstadoContratoRepository;
 import com.inmozara.crm.contrato.service.interfaces.IEstadoContrato;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,12 +36,16 @@ public class EstadoContratoService implements IEstadoContrato {
     }
 
     @Override
-    public EstadoContratoDTO delete(Long idEstadoContrato) {
+    public MensajeDTO delete(Long idEstadoContrato) {
         if(!estadoContratoRepository.existsById(idEstadoContrato)){
             throw new RecursoNoEncontrado("no existe un estado de contrato con el id: "+idEstadoContrato);
         }
         estadoContratoRepository.deleteById(idEstadoContrato);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("El estado del contrato se ha eliminado correctamente con el id: "+idEstadoContrato)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

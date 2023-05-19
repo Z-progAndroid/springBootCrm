@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.inmueble.model.dto.ProvinciaDTO;
 import com.inmozara.crm.inmueble.service.ProvinciaService;
 import com.inmozara.crm.inmueble.service.interfaces.IProvincia;
@@ -35,7 +36,7 @@ public class ProvinciaController implements IProvincia {
 
     @Override
     @DeleteMapping
-    public ProvinciaDTO delete(Integer idProvincia) {
+    public MensajeDTO delete(Integer idProvincia) {
         return provinciaService.delete(idProvincia);
     }
 

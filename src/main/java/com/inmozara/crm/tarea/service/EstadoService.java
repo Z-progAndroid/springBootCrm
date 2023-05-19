@@ -1,12 +1,15 @@
 package com.inmozara.crm.tarea.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.tarea.model.EstadoTarea;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.tarea.model.repository.EstadoTareaRepository;
 import com.inmozara.crm.tarea.service.interfaces.IEstadoTarea;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class EstadoService implements IEstadoTarea {
     }
 
     @Override
-    public EstadoTareaDTO delete(Integer integer) {
-        if (!estadoTareaRepository.existsById(integer)) {
-            throw new RecursoNoEncontrado("No existe el estado con id: " + integer);
+    public MensajeDTO delete(Integer id) {
+        if (!estadoTareaRepository.existsById(id)) {
+            throw new RecursoNoEncontrado("No existe el estado con id: " + id);
         }
-        estadoTareaRepository.deleteById(integer);
-        return null;
+        estadoTareaRepository.deleteById(id);
+        return MensajeDTO.builder()
+                .mensaje("Estado eliminado correctamente con el id: " + id)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

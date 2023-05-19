@@ -1,5 +1,7 @@
 package com.inmozara.crm.utils.comon;
 
+import com.inmozara.crm.config.MensajeDTO;
+
 import java.util.List;
 
 public interface IService<T,ID> {
@@ -8,7 +10,7 @@ public interface IService<T,ID> {
 
     T update(T t);
 
-    T delete(ID id);
+    MensajeDTO delete(ID id);
 
     T find(ID id);
 

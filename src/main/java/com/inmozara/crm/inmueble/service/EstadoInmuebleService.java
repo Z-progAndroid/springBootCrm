@@ -1,13 +1,16 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.EstadoInmueble;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
 import com.inmozara.crm.inmueble.service.interfaces.IEstadoInmueble;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,12 +36,16 @@ public class EstadoInmuebleService implements IEstadoInmueble {
     }
 
     @Override
-    public EstadoInmuebleDTO delete(Integer idEstadoInmueble) {
+    public MensajeDTO delete(Integer idEstadoInmueble) {
         if (!estadoInmuebleRepository.existsById(idEstadoInmueble)) {
             throw new RecursoNoEncontrado("No existe el estado inmueble con el id: " + idEstadoInmueble);
         }
         estadoInmuebleRepository.deleteById(idEstadoInmueble);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("Se elimino el estado de inmueble con id: " + idEstadoInmueble)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.inmozara.crm.tarea.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import com.inmozara.crm.tarea.model.repository.TareaRepository;
 import com.inmozara.crm.tarea.service.interfaces.ITarea;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,12 +33,16 @@ public class TareaService implements ITarea {
     }
 
     @Override
-    public TareaDTO delete(Integer integer) {
-        if (!tareaRepository.existsById(integer)) {
-            throw new RecursoNoEncontrado("No existe la tarea con id: " + integer);
+    public MensajeDTO delete(Integer id) {
+        if (!tareaRepository.existsById(id)) {
+            throw new RecursoNoEncontrado("No existe la tarea con id: " + id);
         }
-        tareaRepository.deleteById(integer);
-        return null;
+        tareaRepository.deleteById(id);
+        return MensajeDTO.builder()
+                .mensaje("Tarea eliminada correctamente con el id: " + id)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.inmozara.crm.usuario.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.usuario.model.dto.RolDTO;
 import com.inmozara.crm.usuario.service.RolService;
 import com.inmozara.crm.usuario.service.interfaces.IRol;
@@ -29,7 +30,7 @@ public class RolController implements IRol {
 
     @Override
     @DeleteMapping
-    public RolDTO delete(@RequestParam Integer id) {
+    public MensajeDTO delete(@RequestParam Integer id) {
         return rolService.delete(id);
     }
 

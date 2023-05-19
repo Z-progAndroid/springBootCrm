@@ -3,6 +3,7 @@ package com.inmozara.crm.cita.controller;
 import com.inmozara.crm.cita.model.dto.TipoCitaDTO;
 import com.inmozara.crm.cita.service.TipoCitaService;
 import com.inmozara.crm.cita.service.interfaces.ITipoCita;
+import com.inmozara.crm.config.MensajeDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class TipoCitaController implements ITipoCita {
 
     @Override
     @DeleteMapping
-    public TipoCitaDTO delete(@RequestParam Integer id) {
+    public MensajeDTO delete(@RequestParam Integer id) {
         return tipoCitaService.delete(id);
     }
 

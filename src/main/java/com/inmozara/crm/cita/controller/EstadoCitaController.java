@@ -3,6 +3,7 @@ package com.inmozara.crm.cita.controller;
 import com.inmozara.crm.cita.model.dto.EstadoCitaDTO;
 import com.inmozara.crm.cita.service.EstadoCitaService;
 import com.inmozara.crm.cita.service.interfaces.IEstadoCita;
+import com.inmozara.crm.config.MensajeDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class EstadoCitaController implements IEstadoCita {
 
     @Override
     @DeleteMapping
-    public EstadoCitaDTO delete(@RequestParam Integer id) {
+    public MensajeDTO delete(@RequestParam Integer id) {
         return estadoCitaService.delete(id);
     }
 

@@ -1,12 +1,15 @@
 package com.inmozara.crm.contrato.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.contrato.model.TipoContrato;
 import com.inmozara.crm.contrato.model.dto.TipoContratoDTO;
 import com.inmozara.crm.contrato.model.repository.TipoContratoRepository;
 import com.inmozara.crm.contrato.service.interfaces.ITipoContrato;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class TipoContratoService implements ITipoContrato {
     }
 
     @Override
-    public TipoContratoDTO delete(Long idTipoContrato) {
+    public MensajeDTO delete(Long idTipoContrato) {
         if (!tipoContratoRepository.existsById(idTipoContrato)) {
             throw new RecursoNoEncontrado("El tipo de contrato no existe");
         }
         tipoContratoRepository.deleteById(idTipoContrato);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("El tipo de contrato se ha eliminado correctamente con el id: " + idTipoContrato)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

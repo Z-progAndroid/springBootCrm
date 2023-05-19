@@ -1,12 +1,15 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.TipoInmueble;
 import com.inmozara.crm.inmueble.model.dto.TipoInmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.TipoInmuebleRespository;
 import com.inmozara.crm.inmueble.service.interfaces.ITipoInmueble;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,13 +34,17 @@ public class TipoInmuebleService implements ITipoInmueble {
     }
 
     @Override
-    public TipoInmuebleDTO delete(Long idTipoInmueble) {
+    public MensajeDTO delete(Long idTipoInmueble) {
         if (!tipoInmuebleRespository.existsById(idTipoInmueble)) {
             throw new RecursoNoEncontrado("No existe un tipo inmueble con el id:" + idTipoInmueble);
 
         }
         tipoInmuebleRespository.deleteById(idTipoInmueble);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("Se elimino el tipo de inmueble con id: " + idTipoInmueble)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

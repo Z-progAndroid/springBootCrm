@@ -1,5 +1,6 @@
 package com.inmozara.crm.seguimiento.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.seguimiento.model.dto.SeguimientoDTO;
 import com.inmozara.crm.seguimiento.service.SeguimientoService;
 import com.inmozara.crm.seguimiento.service.interfaces.ISeguimiento;
@@ -29,7 +30,7 @@ public class SeguimientoController implements ISeguimiento {
 
     @Override
     @DeleteMapping
-    public SeguimientoDTO delete(@RequestParam Long idSeguimiento) {
+    public MensajeDTO delete(@RequestParam Long idSeguimiento) {
         return seguimientoService.delete(idSeguimiento);
     }
 

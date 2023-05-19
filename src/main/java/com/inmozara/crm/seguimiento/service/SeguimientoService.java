@@ -1,12 +1,15 @@
 package com.inmozara.crm.seguimiento.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.seguimiento.model.Seguimiento;
 import com.inmozara.crm.seguimiento.model.dto.SeguimientoDTO;
 import com.inmozara.crm.seguimiento.model.repository.SeguimientoRepository;
 import com.inmozara.crm.seguimiento.service.interfaces.ISeguimiento;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class SeguimientoService implements ISeguimiento {
     }
 
     @Override
-    public SeguimientoDTO delete(Long idSeguimiento) {
+    public MensajeDTO delete(Long idSeguimiento) {
         if (!seguimientoRepository.existsById(idSeguimiento)) {
             throw new RecursoNoEncontrado("No existe el seguimiento");
         }
         seguimientoRepository.deleteById(idSeguimiento);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("Seguimiento eliminado correctamente con el id: " + idSeguimiento)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

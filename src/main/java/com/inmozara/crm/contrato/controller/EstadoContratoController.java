@@ -1,5 +1,6 @@
 package com.inmozara.crm.contrato.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.contrato.model.dto.EstadoContratoDTO;
 import com.inmozara.crm.contrato.service.EstadoContratoService;
 import com.inmozara.crm.contrato.service.interfaces.IEstadoContrato;
@@ -29,7 +30,7 @@ public class EstadoContratoController implements IEstadoContrato {
 
     @Override
     @DeleteMapping
-    public EstadoContratoDTO delete(@RequestParam Long idEstadoContrato) {
+    public MensajeDTO delete(@RequestParam Long idEstadoContrato) {
         return estadoContratoService.delete(idEstadoContrato);
     }
 

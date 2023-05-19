@@ -1,6 +1,7 @@
 package com.inmozara.crm.config;
 
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,7 +31,7 @@ public class ControllerExceptionHandler {
     public MensajeDTO excepcionGobal(Exception ex, WebRequest request) {
         return MensajeDTO.builder()
                 .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .fecha(UtilsDates.now())
                 .mensaje(ex.getMessage())
                 .description(request.getDescription(false))
                 .build();
@@ -41,7 +42,7 @@ public class ControllerExceptionHandler {
     public MensajeDTO methodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
         return MensajeDTO.builder()
                 .estado(HttpStatus.BAD_REQUEST.value())
-                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .fecha(UtilsDates.now())
                 .mensaje(ex.getBindingResult().getFieldErrors()
                         .stream()
                         .map(err -> err.getField() + ": " + err.getDefaultMessage())

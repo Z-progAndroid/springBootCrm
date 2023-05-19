@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.inmueble.model.dto.MunicipoDTO;
 import com.inmozara.crm.inmueble.service.MunicipoService;
 import com.inmozara.crm.inmueble.service.interfaces.IMunicipo;
@@ -35,7 +36,7 @@ public class MunicipoController implements IMunicipo {
 
     @Override
     @DeleteMapping
-    public MunicipoDTO delete(@RequestParam Integer idMunicipio) {
+    public MensajeDTO delete(@RequestParam Integer idMunicipio) {
         return municipoService.delete(idMunicipio);
     }
 

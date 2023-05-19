@@ -1,12 +1,15 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
 import com.inmozara.crm.inmueble.service.interfaces.IInmueble;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class InmuebleService implements IInmueble {
     }
 
     @Override
-    public InmuebleDTO delete(Long idInmueble) {
+    public MensajeDTO delete(Long idInmueble) {
         if (!inmuebleRepository.existsById(idInmueble)){
             throw new RecursoNoEncontrado("No existe un inmueble con el id: "+idInmueble);
         }
         inmuebleRepository.deleteById(idInmueble);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("El inmueble se ha eliminado correctamente con el id: "+idInmueble)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

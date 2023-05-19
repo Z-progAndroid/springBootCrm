@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.inmueble.model.dto.TipoInmuebleDTO;
 import com.inmozara.crm.inmueble.service.TipoInmuebleService;
 import com.inmozara.crm.inmueble.service.interfaces.ITipoInmueble;
@@ -29,7 +30,7 @@ public class TipoInmuebleController implements ITipoInmueble {
 
     @Override
     @DeleteMapping
-    public TipoInmuebleDTO delete(@RequestParam Long idTipoInmueble) {
+    public MensajeDTO delete(@RequestParam Long idTipoInmueble) {
         return tipoInmuebleService.delete(idTipoInmueble);
     }
 

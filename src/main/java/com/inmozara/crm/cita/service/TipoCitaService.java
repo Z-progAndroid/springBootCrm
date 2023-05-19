@@ -4,9 +4,12 @@ import com.inmozara.crm.cita.model.TipoCita;
 import com.inmozara.crm.cita.model.dto.TipoCitaDTO;
 import com.inmozara.crm.cita.model.repository.TipoCitaRepository;
 import com.inmozara.crm.cita.service.interfaces.ITipoCita;
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class TipoCitaService implements ITipoCita {
     }
 
     @Override
-    public TipoCitaDTO delete(Integer integer) {
-        if (!tipoCitaRepository.existsById(integer)) {
+    public MensajeDTO delete(Integer id) {
+        if (!tipoCitaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No se encontro el tipo de la cita");
         }
-        tipoCitaRepository.deleteById(integer);
-        return null;
+        tipoCitaRepository.deleteById(id);
+        return MensajeDTO.builder()
+                .mensaje("El tipo de la cita se ha eliminado correctamente con el id: " + id)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

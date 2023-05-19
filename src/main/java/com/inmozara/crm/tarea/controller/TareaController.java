@@ -1,5 +1,6 @@
 package com.inmozara.crm.tarea.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import com.inmozara.crm.tarea.service.TareaService;
 import com.inmozara.crm.tarea.service.interfaces.ITarea;
@@ -29,7 +30,7 @@ public class TareaController implements ITarea {
 
     @Override
     @DeleteMapping
-    public TareaDTO delete(@RequestParam Integer idTarea) {
+    public MensajeDTO delete(@RequestParam Integer idTarea) {
         return tareaService.delete(idTarea);
     }
 

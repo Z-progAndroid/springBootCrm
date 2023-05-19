@@ -1,12 +1,15 @@
 package com.inmozara.crm.seguimiento.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.seguimiento.model.TipoSeguimiento;
 import com.inmozara.crm.seguimiento.model.dto.TipoSeguimientoDTO;
 import com.inmozara.crm.seguimiento.model.repository.TipoSeguimientoRepository;
 import com.inmozara.crm.seguimiento.service.interfaces.ITipoSeguimiento;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,12 +33,16 @@ public class TipoSeguimientoService implements ITipoSeguimiento {
     }
 
     @Override
-    public TipoSeguimientoDTO delete(Long idTipoSeguimiento) {
+    public MensajeDTO delete(Long idTipoSeguimiento) {
         if (!tipoSeguimientoRepository.existsById(idTipoSeguimiento)) {
             throw new RecursoNoEncontrado("No existe el tipo de seguimiento");
         }
         tipoSeguimientoRepository.deleteById(idTipoSeguimiento);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("Tipo de seguimiento eliminado correctamente con el id: " + idTipoSeguimiento)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

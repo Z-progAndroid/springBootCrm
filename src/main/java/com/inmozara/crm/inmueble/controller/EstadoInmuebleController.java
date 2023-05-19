@@ -1,6 +1,8 @@
 package com.inmozara.crm.inmueble.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
+import com.inmozara.crm.inmueble.service.EstadoInmuebleService;
 import com.inmozara.crm.inmueble.service.interfaces.IEstadoInmueble;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api_v1/crm/estadoInmueble")
 public class EstadoInmuebleController implements IEstadoInmueble {
     @Autowired
-    IEstadoInmueble estadoInmuebleService;
+    EstadoInmuebleService estadoInmuebleService;
 
     @Override
     @PostMapping
@@ -28,7 +30,7 @@ public class EstadoInmuebleController implements IEstadoInmueble {
 
     @Override
     @DeleteMapping
-    public EstadoInmuebleDTO delete(@RequestParam Integer idEstadoInmueble) {
+    public MensajeDTO delete(@RequestParam Integer idEstadoInmueble) {
         return estadoInmuebleService.delete(idEstadoInmueble);
     }
 

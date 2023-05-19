@@ -3,6 +3,7 @@ package com.inmozara.crm.cita.controller;
 import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.cita.service.CitaService;
 import com.inmozara.crm.cita.service.interfaces.ICita;
+import com.inmozara.crm.config.MensajeDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class CitaController implements ICita {
 
     @Override
     @DeleteMapping
-    public CitaDTO delete(@RequestParam Integer id) {
+    public MensajeDTO delete(@RequestParam Integer id) {
         return citaService.delete(id);
     }
 

@@ -4,9 +4,12 @@ import com.inmozara.crm.cita.model.EstadoCita;
 import com.inmozara.crm.cita.model.dto.EstadoCitaDTO;
 import com.inmozara.crm.cita.model.repository.EstadoCitaRepository;
 import com.inmozara.crm.cita.service.interfaces.IEstadoCita;
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class EstadoCitaService implements IEstadoCita {
     }
 
     @Override
-    public EstadoCitaDTO delete(Integer integer) {
-        if (!estadoCitaRepository.existsById(integer)) {
+    public MensajeDTO delete(Integer id) {
+        if (!estadoCitaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No se encontro el estado de la cita");
         }
-        estadoCitaRepository.deleteById(integer);
-        return null;
+        estadoCitaRepository.deleteById(id);
+        return MensajeDTO.builder()
+                .mensaje("Se elimino el estado de la cita con id: " + id)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

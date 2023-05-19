@@ -1,12 +1,15 @@
 package com.inmozara.crm.usuario.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.EstadoUsuario;
 import com.inmozara.crm.usuario.model.dto.EstadoUsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.EstadoUsuarioRepository;
 import com.inmozara.crm.usuario.service.interfaces.IEstadoUsuario;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class EstadoUsuarioService implements IEstadoUsuario {
     }
 
     @Override
-    public EstadoUsuarioDTO delete(Integer integer) {
+    public MensajeDTO delete(Integer integer) {
         if (!estadoUsuarioRepository.existsById(integer)) {
             throw new RecursoNoEncontrado("No se encontro el estado del usuario");
         }
         estadoUsuarioRepository.deleteById(integer);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("Estado del usuario eliminado correctamente con el id: " + integer)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.inmozara.crm.usuario.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.Rol;
 import com.inmozara.crm.usuario.model.dto.RolDTO;
 import com.inmozara.crm.usuario.model.repository.RolRepository;
 import com.inmozara.crm.usuario.service.interfaces.IRol;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class RolService implements IRol {
     }
 
     @Override
-    public RolDTO delete(Integer integer) {
-        if (!rolRepository.existsById(integer)) {
+    public MensajeDTO delete(Integer id) {
+        if (!rolRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No se encontro el rol");
         }
-        rolRepository.deleteById(integer);
-        return null;
+        rolRepository.deleteById(id);
+        return MensajeDTO.builder()
+                .mensaje("Rol eliminado correctamente con el id: " + id)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.inmozara.crm.contrato.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.contrato.model.repository.ContratoRepository;
 import com.inmozara.crm.contrato.service.interfaces.IContrato;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,11 +34,15 @@ public class ContratoService implements IContrato {
     }
 
     @Override
-    public ContratoDTO delete(Long idContrato) {
+    public MensajeDTO delete(Long idContrato) {
         if (!contratoRepository.existsById(idContrato))
             throw new RecursoNoEncontrado("Contrato no encontrado");
         contratoRepository.deleteById(idContrato);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("Contrato eliminado correctamente con el id: " + idContrato)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

@@ -1,13 +1,16 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Pais;
 import com.inmozara.crm.inmueble.model.dto.PaisDTO;
 import com.inmozara.crm.inmueble.model.repository.PaisRepository;
 import com.inmozara.crm.inmueble.service.interfaces.IPais;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,13 +41,17 @@ public class PaisService implements IPais {
     }
 
     @Override
-    public PaisDTO delete(String idPais) {
+    public MensajeDTO delete(String idPais) {
         if (!paisRepository.existsById(idPais)) {
             throw new RecursoNoEncontrado("No existe un pais con el id:" + idPais);
 
         }
         paisRepository.deleteById(idPais);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("El pais se ha eliminado correctamente con el id: " + idPais)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

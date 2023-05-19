@@ -4,9 +4,12 @@ import com.inmozara.crm.cita.model.Cita;
 import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.cita.model.repository.CitaRepository;
 import com.inmozara.crm.cita.service.interfaces.ICita;
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +34,16 @@ public class CitaService implements ICita {
     }
 
     @Override
-    public CitaDTO delete(Integer integer) {
+    public MensajeDTO delete(Integer integer) {
         if (!citaRepository.existsById(integer)) {
             throw new RecursoNoEncontrado("No existe la cita");
         }
         citaRepository.deleteById(integer);
-        return null;
+        return MensajeDTO.builder()
+                .mensaje("La cita se ha eliminado correctamente con el id: " + integer)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
     }
 
     @Override

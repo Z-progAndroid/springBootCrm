@@ -1,5 +1,6 @@
 package com.inmozara.crm.tarea.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.tarea.service.EstadoService;
 import com.inmozara.crm.tarea.service.interfaces.IEstadoTarea;
@@ -29,7 +30,7 @@ public class EstadoTareaController implements IEstadoTarea {
 
     @Override
     @DeleteMapping
-    public EstadoTareaDTO delete(@RequestParam Integer idEstadoTarea) {
+    public MensajeDTO delete(@RequestParam Integer idEstadoTarea) {
         return estadoService.delete(idEstadoTarea);
     }
 

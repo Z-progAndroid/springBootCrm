@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.inmueble.model.dto.BarrioDTO;
 import com.inmozara.crm.inmueble.service.BarrioService;
 import com.inmozara.crm.inmueble.service.interfaces.IBarrio;
@@ -35,7 +36,7 @@ public class BarrioController implements IBarrio {
 
     @Override
     @DeleteMapping
-    public BarrioDTO delete(@RequestParam Integer idBarrio) {
+    public MensajeDTO delete(@RequestParam Integer idBarrio) {
         return barrioService.delete(idBarrio);
     }
 

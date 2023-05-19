@@ -1,5 +1,6 @@
 package com.inmozara.crm.contrato.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.contrato.model.dto.TipoContratoDTO;
 import com.inmozara.crm.contrato.service.TipoContratoService;
 import com.inmozara.crm.contrato.service.interfaces.ITipoContrato;
@@ -29,7 +30,7 @@ public class TipoContratoController implements ITipoContrato {
 
     @Override
     @DeleteMapping
-    public TipoContratoDTO delete(@RequestParam Long idTipoContrato) {
+    public MensajeDTO delete(@RequestParam Long idTipoContrato) {
         return tipoContratoService.delete(idTipoContrato);
     }
 

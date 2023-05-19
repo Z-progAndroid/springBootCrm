@@ -1,5 +1,6 @@
 package com.inmozara.crm.usuario.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.usuario.model.dto.EstadoUsuarioDTO;
 import com.inmozara.crm.usuario.service.EstadoUsuarioService;
 import com.inmozara.crm.usuario.service.interfaces.IEstadoUsuario;
@@ -29,7 +30,7 @@ public class EstadoUsuarioController implements IEstadoUsuario {
 
     @Override
     @DeleteMapping
-    public EstadoUsuarioDTO delete(@RequestParam Integer id) {
+    public MensajeDTO delete(@RequestParam Integer id) {
         return estadoUsuarioService.delete(id);
     }
 

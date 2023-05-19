@@ -1,5 +1,6 @@
 package com.inmozara.crm.seguimiento.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.seguimiento.model.dto.TipoSeguimientoDTO;
 import com.inmozara.crm.seguimiento.service.interfaces.ITipoSeguimiento;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class TipoSeguimientoController implements ITipoSeguimiento {
 
     @Override
     @DeleteMapping
-    public TipoSeguimientoDTO delete(@RequestParam Long id) {
+    public MensajeDTO delete(@RequestParam Long id) {
         return tipoSeguimientoService.delete(id);
     }
 

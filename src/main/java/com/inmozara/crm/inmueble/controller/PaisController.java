@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.controller;
 
+import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.inmueble.model.dto.PaisDTO;
 import com.inmozara.crm.inmueble.service.PaisService;
 import jakarta.validation.Valid;
@@ -32,7 +33,7 @@ public class PaisController {
 
 
     @DeleteMapping
-    public PaisDTO delete(@RequestParam String idPais) {
+    public MensajeDTO delete(@RequestParam String idPais) {
         return paisService.delete(idPais);
     }
 
