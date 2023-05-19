@@ -1,5 +1,6 @@
 package com.inmozara.crm.tarea.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.tarea.model.EstadoTarea;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.tarea.model.repository.EstadoTareaRepository;
@@ -32,7 +33,7 @@ public class EstadoService implements IEstadoTarea {
     @Override
     public EstadoTareaDTO delete(Integer integer) {
         if (!estadoTareaRepository.existsById(integer)) {
-            throw new RuntimeException("No existe el estado con id: " + integer);
+            throw new RecursoNoEncontrado("No existe el estado con id: " + integer);
         }
         estadoTareaRepository.deleteById(integer);
         return null;
@@ -41,7 +42,7 @@ public class EstadoService implements IEstadoTarea {
     @Override
     public EstadoTareaDTO find(Integer integer) {
         EstadoTarea estadoTarea = estadoTareaRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No existe el estado con id: " + integer));
+                .orElseThrow(() -> new RecursoNoEncontrado("No existe el estado con id: " + integer));
         return ObjectMapperUtils.map(estadoTarea, EstadoTareaDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class EstadoService implements IEstadoTarea {
     public List<EstadoTareaDTO> findAll() {
         List<EstadoTarea> estados = estadoTareaRepository.findAll();
         if (estados.isEmpty())
-            throw new RuntimeException("No existen estados");
+            throw new RecursoNoEncontrado("No existen estados");
         return ObjectMapperUtils.mapAll(estados, EstadoTareaDTO.class);
     }
 }

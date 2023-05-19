@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.EstadoInmueble;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
@@ -34,7 +35,7 @@ public class EstadoInmuebleService implements IEstadoInmueble {
     @Override
     public EstadoInmuebleDTO delete(Integer idEstadoInmueble) {
         if (!estadoInmuebleRepository.existsById(idEstadoInmueble)) {
-            throw new RuntimeException("No existe el estado inmueble con el id: " + idEstadoInmueble);
+            throw new RecursoNoEncontrado("No existe el estado inmueble con el id: " + idEstadoInmueble);
         }
         estadoInmuebleRepository.deleteById(idEstadoInmueble);
         return null;
@@ -43,7 +44,7 @@ public class EstadoInmuebleService implements IEstadoInmueble {
     @Override
     public EstadoInmuebleDTO find(Integer integer) {
         EstadoInmueble estadoInmueble = estadoInmuebleRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No se encontro el estado de inmueble con id: " + integer));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el estado de inmueble con id: " + integer));
         return ObjectMapperUtils.map(estadoInmueble, EstadoInmuebleDTO.class);
     }
 
@@ -51,7 +52,7 @@ public class EstadoInmuebleService implements IEstadoInmueble {
     public List<EstadoInmuebleDTO> findAll() {
         List<EstadoInmueble> estadoInmuebles = estadoInmuebleRepository.findAll();
         if (estadoInmuebles.isEmpty()) {
-            throw new RuntimeException("No se encontraron estados de inmuebles");
+            throw new RecursoNoEncontrado("No se encontraron estados de inmuebles");
         }
         return ObjectMapperUtils.mapAll(estadoInmuebles, EstadoInmuebleDTO.class);
     }

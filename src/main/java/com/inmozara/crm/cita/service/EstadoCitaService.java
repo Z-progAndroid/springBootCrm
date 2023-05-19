@@ -4,6 +4,7 @@ import com.inmozara.crm.cita.model.EstadoCita;
 import com.inmozara.crm.cita.model.dto.EstadoCitaDTO;
 import com.inmozara.crm.cita.model.repository.EstadoCitaRepository;
 import com.inmozara.crm.cita.service.interfaces.IEstadoCita;
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class EstadoCitaService implements IEstadoCita {
     @Override
     public EstadoCitaDTO delete(Integer integer) {
         if (!estadoCitaRepository.existsById(integer)) {
-            throw new RuntimeException("No se encontro el estado de la cita");
+            throw new RecursoNoEncontrado("No se encontro el estado de la cita");
         }
         estadoCitaRepository.deleteById(integer);
         return null;
@@ -41,7 +42,7 @@ public class EstadoCitaService implements IEstadoCita {
     @Override
     public EstadoCitaDTO find(Integer integer) {
         EstadoCita estadoCita = estadoCitaRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No se encontro el estado de la cita"));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el estado de la cita"));
         return ObjectMapperUtils.map(estadoCita, EstadoCitaDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class EstadoCitaService implements IEstadoCita {
     public List<EstadoCitaDTO> findAll() {
         List<EstadoCita> estadoCitas = estadoCitaRepository.findAll();
         if (estadoCitas.isEmpty()) {
-            throw new RuntimeException("No se encontraron estados de citas");
+            throw new RecursoNoEncontrado("No se encontraron estados de citas");
         }
         return ObjectMapperUtils.mapAll(estadoCitas, EstadoCitaDTO.class);
     }

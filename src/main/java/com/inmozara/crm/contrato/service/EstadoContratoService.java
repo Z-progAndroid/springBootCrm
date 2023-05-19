@@ -4,9 +4,11 @@ import com.inmozara.crm.contrato.model.EstadoContrato;
 import com.inmozara.crm.contrato.model.dto.EstadoContratoDTO;
 import com.inmozara.crm.contrato.model.repository.EstadoContratoRepository;
 import com.inmozara.crm.contrato.service.interfaces.IEstadoContrato;
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class EstadoContratoService implements IEstadoContrato {
     @Override
     public EstadoContratoDTO delete(Long idEstadoContrato) {
         if(!estadoContratoRepository.existsById(idEstadoContrato)){
-            throw new RuntimeException("no existe un estado de contrato con el id: "+idEstadoContrato);
+            throw new RecursoNoEncontrado("no existe un estado de contrato con el id: "+idEstadoContrato);
         }
         estadoContratoRepository.deleteById(idEstadoContrato);
         return null;
@@ -42,15 +44,16 @@ public class EstadoContratoService implements IEstadoContrato {
     @Override
     public EstadoContratoDTO find(Long idEstadoContrato) {
         EstadoContrato estadoContrato = estadoContratoRepository.findById(idEstadoContrato)
-                .orElseThrow(() -> new RuntimeException("No se encontro el estado del contrato con el id: " + idEstadoContrato));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el estado del contrato con el id: " + idEstadoContrato));
         return ObjectMapperUtils.map(estadoContrato, EstadoContratoDTO.class);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EstadoContratoDTO> findAll() {
         List<EstadoContrato> estadoContratos = estadoContratoRepository.findAll();
         if (estadoContratos.isEmpty())
-            throw new RuntimeException("No se encontraron estados de contratos");
+            throw new RecursoNoEncontrado("No se encontraron estados de contratos");
         return ObjectMapperUtils.mapAll(estadoContratos, EstadoContratoDTO.class);
     }
 }

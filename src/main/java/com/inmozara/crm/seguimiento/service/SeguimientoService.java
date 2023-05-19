@@ -1,5 +1,6 @@
 package com.inmozara.crm.seguimiento.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.seguimiento.model.Seguimiento;
 import com.inmozara.crm.seguimiento.model.dto.SeguimientoDTO;
 import com.inmozara.crm.seguimiento.model.repository.SeguimientoRepository;
@@ -32,7 +33,7 @@ public class SeguimientoService implements ISeguimiento {
     @Override
     public SeguimientoDTO delete(Long idSeguimiento) {
         if (!seguimientoRepository.existsById(idSeguimiento)) {
-            throw new RuntimeException("No existe el seguimiento");
+            throw new RecursoNoEncontrado("No existe el seguimiento");
         }
         seguimientoRepository.deleteById(idSeguimiento);
         return null;
@@ -41,7 +42,7 @@ public class SeguimientoService implements ISeguimiento {
     @Override
     public SeguimientoDTO find(Long aLong) {
         Seguimiento seguimiento = seguimientoRepository.findById(aLong).orElseThrow(
-                () -> new RuntimeException("No existe el seguimiento"));
+                () -> new RecursoNoEncontrado("No existe el seguimiento"));
         return ObjectMapperUtils.map(seguimiento, SeguimientoDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class SeguimientoService implements ISeguimiento {
     public List<SeguimientoDTO> findAll() {
         List<Seguimiento> seguimientos = seguimientoRepository.findAll();
         if (seguimientos.isEmpty()) {
-            throw new RuntimeException("No existen seguimientos");
+            throw new RecursoNoEncontrado("No existen seguimientos");
         }
         return ObjectMapperUtils.mapAll(seguimientos, SeguimientoDTO.class);
     }

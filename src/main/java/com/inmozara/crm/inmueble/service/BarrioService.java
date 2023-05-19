@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Barrio;
 import com.inmozara.crm.inmueble.model.Municipio;
 import com.inmozara.crm.inmueble.model.dto.BarrioDTO;
@@ -22,7 +23,7 @@ public class BarrioService implements IBarrio {
     public List<BarrioDTO> findAllByMunicipio(int idMunicipio) {
         List<Barrio> barrios = barrioRepository.findAllByMunicipio(Municipio.builder().idMunicipio(idMunicipio).build());
         if (barrios.isEmpty()) {
-            throw new RuntimeException("No se encontraron barrios para el municipio con id: " + idMunicipio);
+            throw new RecursoNoEncontrado("No se encontraron barrios para el municipio con id: " + idMunicipio);
         }
         return ObjectMapperUtils.mapAll(barrios, BarrioDTO.class);
     }
@@ -44,7 +45,7 @@ public class BarrioService implements IBarrio {
     @Override
     public BarrioDTO delete(Integer idBarrio) {
         if (!barrioRepository.existsById(idBarrio)) {
-            throw new RuntimeException("No existe un barrio con este id");
+            throw new RecursoNoEncontrado("No existe un barrio con este id");
         }
         barrioRepository.deleteById(idBarrio);
         return null;
@@ -53,7 +54,7 @@ public class BarrioService implements IBarrio {
     @Override
     public BarrioDTO find(Integer idMunicipio) {
         Barrio barrio = barrioRepository.findById(idMunicipio)
-                .orElseThrow(() -> new RuntimeException("No se encontro el barrio con id: " + idMunicipio));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el barrio con id: " + idMunicipio));
         return ObjectMapperUtils.map(barrio, BarrioDTO.class);
     }
 
@@ -61,7 +62,7 @@ public class BarrioService implements IBarrio {
     public List<BarrioDTO> findAll() {
         List<Barrio> barrios = barrioRepository.findAll();
         if (barrios.isEmpty()) {
-            throw new RuntimeException("No se encontraron barrios");
+            throw new RecursoNoEncontrado("No se encontraron barrios");
         }
         return ObjectMapperUtils.mapAll(barrios, BarrioDTO.class);
     }

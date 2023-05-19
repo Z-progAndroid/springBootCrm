@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Pais;
 import com.inmozara.crm.inmueble.model.Provincia;
 import com.inmozara.crm.inmueble.model.dto.ProvinciaDTO;
@@ -24,7 +25,7 @@ public class ProvinciaService implements IProvincia {
                 .idPais(idPais)
                 .build());
         if (provincias.isEmpty()) {
-            throw new RuntimeException("no se ha encontrado provincias");
+            throw new RecursoNoEncontrado("no se ha encontrado provincias");
         }
         return ObjectMapperUtils.mapAll(provincias, ProvinciaDTO.class);
     }
@@ -44,7 +45,7 @@ public class ProvinciaService implements IProvincia {
     @Override
     public ProvinciaDTO delete(Integer idPorvincia) {
         if (!provinciaRepository.existsById(idPorvincia)) {
-            throw new RuntimeException("No existe una  provincia con el id:" + idPorvincia);
+            throw new RecursoNoEncontrado("No existe una  provincia con el id:" + idPorvincia);
 
         }
         provinciaRepository.deleteById(idPorvincia);
@@ -54,7 +55,7 @@ public class ProvinciaService implements IProvincia {
     @Override
     public ProvinciaDTO find(Integer integer) {
         Provincia provincia = Optional.of(provinciaRepository.getReferenceById(integer))
-                .orElseThrow(() -> new RuntimeException("No se encontro la provincia con id: " + integer));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro la provincia con id: " + integer));
         return ObjectMapperUtils.map(provincia, ProvinciaDTO.class);
     }
 
@@ -62,7 +63,7 @@ public class ProvinciaService implements IProvincia {
     public List<ProvinciaDTO> findAll() {
         List<Provincia> provincias = provinciaRepository.findAll();
         if (provincias.isEmpty()) {
-            throw new RuntimeException("no se ha encontrado provincias");
+            throw new RecursoNoEncontrado("no se ha encontrado provincias");
         }
         return ObjectMapperUtils.mapAll(provincias, ProvinciaDTO.class);
     }

@@ -1,5 +1,6 @@
 package com.inmozara.crm.usuario.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.Rol;
 import com.inmozara.crm.usuario.model.dto.RolDTO;
 import com.inmozara.crm.usuario.model.repository.RolRepository;
@@ -32,7 +33,7 @@ public class RolService implements IRol {
     @Override
     public RolDTO delete(Integer integer) {
         if (!rolRepository.existsById(integer)) {
-            throw new RuntimeException("No se encontro el rol");
+            throw new RecursoNoEncontrado("No se encontro el rol");
         }
         rolRepository.deleteById(integer);
         return null;
@@ -41,7 +42,7 @@ public class RolService implements IRol {
     @Override
     public RolDTO find(Integer integer) {
         Rol rol = rolRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No se encontro el rol"));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el rol"));
         return ObjectMapperUtils.map(rol, RolDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class RolService implements IRol {
     public List<RolDTO> findAll() {
         List<Rol> roles = rolRepository.findAll();
         if (roles.isEmpty()) {
-            throw new RuntimeException("No se encontraron roles");
+            throw new RecursoNoEncontrado("No se encontraron roles");
         }
         return ObjectMapperUtils.mapAll(roles, RolDTO.class);
     }

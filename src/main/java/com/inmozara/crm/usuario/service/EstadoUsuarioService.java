@@ -1,5 +1,6 @@
 package com.inmozara.crm.usuario.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.EstadoUsuario;
 import com.inmozara.crm.usuario.model.dto.EstadoUsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.EstadoUsuarioRepository;
@@ -32,7 +33,7 @@ public class EstadoUsuarioService implements IEstadoUsuario {
     @Override
     public EstadoUsuarioDTO delete(Integer integer) {
         if (!estadoUsuarioRepository.existsById(integer)) {
-            throw new RuntimeException("No se encontro el estado del usuario");
+            throw new RecursoNoEncontrado("No se encontro el estado del usuario");
         }
         estadoUsuarioRepository.deleteById(integer);
         return null;
@@ -41,7 +42,7 @@ public class EstadoUsuarioService implements IEstadoUsuario {
     @Override
     public EstadoUsuarioDTO find(Integer integer) {
         EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No se encontro el estado del usuario"));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el estado del usuario"));
         return ObjectMapperUtils.map(estadoUsuario, EstadoUsuarioDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class EstadoUsuarioService implements IEstadoUsuario {
     public List<EstadoUsuarioDTO> findAll() {
         List<EstadoUsuario> estadoUsuarios = estadoUsuarioRepository.findAll();
         if (estadoUsuarios.isEmpty()) {
-            throw new RuntimeException("No se encontraron estados de usuarios");
+            throw new RecursoNoEncontrado("No se encontraron estados de usuarios");
         }
         return ObjectMapperUtils.mapAll(estadoUsuarios, EstadoUsuarioDTO.class);
     }

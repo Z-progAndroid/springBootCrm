@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Pais;
 import com.inmozara.crm.inmueble.model.dto.PaisDTO;
 import com.inmozara.crm.inmueble.model.repository.PaisRepository;
@@ -20,7 +21,7 @@ public class PaisService implements IPais {
 
     @Override
     public PaisDTO findByIdPais(String idPais) {
-        Pais pais = paisRepository.findByIdPais(idPais).orElseThrow(() -> new RuntimeException("No se encontro el pais con id: " + idPais));
+        Pais pais = paisRepository.findByIdPais(idPais).orElseThrow(() -> new RecursoNoEncontrado("No se encontro el pais con id: " + idPais));
         return ObjectMapperUtils.map(pais, PaisDTO.class);
     }
 
@@ -39,7 +40,7 @@ public class PaisService implements IPais {
     @Override
     public PaisDTO delete(String idPais) {
         if (!paisRepository.existsById(idPais)) {
-            throw new RuntimeException("No existe un pais con el id:" + idPais);
+            throw new RecursoNoEncontrado("No existe un pais con el id:" + idPais);
 
         }
         paisRepository.deleteById(idPais);
@@ -48,7 +49,7 @@ public class PaisService implements IPais {
 
     @Override
     public PaisDTO find(String id) {
-        Pais pais = Optional.of(paisRepository.getReferenceById(id)).orElseThrow(() -> new RuntimeException("No se encontro el pais con id: " + id));
+        Pais pais = Optional.of(paisRepository.getReferenceById(id)).orElseThrow(() -> new RecursoNoEncontrado("No se encontro el pais con id: " + id));
         return ObjectMapperUtils.map(pais, PaisDTO.class);
 
     }
@@ -57,7 +58,7 @@ public class PaisService implements IPais {
     public List<PaisDTO> findAll() {
         List<Pais> pais = paisRepository.findAll();
         if (pais.isEmpty()) {
-            throw new RuntimeException("No se encontraron paises");
+            throw new RecursoNoEncontrado("No se encontraron paises");
         }
         return ObjectMapperUtils.mapAll(pais, PaisDTO.class);
     }

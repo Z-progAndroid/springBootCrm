@@ -1,5 +1,6 @@
 package com.inmozara.crm.seguimiento.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.seguimiento.model.TipoSeguimiento;
 import com.inmozara.crm.seguimiento.model.dto.TipoSeguimientoDTO;
 import com.inmozara.crm.seguimiento.model.repository.TipoSeguimientoRepository;
@@ -31,7 +32,7 @@ public class TipoSeguimientoService implements ITipoSeguimiento {
     @Override
     public TipoSeguimientoDTO delete(Long idTipoSeguimiento) {
         if (!tipoSeguimientoRepository.existsById(idTipoSeguimiento)) {
-            throw new RuntimeException("No existe el tipo de seguimiento");
+            throw new RecursoNoEncontrado("No existe el tipo de seguimiento");
         }
         tipoSeguimientoRepository.deleteById(idTipoSeguimiento);
         return null;
@@ -40,7 +41,7 @@ public class TipoSeguimientoService implements ITipoSeguimiento {
     @Override
     public TipoSeguimientoDTO find(Long idTipoSeguimiento) {
         TipoSeguimiento tipoSeguimiento = tipoSeguimientoRepository.findById(idTipoSeguimiento).orElseThrow(
-                () -> new RuntimeException("No existe el tipo de seguimiento"));
+                () -> new RecursoNoEncontrado("No existe el tipo de seguimiento"));
         return ObjectMapperUtils.map(tipoSeguimiento, TipoSeguimientoDTO.class);
     }
 
@@ -48,7 +49,7 @@ public class TipoSeguimientoService implements ITipoSeguimiento {
     public List<TipoSeguimientoDTO> findAll() {
         List<TipoSeguimiento> tipoSeguimientos = tipoSeguimientoRepository.findAll();
         if (tipoSeguimientos.isEmpty()) {
-            throw new RuntimeException("No existen tipos de seguimientos");
+            throw new RecursoNoEncontrado("No existen tipos de seguimientos");
         }
         return ObjectMapperUtils.mapAll(tipoSeguimientos, TipoSeguimientoDTO.class);
     }

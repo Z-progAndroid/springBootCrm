@@ -1,5 +1,6 @@
 package com.inmozara.crm.usuario.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.Usuario;
 import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.UsuarioRepository;
@@ -32,7 +33,7 @@ public class UsuarioService implements IUsuario {
     @Override
     public UsuarioDTO delete(Integer integer) {
         if (!usuarioRepository.existsById(integer)) {
-            throw new RuntimeException("No se encontro el usuario");
+            throw new RecursoNoEncontrado("No se encontro el usuario");
         }
         usuarioRepository.deleteById(integer);
         return null;
@@ -41,7 +42,7 @@ public class UsuarioService implements IUsuario {
     @Override
     public UsuarioDTO find(Integer integer) {
         Usuario usuario = usuarioRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No se encontro el usuario"));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el usuario"));
         return ObjectMapperUtils.map(usuario, UsuarioDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class UsuarioService implements IUsuario {
     public List<UsuarioDTO> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         if (usuarios.isEmpty()) {
-            throw new RuntimeException("No se encontraron usuarios");
+            throw new RecursoNoEncontrado("No se encontraron usuarios");
         }
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }

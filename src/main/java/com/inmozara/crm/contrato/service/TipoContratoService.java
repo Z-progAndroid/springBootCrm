@@ -4,6 +4,7 @@ import com.inmozara.crm.contrato.model.TipoContrato;
 import com.inmozara.crm.contrato.model.dto.TipoContratoDTO;
 import com.inmozara.crm.contrato.model.repository.TipoContratoRepository;
 import com.inmozara.crm.contrato.service.interfaces.ITipoContrato;
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class TipoContratoService implements ITipoContrato {
     @Override
     public TipoContratoDTO delete(Long idTipoContrato) {
         if (!tipoContratoRepository.existsById(idTipoContrato)) {
-            throw new RuntimeException("El tipo de contrato no existe");
+            throw new RecursoNoEncontrado("El tipo de contrato no existe");
         }
         tipoContratoRepository.deleteById(idTipoContrato);
         return null;
@@ -41,7 +42,7 @@ public class TipoContratoService implements ITipoContrato {
     @Override
     public TipoContratoDTO find(Long idTipoContrato) {
         TipoContrato tipoContrato = tipoContratoRepository.findById(idTipoContrato)
-                .orElseThrow(() -> new RuntimeException("El tipo de contrato no existe"));
+                .orElseThrow(() -> new RecursoNoEncontrado("El tipo de contrato no existe"));
         return ObjectMapperUtils.map(tipoContrato, TipoContratoDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class TipoContratoService implements ITipoContrato {
     public List<TipoContratoDTO> findAll() {
         List<TipoContrato> tipoContratos = tipoContratoRepository.findAll();
         if (tipoContratos.isEmpty()) {
-            throw new RuntimeException("No hay tipos de contratos");
+            throw new RecursoNoEncontrado("No hay tipos de contratos");
         }
         return ObjectMapperUtils.mapAll(tipoContratos, TipoContratoDTO.class);
     }

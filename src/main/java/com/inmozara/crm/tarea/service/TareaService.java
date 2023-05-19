@@ -1,5 +1,6 @@
 package com.inmozara.crm.tarea.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import com.inmozara.crm.tarea.model.repository.TareaRepository;
@@ -31,7 +32,7 @@ public class TareaService implements ITarea {
     @Override
     public TareaDTO delete(Integer integer) {
         if (!tareaRepository.existsById(integer)) {
-            throw new RuntimeException("No existe la tarea con id: " + integer);
+            throw new RecursoNoEncontrado("No existe la tarea con id: " + integer);
         }
         tareaRepository.deleteById(integer);
         return null;
@@ -40,7 +41,7 @@ public class TareaService implements ITarea {
     @Override
     public TareaDTO find(Integer integer) {
         Tarea tarea = tareaRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No existe la tarea con id: " + integer));
+                .orElseThrow(() -> new RecursoNoEncontrado("No existe la tarea con id: " + integer));
 
         return ObjectMapperUtils.map(tarea, TareaDTO.class);
     }
@@ -49,7 +50,7 @@ public class TareaService implements ITarea {
     public List<TareaDTO> findAll() {
         List<Tarea> tareas = tareaRepository.findAll();
         if (tareas.isEmpty())
-            throw new RuntimeException("No existen tareas");
+            throw new RecursoNoEncontrado("No existen tareas");
         return ObjectMapperUtils.mapAll(tareas, TareaDTO.class);
 
     }

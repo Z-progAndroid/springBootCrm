@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.TipoInmueble;
 import com.inmozara.crm.inmueble.model.dto.TipoInmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.TipoInmuebleRespository;
@@ -32,7 +33,7 @@ public class TipoInmuebleService implements ITipoInmueble {
     @Override
     public TipoInmuebleDTO delete(Long idTipoInmueble) {
         if (!tipoInmuebleRespository.existsById(idTipoInmueble)) {
-            throw new RuntimeException("No existe un tipo inmueble con el id:" + idTipoInmueble);
+            throw new RecursoNoEncontrado("No existe un tipo inmueble con el id:" + idTipoInmueble);
 
         }
         tipoInmuebleRespository.deleteById(idTipoInmueble);
@@ -42,14 +43,14 @@ public class TipoInmuebleService implements ITipoInmueble {
     @Override
     public TipoInmuebleDTO find(Long idTipoInmueble) {
         TipoInmueble inmueble = tipoInmuebleRespository.findById(idTipoInmueble).
-                orElseThrow(() -> new RuntimeException("No se encontro el tipo de inmueblepor id: " + idTipoInmueble));
+                orElseThrow(() -> new RecursoNoEncontrado("No se encontro el tipo de inmueblepor id: " + idTipoInmueble));
         return ObjectMapperUtils.map(inmueble, TipoInmuebleDTO.class);
     }
 
     public List<TipoInmuebleDTO> findAll() {
         List<TipoInmueble> inmuebles = tipoInmuebleRespository.findAll();
         if (inmuebles.isEmpty())
-            throw new RuntimeException("No se encontraron tipos de inmuebles");
+            throw new RecursoNoEncontrado("No se encontraron tipos de inmuebles");
         return ObjectMapperUtils.mapAll(inmuebles, TipoInmuebleDTO.class);
     }
 }

@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
@@ -32,7 +33,7 @@ public class InmuebleService implements IInmueble {
     @Override
     public InmuebleDTO delete(Long idInmueble) {
         if (!inmuebleRepository.existsById(idInmueble)){
-            throw new RuntimeException("No existe un inmueble con el id: "+idInmueble);
+            throw new RecursoNoEncontrado("No existe un inmueble con el id: "+idInmueble);
         }
         inmuebleRepository.deleteById(idInmueble);
         return null;
@@ -41,7 +42,7 @@ public class InmuebleService implements IInmueble {
     @Override
     public InmuebleDTO find(Long aLong) {
         Inmueble inmueble = inmuebleRepository.findById(aLong)
-                .orElseThrow(() -> new RuntimeException("Inmueble no encontrado por el id: " + aLong));
+                .orElseThrow(() -> new RecursoNoEncontrado("Inmueble no encontrado por el id: " + aLong));
 
         return ObjectMapperUtils.map(inmueble, InmuebleDTO.class);
     }
@@ -50,7 +51,7 @@ public class InmuebleService implements IInmueble {
     public List<InmuebleDTO> findAll() {
         List<Inmueble> inmuebles = inmuebleRepository.findAll();
         if (inmuebles.isEmpty())
-            throw new RuntimeException("No hay inmuebles en la base de datos");
+            throw new RecursoNoEncontrado("No hay inmuebles en la base de datos");
         return ObjectMapperUtils.mapAll(inmuebles, InmuebleDTO.class);
 
     }

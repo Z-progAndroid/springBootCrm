@@ -4,6 +4,7 @@ import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.contrato.model.repository.ContratoRepository;
 import com.inmozara.crm.contrato.service.interfaces.IContrato;
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ContratoService implements IContrato {
     @Override
     public ContratoDTO delete(Long idContrato) {
         if (!contratoRepository.existsById(idContrato))
-            throw new RuntimeException("Contrato no encontrado");
+            throw new RecursoNoEncontrado("Contrato no encontrado");
         contratoRepository.deleteById(idContrato);
         return null;
     }
@@ -40,7 +41,7 @@ public class ContratoService implements IContrato {
     @Override
     public ContratoDTO find(Long idContrato) {
         Contrato contrato = contratoRepository.findById(idContrato)
-                .orElseThrow(() -> new RuntimeException("Contrato no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontrado("Contrato no encontrado"));
         return ObjectMapperUtils.map(contrato, ContratoDTO.class);
     }
 
@@ -48,7 +49,7 @@ public class ContratoService implements IContrato {
     public List<ContratoDTO> findAll() {
         List<Contrato> contratos = contratoRepository.findAll();
         if (contratos.isEmpty()) {
-            throw new RuntimeException("No hay contratos");
+            throw new RecursoNoEncontrado("No hay contratos");
         }
         return ObjectMapperUtils.mapAll(contratos, ContratoDTO.class);
     }

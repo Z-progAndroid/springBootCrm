@@ -1,5 +1,6 @@
 package com.inmozara.crm.inmueble.service;
 
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Municipio;
 import com.inmozara.crm.inmueble.model.Provincia;
 import com.inmozara.crm.inmueble.model.dto.MunicipoDTO;
@@ -26,7 +27,7 @@ public class MunicipoService implements IMunicipo {
                 .idProvincia(idProvincia)
                 .build());
         if (municipos.isEmpty()) {
-            throw new RuntimeException("No se encontraron municipios para la provincia con id: " + idProvincia);
+            throw new RecursoNoEncontrado("No se encontraron municipios para la provincia con id: " + idProvincia);
         }
         return ObjectMapperUtils.mapAll(municipos, MunicipoDTO.class);
     }
@@ -48,7 +49,7 @@ public class MunicipoService implements IMunicipo {
     @Override
     public MunicipoDTO delete(Integer idMunicipio) {
         if (!municipoReprository.existsById(idMunicipio)) {
-            throw new RuntimeException("No existe un municipio con el id:" + idMunicipio);
+            throw new RecursoNoEncontrado("No existe un municipio con el id:" + idMunicipio);
 
         }
         municipoReprository.deleteById(idMunicipio);
@@ -58,7 +59,7 @@ public class MunicipoService implements IMunicipo {
     @Override
     public MunicipoDTO find(Integer idMunicipio) {
         Municipio municipio = municipoReprository.findById(idMunicipio)
-                .orElseThrow(() -> new RuntimeException("No se encontro el municipio con id: " + idMunicipio));
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el municipio con id: " + idMunicipio));
         return ObjectMapperUtils.map(municipio, MunicipoDTO.class);
     }
 
@@ -66,7 +67,7 @@ public class MunicipoService implements IMunicipo {
     public List<MunicipoDTO> findAll() {
         List<Municipio> municipos = municipoReprository.findAll();
         if (municipos.isEmpty()) {
-            throw new RuntimeException("No se encontraron municipios");
+            throw new RecursoNoEncontrado("No se encontraron municipios");
         }
         return ObjectMapperUtils.mapAll(municipos, MunicipoDTO.class);
     }

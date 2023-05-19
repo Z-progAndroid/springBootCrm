@@ -4,6 +4,7 @@ import com.inmozara.crm.cita.model.Cita;
 import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.cita.model.repository.CitaRepository;
 import com.inmozara.crm.cita.service.interfaces.ICita;
+import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class CitaService implements ICita {
     @Override
     public CitaDTO delete(Integer integer) {
         if (!citaRepository.existsById(integer)) {
-            throw new RuntimeException("No existe la cita");
+            throw new RecursoNoEncontrado("No existe la cita");
         }
         citaRepository.deleteById(integer);
         return null;
@@ -41,7 +42,7 @@ public class CitaService implements ICita {
     @Override
     public CitaDTO find(Integer integer) {
         Cita cita = citaRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("No existe la cita"));
+                .orElseThrow(() -> new RecursoNoEncontrado("No existe la cita"));
         return ObjectMapperUtils.map(cita, CitaDTO.class);
     }
 
@@ -49,7 +50,7 @@ public class CitaService implements ICita {
     public List<CitaDTO> findAll() {
         List<Cita> citas = citaRepository.findAll();
         if (citas.isEmpty())
-            throw new RuntimeException("No existen citas");
+            throw new RecursoNoEncontrado("No existen citas");
         return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
     }
 }
