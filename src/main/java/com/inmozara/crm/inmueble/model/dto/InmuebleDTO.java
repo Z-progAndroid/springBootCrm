@@ -57,6 +57,7 @@ public class InmuebleDTO {
     private int idProvincia;
     @NotNull(message = "El id de  municipio no puede estar vacío")
     private int idMunicipio;
+    private int idUsuario;
     private List<Seguimiento> seguimientos;
     private List<Contrato> contratos;
     private List<Cita> citas;

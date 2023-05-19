@@ -31,9 +31,12 @@ public class TipoInmuebleService implements ITipoInmueble {
 
     @Override
     public TipoInmuebleDTO delete(Long idTipoInmueble) {
-        TipoInmuebleDTO tipoInmuebleDTO = this.find(idTipoInmueble);
-        tipoInmuebleRespository.delete(ObjectMapperUtils.map(tipoInmuebleDTO, TipoInmueble.class));
-        return tipoInmuebleDTO;
+        if (!tipoInmuebleRespository.existsById(idTipoInmueble)) {
+            throw new RuntimeException("No existe un tipo inmueble con el id:" + idTipoInmueble);
+
+        }
+        tipoInmuebleRespository.deleteById(idTipoInmueble);
+        return null;
     }
 
     @Override

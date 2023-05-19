@@ -32,10 +32,12 @@ public class EstadoInmuebleService implements IEstadoInmueble {
     }
 
     @Override
-    public EstadoInmuebleDTO delete(Integer integer) {
-        EstadoInmuebleDTO estadoInmueble = this.find(integer);
-        estadoInmuebleRepository.delete(ObjectMapperUtils.map(estadoInmueble, EstadoInmueble.class));
-        return estadoInmueble;
+    public EstadoInmuebleDTO delete(Integer idEstadoInmueble) {
+        if (!estadoInmuebleRepository.existsById(idEstadoInmueble)) {
+            throw new RuntimeException("No existe el estado inmueble con el id: " + idEstadoInmueble);
+        }
+        estadoInmuebleRepository.deleteById(idEstadoInmueble);
+        return null;
     }
 
     @Override

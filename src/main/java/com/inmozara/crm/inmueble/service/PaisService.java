@@ -20,8 +20,7 @@ public class PaisService implements IPais {
 
     @Override
     public PaisDTO findByIdPais(String idPais) {
-        Pais pais = paisRepository.findByIdPais(idPais)
-                .orElseThrow(() -> new RuntimeException("No se encontro el pais con id: " + idPais));
+        Pais pais = paisRepository.findByIdPais(idPais).orElseThrow(() -> new RuntimeException("No se encontro el pais con id: " + idPais));
         return ObjectMapperUtils.map(pais, PaisDTO.class);
     }
 
@@ -39,15 +38,17 @@ public class PaisService implements IPais {
 
     @Override
     public PaisDTO delete(String idPais) {
-        PaisDTO paisDTO = findByIdPais(idPais);
-        paisRepository.delete(ObjectMapperUtils.map(paisDTO, Pais.class));
-        return paisDTO;
+        if (!paisRepository.existsById(idPais)) {
+            throw new RuntimeException("No existe un pais con el id:" + idPais);
+
+        }
+        paisRepository.deleteById(idPais);
+        return null;
     }
 
     @Override
     public PaisDTO find(String id) {
-        Pais pais = Optional.of(paisRepository.getReferenceById(id))
-                .orElseThrow(() -> new RuntimeException("No se encontro el pais con id: " + id));
+        Pais pais = Optional.of(paisRepository.getReferenceById(id)).orElseThrow(() -> new RuntimeException("No se encontro el pais con id: " + id));
         return ObjectMapperUtils.map(pais, PaisDTO.class);
 
     }

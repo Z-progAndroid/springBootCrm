@@ -29,4 +29,6 @@ public class CitaDTO {
     private int idEstadoCita;
     @NotNull(message = "El campo horaCita no puede estar vacio")
     private Long idInmueble;
+    private int idUsuarioAgente;
+    private int idUsuarioCliente;
 }

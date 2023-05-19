@@ -32,6 +32,9 @@ public class EstadoContratoService implements IEstadoContrato {
 
     @Override
     public EstadoContratoDTO delete(Long idEstadoContrato) {
+        if(!estadoContratoRepository.existsById(idEstadoContrato)){
+            throw new RuntimeException("no existe un estado de contrato con el id: "+idEstadoContrato);
+        }
         estadoContratoRepository.deleteById(idEstadoContrato);
         return null;
     }

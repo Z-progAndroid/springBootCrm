@@ -30,10 +30,12 @@ public class InmuebleService implements IInmueble {
     }
 
     @Override
-    public InmuebleDTO delete(Long aLong) {
-        InmuebleDTO inmuebleDTO = find(aLong);
-        inmuebleRepository.deleteById(aLong);
-        return inmuebleDTO;
+    public InmuebleDTO delete(Long idInmueble) {
+        if (!inmuebleRepository.existsById(idInmueble)){
+            throw new RuntimeException("No existe un inmueble con el id: "+idInmueble);
+        }
+        inmuebleRepository.deleteById(idInmueble);
+        return null;
     }
 
     @Override

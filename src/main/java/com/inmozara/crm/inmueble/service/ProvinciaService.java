@@ -42,10 +42,13 @@ public class ProvinciaService implements IProvincia {
     }
 
     @Override
-    public ProvinciaDTO delete(Integer integer) {
-        ProvinciaDTO provinciaDTO = this.find(integer);
-        provinciaRepository.delete(ObjectMapperUtils.map(provinciaDTO, Provincia.class));
-        return provinciaDTO;
+    public ProvinciaDTO delete(Integer idPorvincia) {
+        if (!provinciaRepository.existsById(idPorvincia)) {
+            throw new RuntimeException("No existe una  provincia con el id:" + idPorvincia);
+
+        }
+        provinciaRepository.deleteById(idPorvincia);
+        return null;
     }
 
     @Override

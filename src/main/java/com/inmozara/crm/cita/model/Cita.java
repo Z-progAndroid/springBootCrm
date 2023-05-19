@@ -1,6 +1,7 @@
 package com.inmozara.crm.cita.model;
 
 import com.inmozara.crm.inmueble.model.Inmueble;
+import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,4 +36,10 @@ public class Cita {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_INMUEBLE")
     private Inmueble inmueble;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_AGENTE", referencedColumnName = "ID_USUARIO")
+    private Usuario agente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_USUARIO")
+    private Usuario cliente;
 }

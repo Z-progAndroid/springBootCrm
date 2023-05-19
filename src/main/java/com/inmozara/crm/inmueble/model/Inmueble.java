@@ -3,6 +3,7 @@ package com.inmozara.crm.inmueble.model;
 import com.inmozara.crm.cita.model.Cita;
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.seguimiento.model.Seguimiento;
+import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,4 +73,7 @@ public class Inmueble {
     private List<Contrato> contratos;
     @OneToMany(mappedBy = "inmueble")
     private List<Cita> citas;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_USUARIO")
+    private Usuario usuario;
 }

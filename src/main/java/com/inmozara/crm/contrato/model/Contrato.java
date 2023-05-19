@@ -1,6 +1,7 @@
 package com.inmozara.crm.contrato.model;
 
 import com.inmozara.crm.inmueble.model.Inmueble;
+import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,4 +53,10 @@ public class Contrato {
     @ManyToOne
     @JoinColumn(name = "ID_ESTADO_CONTRATO")
     private EstadoContrato estadoContrato;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_AGENTE", referencedColumnName = "ID_USUARIO")
+    private Usuario agente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_USUARIO")
+    private Usuario cliente;
 }

@@ -47,9 +47,12 @@ public class MunicipoService implements IMunicipo {
 
     @Override
     public MunicipoDTO delete(Integer idMunicipio) {
-        MunicipoDTO municipoDTO = this.find(idMunicipio);
-        municipoReprository.delete(ObjectMapperUtils.map(municipoDTO, Municipio.class));
-        return municipoDTO;
+        if (!municipoReprository.existsById(idMunicipio)) {
+            throw new RuntimeException("No existe un municipio con el id:" + idMunicipio);
+
+        }
+        municipoReprository.deleteById(idMunicipio);
+        return null;
     }
 
     @Override

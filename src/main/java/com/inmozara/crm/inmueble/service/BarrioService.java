@@ -42,11 +42,12 @@ public class BarrioService implements IBarrio {
     }
 
     @Override
-    public BarrioDTO delete(Integer idMunicipio) {
-        Barrio barrio = barrioRepository.findById(idMunicipio)
-                .orElseThrow(() -> new RuntimeException("No se encontro el barrio con id: " + idMunicipio));
-        barrioRepository.delete(barrio);
-        return ObjectMapperUtils.map(barrio, BarrioDTO.class);
+    public BarrioDTO delete(Integer idBarrio) {
+        if (!barrioRepository.existsById(idBarrio)) {
+            throw new RuntimeException("No existe un barrio con este id");
+        }
+        barrioRepository.deleteById(idBarrio);
+        return null;
     }
 
     @Override
