@@ -1,9 +1,6 @@
 package com.inmozara.crm.usuario.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -27,6 +24,6 @@ public class EstadoUsuario {
     private Date fechaModificacion;
     @Column(name = "MODIFICADO")
     private String modificado;
-    @OneToMany(mappedBy = "estadoUsuario")
+    @OneToMany(mappedBy = "estadoUsuario",fetch = FetchType.LAZY)
     private List<Usuario> usuarios;
 }

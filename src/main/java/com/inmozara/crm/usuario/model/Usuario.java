@@ -43,10 +43,10 @@ public class Usuario {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ESTADO_USUARIO")
     private EstadoUsuario estadoUsuario;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ROL")
     private Rol rol;
     @OneToMany(mappedBy = "agente")

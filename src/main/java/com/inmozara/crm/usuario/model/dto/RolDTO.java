@@ -1,12 +1,10 @@
 package com.inmozara.crm.usuario.model.dto;
 
-import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +22,5 @@ public class RolDTO {
     private Date fechaModificacion;
     @NotEmpty(message = "El campo modificado no puede estar vacío")
     private String modificado;
-    private List<Usuario> usuarios;
 }
 

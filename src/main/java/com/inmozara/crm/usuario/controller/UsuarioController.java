@@ -45,4 +45,10 @@ public class UsuarioController implements IUsuario {
     public List<UsuarioDTO> findAll() {
         return usuarioService.findAll();
     }
+
+    @Override
+    @PostMapping("/search")
+    public List<UsuarioDTO> findAllBYParams(@RequestBody UsuarioDTO usuarioDTO) {
+        return usuarioService.findAllBYParams(usuarioDTO);
+    }
 }
