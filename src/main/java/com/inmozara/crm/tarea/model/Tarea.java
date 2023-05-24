@@ -1,19 +1,23 @@
 package com.inmozara.crm.tarea.model;
 
-import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@Entity(name = Tarea.TABLA_TAREA)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "tareas")
 public class Tarea {
-    protected static final String TABLA_TAREA = "TAREAS";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_TAREA")
-    private int id;
+    private int idTarea;
     @Column(name = "TITULO")
     private String titulo;
     @Column(name = "DESCRIPCION")
@@ -22,12 +26,13 @@ public class Tarea {
     private Date fechaInicio;
     @Column(name = "FECHA_FIN")
     private Date fechaFin;
-    //Relaciones
-    @ManyToOne
-    @JoinColumn(name = "ID_USUARIO")
-    private Usuario usuario;
-    @OneToOne
-    @JoinColumn(name = "ID_ESTADO")
-    private EstadoTarea estado;
-
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+    @Column(name = "FECHA_MODIFICACION")
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_ESTADO_TAREA")
+    private EstadoTarea estadoTarea;
 }

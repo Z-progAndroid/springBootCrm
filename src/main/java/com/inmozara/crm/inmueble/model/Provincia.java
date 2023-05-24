@@ -1,26 +1,37 @@
 package com.inmozara.crm.inmueble.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
 
 @Data
-@Entity(name = Provincia.TABLA_PROVINCIA)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "PROVINCIAS")
 public class Provincia {
-    protected static final String TABLA_PROVINCIA = "PROVINCIAS";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "CODIGO_PROVINCIA")
-    private String codigo;
-    @Column(name = "NOMBRE_PROVINCIA")
-    private String nombre;
+    @Column(name = "ID_PROVINCIA", nullable = false, unique = true)
+    private int idProvincia;
+    @Column(name = "PROVINCIA")
+    private String provincia;
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+    @Column(name = "FECHA_MODIFICACION")
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
     //Relaciones
-    @ManyToOne
-    @JoinColumn(name = "CODIGO_PAIS")
+    @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY)
+    private List<Inmueble> inmuebles;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PAIS")
     private Pais pais;
-    @OneToMany(mappedBy = "provincia")
-    private Set<Municipio> municipios=new HashSet<>();
+    @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY)
+    private List<Municipio> municipios;
 }

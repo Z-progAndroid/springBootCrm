@@ -5,25 +5,29 @@ import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.seguimiento.model.Seguimiento;
 import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
-@Entity(name = Inmueble.TABLA_INMUEBLE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "INMUEBLES")
 public class Inmueble {
-    protected static final String TABLA_INMUEBLE = "INMUEBLES";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_INMUEBLE")
-    private int id;
-    @Column(name = "DESCRIPCION")
+    private Long idInmueble;
+    @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
-    @Column(name = "DIRECCION")
+    @Column(name = "DIRECCION", length = 200)
     private String direccion;
-    @Column(name = "CODIGO_POSTAL")
+    @Column(name = "CODIGO_POSTAL", length = 10)
     private String codigoPostal;
     @Column(name = "PRECIO_VENTA")
     private double precio_venta;
@@ -38,27 +42,38 @@ public class Inmueble {
     @Column(name = "ANO_CONSTRUCCION")
     private int ano_construccion;
     @Column(name = "FECHA_CREACION")
-    private Date fecha_creacion;
+    private Date fechaCreacion;
     @Column(name = "FECHA_MODIFICACION")
-    private Date fecha_modificacion;
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
+
     //Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_TIPO_INMUEBLE")
+    private TipoInmueble tipoInmueble;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_ESTADO_INMUEBLE")
+    private EstadoInmueble estadoInmueble;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PAIS")
+    private Pais pais;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PROVINCIA")
+    private Provincia provincia;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_MUNICIPIO")
+    private Municipio municipio;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_BARRIO")
+    private Barrio barrio;
+    @OneToMany(mappedBy = "inmueble")
+    private List<Seguimiento> seguimientos;
+    @OneToMany(mappedBy = "inmueble")
+    private List<Contrato> contratos;
+    @OneToMany(mappedBy = "inmueble")
+    private List<Cita> citas;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CODIGO_MUNICIPIO")
-    private Municipio municipio;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_TIPO_INMUEBLE")
-    private TipoInmueble tipo;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_ESTADO_INMUEBLE")
-    private EstadoInmueble estado;
-    @OneToMany(mappedBy = "inmueble")
-    private Set<Cita> citas = new HashSet<>();
-    @OneToMany(mappedBy = "inmueble")
-    private Set<Contrato> contratos = new HashSet<>();
-    @OneToMany(mappedBy = "inmueble")
-    private Set<Seguimiento> seguimientos = new HashSet<>();
-
 }

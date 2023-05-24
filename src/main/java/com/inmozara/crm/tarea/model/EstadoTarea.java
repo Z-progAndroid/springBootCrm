@@ -1,23 +1,34 @@
 package com.inmozara.crm.tarea.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
-@Entity(name = EstadoTarea.TABLA_ESTADO_TAREA)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "estado_tarea")
 public class EstadoTarea {
-    protected static final String TABLA_ESTADO_TAREA = "ESTADO_TAREA";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "ID_ESTADO")
-    private int idEstado;
-    @Column(name = "ESTADO")
-    private String estado;
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
-
-    //Relaciones
-    @OneToOne(mappedBy = "estado")
-    private Tarea tarea;
+    @Column(name = "ID_ESTADO_TAREA", unique = true, nullable = false)
+    private int idEstadoTarea;
+    @Column(name = "ESTADO_TAREA")
+    private String estadoTarea;
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+    @Column(name = "FECHA_MODIFICACION")
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
+    @OneToMany(mappedBy = "estadoTarea")
+    private List<Tarea> tareas;
 }

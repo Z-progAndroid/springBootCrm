@@ -1,22 +1,29 @@
 package com.inmozara.crm.usuario.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@Entity(name = Rol.TABLA_ROL)
+import java.util.Date;
+import java.util.List;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "roles")
 public class Rol {
-    protected static final String TABLA_ROL = "ROLES";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "ID_ROL")
+    @Column(name = "ID_ROL", nullable = false, unique = true)
     private int idRol;
     @Column(name = "ROL")
     private String rol;
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
-    //Relaciones
-    @OneToOne(mappedBy = "rol")
-    private Usuario usuario;
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+    @Column(name = "FECHA_MODIFICACION")
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
+    @OneToMany(mappedBy = "rol" ,fetch = FetchType.LAZY)
+    private List<Usuario> usuarios;
 }

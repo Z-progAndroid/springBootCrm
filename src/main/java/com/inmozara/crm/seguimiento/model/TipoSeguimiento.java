@@ -1,22 +1,32 @@
 package com.inmozara.crm.seguimiento.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
-@Entity(name = TipoSeguimiento.TABLA_TIPO_SEGUIMIENTO)
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "tipo_seguimientos")
 public class TipoSeguimiento {
-    protected static final String TABLA_TIPO_SEGUIMIENTO = "TIPO_SEGUIMIENTO";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "ID_TIPO_SEGUIMIENTO")
-    private int id_tipo_seguimiento;
-    @Column(name = "ESTADO")
-    private String estado;
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
-    //Relaciones
-    @OneToOne(mappedBy = "tipoSeguimiento", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Seguimiento seguimiento;
+    @Column(name = "ID_TIPO_SEGUIMIENTO", nullable = false, unique = true)
+    private Long idTipoSeguimiento;
+    @Column(name = "TIPO_SEGUIMIENTO")
+    private String tipoSeguimiento;
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+    @Column(name = "FECHA_MODIFICACION")
+    private Date fechaModificacion;
+    @Column(name = "MODIFICADO")
+    private String modificado;
+    @OneToMany(mappedBy = "tipoSeguimiento")
+    List<Seguimiento> seguimientos;
 }
