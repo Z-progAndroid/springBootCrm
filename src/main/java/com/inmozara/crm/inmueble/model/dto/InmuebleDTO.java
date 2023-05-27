@@ -1,8 +1,5 @@
 package com.inmozara.crm.inmueble.model.dto;
 
-import com.inmozara.crm.cita.model.Cita;
-import com.inmozara.crm.contrato.model.Contrato;
-import com.inmozara.crm.seguimiento.model.Seguimiento;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class InmuebleDTO {
-    private Long idInmueble;
+    private int idInmueble;
     private String descripcion;
     @NotEmpty(message = "La dirección no puede estar vacía")
     private String direccion;
@@ -42,10 +39,6 @@ public class InmuebleDTO {
     private Date fechaModificacion;
     @NotEmpty(message = "El campo modificado no puede estar vacío")
     private String modificado;
-
-    private double precioMinimo;
-    private double precioMaximo;
-
     //Relaciones
     @NotNull(message = "El tipo de inmueble no puede estar vacío")
     private Long idTipoInmueble;
@@ -58,7 +51,19 @@ public class InmuebleDTO {
     @NotNull(message = "El id de  municipio no puede estar vacío")
     private int idMunicipio;
     private int idUsuario;
-    private List<Seguimiento> seguimientos;
-    private List<Contrato> contratos;
-    private List<Cita> citas;
+    @NotNull(message = "El id del barrio no puede estar vacío")
+    private int idBarrio;
+    private String imagen1;
+    private String imagen2;
+    private String imagen3;
+    private String imagen4;
+    //PARA FRONT
+    private String barrio;
+    private String estadoInmueble;
+    private String municipio;
+    private String pais;
+    private String provincia;
+    private String tipoInmueble;
+    private List<String> imagenes;
+
 }

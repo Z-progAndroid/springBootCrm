@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IUsuario extends IService<UsuarioDTO, Integer> {
     List<UsuarioDTO> findAllBYParams(UsuarioDTO usuarioDTO);
+    List<UsuarioDTO> findAllUserAdminORAgente();
 }

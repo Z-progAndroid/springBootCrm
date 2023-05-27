@@ -1,6 +1,8 @@
 package com.inmozara.crm.config;
 
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
+import com.inmozara.crm.inmueble.exception.CargarImagenException;
+import com.inmozara.crm.inmueble.exception.GuardarImagenException;
 import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,6 +49,28 @@ public class ControllerExceptionHandler {
                         .stream()
                         .map(err -> err.getField() + ": " + err.getDefaultMessage())
                         .collect(Collectors.joining(", ")))
+                .description(request.getDescription(false))
+                .build();
+    }
+
+    @ExceptionHandler(GuardarImagenException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public MensajeDTO imagenGuardarException(GuardarImagenException e, WebRequest request) {
+        return MensajeDTO.builder()
+                .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .mensaje(e.getMessage())
+                .description(request.getDescription(false))
+                .build();
+    }
+
+    @ExceptionHandler(CargarImagenException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public MensajeDTO cargarImagenException(CargarImagenException e, WebRequest request) {
+        return MensajeDTO.builder()
+                .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .mensaje(e.getMessage())
                 .description(request.getDescription(false))
                 .build();
     }

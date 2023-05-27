@@ -1,6 +1,5 @@
 package com.inmozara.crm.inmueble.model.dto;
 
-import com.inmozara.crm.inmueble.model.Inmueble;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,6 +26,5 @@ public class EstadoInmuebleDTO {
     private Date fechaModificacion;
     @NotNull(message = "El campo modificado no puede ser nulo")
     private String modificado;
-    private List<Inmueble> inmuebles;
 
 }

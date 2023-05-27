@@ -3,6 +3,7 @@ package com.inmozara.crm.usuario.service;
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.Usuario;
+import com.inmozara.crm.usuario.model.dto.RolDTO;
 import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.UsuarioRepository;
 import com.inmozara.crm.usuario.model.search.UserSearch;
@@ -87,6 +88,25 @@ public class UsuarioService implements IUsuario {
         Usuario usuario = ObjectMapperUtils.map(usuarioDTO, Usuario.class);
         List<Usuario> usuarios = usuarioRepository.findAll(UserSearch.builder()
                 .usuario(usuario)
+                .build());
+        if (usuarios.isEmpty()) {
+            throw new RecursoNoEncontrado("No se encontraron usuarios por los parametros ingresados");
+        }
+        Map<Integer, String> rol = rolService.findAllMap();
+        Map<Integer, String> estadoUsuario = estadoUsuarioService.findAllMap();
+        List<UsuarioDTO> usuarioDTOS = ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
+        return usuarioDTOS.stream().map(user -> {
+            user.setRol(rol.get(user.getIdRol()));
+            user.setEstadoUsuario(estadoUsuario.get(user.getIdEstadoUsuario()));
+            return user;
+        }).collect(Collectors.toList());
+    }
+
+    public List<UsuarioDTO> findAllUserAdminORAgente() {
+        List<Usuario> usuarios = usuarioRepository.findAll(UserSearch.builder()
+                .roles(rolService.rolesAdminYAgente()
+                        .stream().map(RolDTO::getIdRol)
+                        .collect(Collectors.toList()))
                 .build());
         if (usuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron usuarios por los parametros ingresados");
