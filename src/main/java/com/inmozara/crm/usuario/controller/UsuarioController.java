@@ -51,4 +51,10 @@ public class UsuarioController implements IUsuario {
     public List<UsuarioDTO> findAllBYParams(@RequestBody UsuarioDTO usuarioDTO) {
         return usuarioService.findAllBYParams(usuarioDTO);
     }
+
+    @Override
+    @GetMapping("/all/admin-or-agent")
+    public List<UsuarioDTO> findAllUserAdminORAgente() {
+        return usuarioService.findAllUserAdminORAgente();
+    }
 }

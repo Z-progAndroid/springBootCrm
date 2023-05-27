@@ -1,7 +1,5 @@
 package com.inmozara.crm.inmueble.model.dto;
 
-import com.inmozara.crm.inmueble.model.Inmueble;
-import com.inmozara.crm.inmueble.model.Provincia;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,6 +25,4 @@ public class PaisDTO {
     private Date fechaModificacion;
     @NotEmpty(message = "El campo modificado no puede estar vacio")
     private String modificado;
-    private List<Inmueble> inmuebles;
-    private List<Provincia> provincias;
 }

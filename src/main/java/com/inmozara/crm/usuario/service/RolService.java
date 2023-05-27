@@ -70,4 +70,11 @@ public class RolService implements IRol {
         }
         return roles.stream().collect(Collectors.toMap(Rol::getIdRol, Rol::getRol));
     }
+    List<RolDTO> rolesAdminYAgente(){
+        List<Rol> roles = rolRepository.findRolesAgenteYAdmin();
+        if (roles.isEmpty()) {
+            throw new RecursoNoEncontrado("No se encontraron roles");
+        }
+        return ObjectMapperUtils.mapAll(roles, RolDTO.class);
+    }
 }
