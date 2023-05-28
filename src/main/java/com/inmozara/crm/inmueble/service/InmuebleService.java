@@ -75,7 +75,7 @@ public class InmuebleService implements IInmueble {
 
     public List<InmuebleDTO> search(InmuebleDTO search) {
         List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder()
-                .inmuebleDTO(search)
+                .inmueble(ObjectMapperUtils.map(search, Inmueble.class))
                 .build());
 
         if (inmuebles.isEmpty()) {

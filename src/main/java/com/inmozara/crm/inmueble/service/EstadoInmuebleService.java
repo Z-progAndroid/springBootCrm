@@ -5,7 +5,6 @@ import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.EstadoInmueble;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
-import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
 import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
 import com.inmozara.crm.inmueble.model.search.InmuebleSearch;
@@ -46,12 +45,13 @@ public class EstadoInmuebleService implements IEstadoInmueble {
         if (!estadoInmuebleRepository.existsById(idEstadoInmueble)) {
             throw new RecursoNoEncontrado("No existe el estado inmueble con el id: " + idEstadoInmueble);
         }
-        List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder().inmuebleDTO(InmuebleDTO.builder().estadoInmueble(String.valueOf(idEstadoInmueble)).build()).build());
-        EstadoInmueble estadoInmueble = estadoInmuebleRepository.findById(0)
-                .orElseThrow(() -> new RecursoNoEncontrado("No existe un estado con el id: " + 0));
+        List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder()
+                .inmueble(Inmueble.builder()
+                        .estadoInmueble(EstadoInmueble.builder()
+                                .idEstadoInmueble(idEstadoInmueble).build()).build()).build());
         if (!inmuebles.isEmpty()) {
             inmuebles.forEach(inmueble -> {
-                inmueble.setEstadoInmueble(estadoInmueble);
+                inmueble.setEstadoInmueble(EstadoInmueble.builder().idEstadoInmueble(0).build());
             });
         }
         inmuebleRepository.saveAll(inmuebles);

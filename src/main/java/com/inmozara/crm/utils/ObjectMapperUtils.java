@@ -4,6 +4,8 @@ import com.inmozara.crm.cita.model.Cita;
 import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
+import com.inmozara.crm.inmueble.model.Inmueble;
+import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import org.modelmapper.ModelMapper;
@@ -31,6 +33,72 @@ public class ObjectMapperUtils {
         modelMapper.addMappings(TAREA_TO_TAREADTO());
         modelMapper.addMappings(CITADTO_TO_CITA());
         modelMapper.addMappings(CITA_TO_CITADTO());
+        modelMapper.addMappings(INMUEBLEDTO_TO_INMUEBLE());
+        modelMapper.addMappings(INMUEBLE_TO_INMUEBLEDTO());
+    }
+
+    private static PropertyMap<Inmueble, InmuebleDTO> INMUEBLE_TO_INMUEBLEDTO() {
+        return new PropertyMap<Inmueble, InmuebleDTO>() {
+            @Override
+            protected void configure() {
+                map().setIdInmueble(source.getIdInmueble());
+                map().setDescripcion(source.getDescripcion());
+                map().setDireccion(source.getDireccion());
+                map().setCodigoPostal(source.getCodigoPostal());
+                map().setPrecio_venta(source.getPrecio_venta());
+                map().setPrecio_alquiler(source.getPrecio_alquiler());
+                map().setNumBanos(source.getNumBanos());
+                map().setNumHabitaciones(source.getNumHabitaciones());
+                map().setMetros_cuadrados(source.getMetros_cuadrados());
+                map().setAno_construccion(source.getAno_construccion());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().setImagen1(source.getImagen1());
+                map().setImagen2(source.getImagen2());
+                map().setImagen3(source.getImagen3());
+                map().setImagen4(source.getImagen4());
+                map().setIdTipoInmueble(source.getTipoInmueble().getId());
+                map().setIdEstadoInmueble(source.getEstadoInmueble().getIdEstadoInmueble());
+                map().setIdPais(source.getPais().getIdPais());
+                map().setIdProvincia(source.getProvincia().getIdProvincia());
+                map().setIdMunicipio(source.getMunicipio().getIdMunicipio());
+                map().setIdBarrio(source.getBarrio().getIdBarrio());
+                map().setIdUsuario(source.getUsuario().getIdUsuario());
+            }
+        };
+    }
+
+    private static PropertyMap<InmuebleDTO, Inmueble> INMUEBLEDTO_TO_INMUEBLE() {
+        return new PropertyMap<InmuebleDTO, Inmueble>() {
+            @Override
+            protected void configure() {
+                map().setIdInmueble(source.getIdInmueble());
+                map().setDescripcion(source.getDescripcion());
+                map().setDireccion(source.getDireccion());
+                map().setCodigoPostal(source.getCodigoPostal());
+                map().setPrecio_venta(source.getPrecio_venta());
+                map().setPrecio_alquiler(source.getPrecio_alquiler());
+                map().setNumBanos(source.getNumBanos());
+                map().setNumHabitaciones(source.getNumHabitaciones());
+                map().setMetros_cuadrados(source.getMetros_cuadrados());
+                map().setAno_construccion(source.getAno_construccion());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().setImagen1(source.getImagen1());
+                map().setImagen2(source.getImagen2());
+                map().setImagen3(source.getImagen3());
+                map().setImagen4(source.getImagen4());
+                map().getTipoInmueble().setId(source.getIdTipoInmueble());
+                map().getEstadoInmueble().setIdEstadoInmueble(source.getIdEstadoInmueble());
+                map().getPais().setIdPais(source.getIdPais());
+                map().getProvincia().setIdProvincia(source.getIdProvincia());
+                map().getMunicipio().setIdMunicipio(source.getIdMunicipio());
+                map().getBarrio().setIdBarrio(source.getIdBarrio());
+                map().getUsuario().setIdUsuario(source.getIdUsuario());
+            }
+        };
     }
 
     private static PropertyMap<Cita, CitaDTO> CITA_TO_CITADTO() {
