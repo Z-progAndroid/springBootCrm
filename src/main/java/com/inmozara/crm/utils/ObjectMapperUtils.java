@@ -1,6 +1,9 @@
 package com.inmozara.crm.utils;
 
+import com.inmozara.crm.contrato.model.Contrato;
+import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.NamingConventions;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +21,59 @@ public class ObjectMapperUtils {
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
                 .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
+        modelMapper.addMappings(CONTRATODTO_TO_CONTRATO());
+        modelMapper.addMappings(CONTRATO_TO_CONTRATODTO()
+        );
+    }
+
+    private static PropertyMap<Contrato, ContratoDTO> CONTRATO_TO_CONTRATODTO() {
+        return new PropertyMap<Contrato, ContratoDTO>() {
+            @Override
+            protected void configure() {
+                map().setIdContrato(source.getIdContrato());
+                map().setTitulo(source.getTitulo());
+                map().setFechaInicio(source.getFechaInicio());
+                map().setFechaFinalizacion(source.getFechaFinalizacion());
+                map().setDescripcion(source.getDescripcion());
+                map().setTerminosYCondiciones(source.getTerminosYCondiciones());
+                map().setValor(source.getValor());
+                map().setObservaciones(source.getObservaciones());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().setIdTipoContrato(source.getTipoContrato().getIdTipoContrato());
+                map().setIdTipoPago(source.getTipoPago().getIdTipoPago());
+                map().setIdInmueble(source.getInmueble().getIdInmueble());
+                map().setIdEstadoContrato(source.getEstadoContrato().getIdEstadoContrato());
+                map().setAgente(source.getAgente().getIdUsuario());
+                map().setCliente(source.getCliente().getIdUsuario());
+            }
+        };
+    }
+
+    private static PropertyMap<ContratoDTO, Contrato> CONTRATODTO_TO_CONTRATO() {
+        return new PropertyMap<ContratoDTO, Contrato>() {
+            @Override
+            protected void configure() {
+                map().setIdContrato(source.getIdContrato());
+                map().setTitulo(source.getTitulo());
+                map().setFechaInicio(source.getFechaInicio());
+                map().setFechaFinalizacion(source.getFechaFinalizacion());
+                map().setDescripcion(source.getDescripcion());
+                map().setTerminosYCondiciones(source.getTerminosYCondiciones());
+                map().setValor(source.getValor());
+                map().setObservaciones(source.getObservaciones());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().getTipoContrato().setIdTipoContrato(source.getIdTipoContrato());
+                map().getTipoPago().setIdTipoPago(source.getIdTipoPago());
+                map().getInmueble().setIdInmueble(source.getIdInmueble());
+                map().getEstadoContrato().setIdEstadoContrato(source.getIdEstadoContrato());
+                map().getAgente().setIdUsuario(source.getAgente());
+                map().getCliente().setIdUsuario(source.getCliente());
+            }
+        };
     }
 
     /**

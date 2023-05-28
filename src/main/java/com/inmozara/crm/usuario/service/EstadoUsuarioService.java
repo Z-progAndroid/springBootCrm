@@ -7,6 +7,8 @@ import com.inmozara.crm.usuario.model.Usuario;
 import com.inmozara.crm.usuario.model.dto.EstadoUsuarioDTO;
 import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.EstadoUsuarioRepository;
+import com.inmozara.crm.usuario.model.repository.UsuarioRepository;
+import com.inmozara.crm.usuario.model.search.UserSearch;
 import com.inmozara.crm.usuario.service.interfaces.IEstadoUsuario;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -23,7 +25,7 @@ public class EstadoUsuarioService implements IEstadoUsuario {
     @Autowired
     private EstadoUsuarioRepository estadoUsuarioRepository;
     @Autowired
-    UsuarioService usuarioService;
+    UsuarioRepository usuarioRepository;
 
     @Override
     public EstadoUsuarioDTO save(EstadoUsuarioDTO estadoUsuarioDTO) {
@@ -46,12 +48,14 @@ public class EstadoUsuarioService implements IEstadoUsuario {
         }
         EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById(0)
                 .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el estado del usuario por el id" + integer));
-        List<UsuarioDTO> usuarios = usuarioService.findAllBYParams(UsuarioDTO.builder().idEstadoUsuario(integer).build());
+        List<Usuario> usuarios = usuarioRepository.findAll(UserSearch
+                .builder()
+                .usuario(ObjectMapperUtils.map(UsuarioDTO.builder().idEstadoUsuario(integer).build(),Usuario.class))
+                .build());
         if (!usuarios.isEmpty()) {
-            List<Usuario> usuarioList = ObjectMapperUtils.mapAll(usuarios, Usuario.class);
-            usuarioList.forEach(usuario -> {
+            usuarios.forEach(usuario -> {
                 usuario.setEstadoUsuario(estadoUsuario);
-                usuarioService.save(ObjectMapperUtils.map(usuario, UsuarioDTO.class));
+                usuarioRepository.save(usuario);
             });
         }
         estadoUsuarioRepository.deleteById(integer);
