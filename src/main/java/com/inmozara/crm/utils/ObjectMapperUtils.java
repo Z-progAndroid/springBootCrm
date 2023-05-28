@@ -2,6 +2,8 @@ package com.inmozara.crm.utils;
 
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
+import com.inmozara.crm.tarea.model.Tarea;
+import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.NamingConventions;
@@ -22,8 +24,45 @@ public class ObjectMapperUtils {
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
                 .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
         modelMapper.addMappings(CONTRATODTO_TO_CONTRATO());
-        modelMapper.addMappings(CONTRATO_TO_CONTRATODTO()
-        );
+        modelMapper.addMappings(CONTRATO_TO_CONTRATODTO());
+        modelMapper.addMappings(TAREADTO_TO_TAREA());
+        modelMapper.addMappings(TARE_TO_TAREADTO());
+    }
+
+    private static PropertyMap<Tarea, TareaDTO> TARE_TO_TAREADTO() {
+        return new PropertyMap<Tarea, TareaDTO>() {
+            @Override
+            protected void configure() {
+                map().setIdTarea(source.getIdTarea());
+                map().setTitulo(source.getTitulo());
+                map().setDescripcion(source.getDescripcion());
+                map().setFechaInicio(source.getFechaInicio());
+                map().setFechaFin(source.getFechaFin());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().setIdEstadoTarea(source.getEstadoTarea().getIdEstadoTarea());
+                map().setIdUsuario(source.getUsuario().getIdUsuario());
+            }
+        };
+    }
+
+    private static PropertyMap<TareaDTO, Tarea> TAREADTO_TO_TAREA() {
+        return new PropertyMap<TareaDTO, Tarea>() {
+            @Override
+            protected void configure() {
+                map().setIdTarea(source.getIdTarea());
+                map().setTitulo(source.getTitulo());
+                map().setDescripcion(source.getDescripcion());
+                map().setFechaInicio(source.getFechaInicio());
+                map().setFechaFin(source.getFechaFin());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().getEstadoTarea().setIdEstadoTarea(source.getIdEstadoTarea());
+                map().getUsuario().setIdUsuario(source.getIdUsuario());
+            }
+        };
     }
 
     private static PropertyMap<Contrato, ContratoDTO> CONTRATO_TO_CONTRATODTO() {

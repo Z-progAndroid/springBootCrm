@@ -3,8 +3,11 @@ package com.inmozara.crm.tarea.service;
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.tarea.model.EstadoTarea;
+import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.tarea.model.repository.EstadoTareaRepository;
+import com.inmozara.crm.tarea.model.repository.TareaRepository;
+import com.inmozara.crm.tarea.model.search.TareasSearch;
 import com.inmozara.crm.tarea.service.interfaces.IEstadoTarea;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -18,6 +21,8 @@ import java.util.List;
 public class EstadoService implements IEstadoTarea {
     @Autowired
     private EstadoTareaRepository estadoTareaRepository;
+    @Autowired
+    private TareaRepository tareaRepository;
 
     @Override
     public EstadoTareaDTO save(EstadoTareaDTO estadoTareaDTO) {
@@ -37,6 +42,15 @@ public class EstadoService implements IEstadoTarea {
     public MensajeDTO delete(Integer id) {
         if (!estadoTareaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No existe el estado con id: " + id);
+        }
+        List<Tarea> tareas = tareaRepository.findAll(TareasSearch.builder()
+                .tarea(Tarea.builder().estadoTarea(
+                        EstadoTarea.builder().idEstadoTarea(id).build()).build()).build());
+        if (!tareas.isEmpty()) {
+            tareas.forEach(tarea -> {
+                tarea.setEstadoTarea(EstadoTarea.builder().idEstadoTarea(0).build());
+                tareaRepository.save(tarea);
+            });
         }
         estadoTareaRepository.deleteById(id);
         return MensajeDTO.builder()

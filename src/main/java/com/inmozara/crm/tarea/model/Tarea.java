@@ -1,5 +1,6 @@
 package com.inmozara.crm.tarea.model;
 
+import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,10 @@ public class Tarea {
     private Date fechaModificacion;
     @Column(name = "MODIFICADO")
     private String modificado;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ESTADO_TAREA")
     private EstadoTarea estadoTarea;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_USUARIO")
+    private Usuario usuario;
 }

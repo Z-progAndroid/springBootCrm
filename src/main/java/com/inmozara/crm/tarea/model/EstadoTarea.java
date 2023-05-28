@@ -23,6 +23,10 @@ public class EstadoTarea {
     private int idEstadoTarea;
     @Column(name = "ESTADO_TAREA")
     private String estadoTarea;
+    @Column(name = "FECHA_INICIO")
+    private Date fechaInicio;
+    @Column(name = "FECHA_FIN")
+    private Date fechaFin;
     @Column(name = "FECHA_CREACION")
     private Date fechaCreacion;
     @Column(name = "FECHA_MODIFICACION")

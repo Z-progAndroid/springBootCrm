@@ -5,6 +5,7 @@ import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import com.inmozara.crm.tarea.model.repository.TareaRepository;
+import com.inmozara.crm.tarea.model.search.TareasSearch;
 import com.inmozara.crm.tarea.service.interfaces.ITarea;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class TareaService implements ITarea {
     @Autowired
@@ -56,6 +58,17 @@ public class TareaService implements ITarea {
     @Override
     public List<TareaDTO> findAll() {
         List<Tarea> tareas = tareaRepository.findAll();
+        if (tareas.isEmpty())
+            throw new RecursoNoEncontrado("No existen tareas");
+        return ObjectMapperUtils.mapAll(tareas, TareaDTO.class);
+
+    }
+
+    @Override
+    public List<TareaDTO> findAllByParams(TareaDTO tareaDTO) {
+        List<Tarea> tareas = tareaRepository.findAll(TareasSearch.builder()
+                .tarea(ObjectMapperUtils.map(tareaDTO, Tarea.class))
+                .build());
         if (tareas.isEmpty())
             throw new RecursoNoEncontrado("No existen tareas");
         return ObjectMapperUtils.mapAll(tareas, TareaDTO.class);
