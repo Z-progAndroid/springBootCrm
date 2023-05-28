@@ -56,4 +56,9 @@ public class InmuebleController implements IInmueble {
     public List<InmuebleDTO> search(@RequestBody InmuebleDTO search) {
         return inmuebleService.search(search);
     }
+
+    @PutMapping("/actualizarEstadoInmuebles")
+    public MensajeDTO actulizarEstadoInmuebles(@RequestParam int nuevoIdEstado, @RequestParam int idEstadoAntiguo) {
+        return inmuebleService.actualizarEstadoInmuebles(nuevoIdEstado, idEstadoAntiguo);
+    }
 }

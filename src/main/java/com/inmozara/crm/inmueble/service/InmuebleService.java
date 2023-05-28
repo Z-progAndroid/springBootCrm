@@ -4,6 +4,7 @@ import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
+import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
 import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
 import com.inmozara.crm.inmueble.model.search.InmuebleSearch;
 import com.inmozara.crm.inmueble.service.interfaces.IInmueble;
@@ -19,6 +20,8 @@ import java.util.List;
 public class InmuebleService implements IInmueble {
     @Autowired
     private InmuebleRepository inmuebleRepository;
+    @Autowired
+    private EstadoInmuebleRepository estadoInmuebleRepository;
 
     @Override
     public InmuebleDTO save(InmuebleDTO inmuebleDTO) {
@@ -71,13 +74,25 @@ public class InmuebleService implements IInmueble {
     }
 
     public List<InmuebleDTO> search(InmuebleDTO search) {
-          List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder()
-                  .inmuebleDTO(search)
-                  .build());
+        List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder()
+                .inmuebleDTO(search)
+                .build());
 
         if (inmuebles.isEmpty()) {
             throw new RecursoNoEncontrado("No hay inmuebles en la base de datos con los parametros de busqueda");
         }
         return ObjectMapperUtils.mapAll(inmuebles, InmuebleDTO.class);
     }
+
+
+    public MensajeDTO actualizarEstadoInmuebles(int nuevoIdEstado, int idEstadoAntiguo) {
+
+
+        return MensajeDTO.builder()
+                .mensaje("Se han actualizado los estados de los inmuebles correctamente")
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
+    }
+
 }

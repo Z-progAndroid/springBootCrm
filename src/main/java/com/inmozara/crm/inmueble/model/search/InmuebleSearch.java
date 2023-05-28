@@ -62,7 +62,7 @@ public class InmuebleSearch implements Specification<Inmueble>, Serializable {
         if (inmuebleDTO.getEstadoInmueble() != null && !inmuebleDTO.getEstadoInmueble().isEmpty()) {
             predicates.add(cb.equal(root.get("estadoInmueble").get("idEstadoInmueble"), Integer.parseInt(inmuebleDTO.getEstadoInmueble())));
         }
-        if (!inmuebleDTO.getIdPais().isEmpty()) {
+        if (inmuebleDTO.getIdPais()!=null&&!inmuebleDTO.getIdPais().isEmpty()) {
             predicates.add(cb.equal(root.get("pais").get("idPais"), inmuebleDTO.getIdPais()));
 
         }

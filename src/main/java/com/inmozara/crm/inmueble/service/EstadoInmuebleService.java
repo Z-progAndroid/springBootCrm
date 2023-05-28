@@ -3,8 +3,12 @@ package com.inmozara.crm.inmueble.service;
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.EstadoInmueble;
+import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
+import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
+import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
+import com.inmozara.crm.inmueble.model.search.InmuebleSearch;
 import com.inmozara.crm.inmueble.service.interfaces.IEstadoInmueble;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -20,6 +24,8 @@ import java.util.List;
 public class EstadoInmuebleService implements IEstadoInmueble {
     @Autowired
     EstadoInmuebleRepository estadoInmuebleRepository;
+    @Autowired
+    private InmuebleRepository inmuebleRepository;
 
     @Override
     public EstadoInmuebleDTO save(EstadoInmuebleDTO estadoInmuebleDTO) {
@@ -40,6 +46,15 @@ public class EstadoInmuebleService implements IEstadoInmueble {
         if (!estadoInmuebleRepository.existsById(idEstadoInmueble)) {
             throw new RecursoNoEncontrado("No existe el estado inmueble con el id: " + idEstadoInmueble);
         }
+        List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder().inmuebleDTO(InmuebleDTO.builder().estadoInmueble(String.valueOf(idEstadoInmueble)).build()).build());
+        EstadoInmueble estadoInmueble = estadoInmuebleRepository.findById(0)
+                .orElseThrow(() -> new RecursoNoEncontrado("No existe un estado con el id: " + 0));
+        if (!inmuebles.isEmpty()) {
+            inmuebles.forEach(inmueble -> {
+                inmueble.setEstadoInmueble(estadoInmueble);
+            });
+        }
+        inmuebleRepository.saveAll(inmuebles);
         estadoInmuebleRepository.deleteById(idEstadoInmueble);
         return MensajeDTO.builder()
                 .mensaje("Se elimino el estado de inmueble con id: " + idEstadoInmueble)
