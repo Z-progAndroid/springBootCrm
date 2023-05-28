@@ -1,7 +1,10 @@
 package com.inmozara.crm.cita.service;
 
+import com.inmozara.crm.cita.model.Cita;
+import com.inmozara.crm.cita.model.CitaSearch;
 import com.inmozara.crm.cita.model.EstadoCita;
 import com.inmozara.crm.cita.model.dto.EstadoCitaDTO;
+import com.inmozara.crm.cita.model.repository.CitaRepository;
 import com.inmozara.crm.cita.model.repository.EstadoCitaRepository;
 import com.inmozara.crm.cita.service.interfaces.IEstadoCita;
 import com.inmozara.crm.config.MensajeDTO;
@@ -18,6 +21,8 @@ import java.util.List;
 public class EstadoCitaService implements IEstadoCita {
     @Autowired
     private EstadoCitaRepository estadoCitaRepository;
+    @Autowired
+    private CitaRepository citaRepository;
 
     @Override
     public EstadoCitaDTO save(EstadoCitaDTO estadoCitaDTO) {
@@ -37,6 +42,16 @@ public class EstadoCitaService implements IEstadoCita {
     public MensajeDTO delete(Integer id) {
         if (!estadoCitaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No se encontro el estado de la cita");
+        }
+
+        List<Cita> citas = citaRepository.findAll(CitaSearch.builder()
+                .cita(Cita.builder().estadoCita(EstadoCita.builder()
+                        .idEstadoCita(id).build()).build()).build());
+        if (!citas.isEmpty()) {
+            citas.forEach(cita -> {
+                cita.setEstadoCita(EstadoCita.builder().idEstadoCita(0).build());
+                citaRepository.save(cita);
+            });
         }
         estadoCitaRepository.deleteById(id);
         return MensajeDTO.builder()

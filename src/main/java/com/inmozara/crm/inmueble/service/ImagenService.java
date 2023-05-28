@@ -32,7 +32,6 @@ public class ImagenService implements IImagen {
     @Override
     @PostConstruct
     public void init() {
-        System.out.println("uploadDir: " + uploadDir);
         rootLocation = Paths.get(uploadDir);
     }
 

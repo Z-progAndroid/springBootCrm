@@ -1,6 +1,7 @@
 package com.inmozara.crm.cita.service;
 
 import com.inmozara.crm.cita.model.Cita;
+import com.inmozara.crm.cita.model.CitaSearch;
 import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.cita.model.repository.CitaRepository;
 import com.inmozara.crm.cita.service.interfaces.ICita;
@@ -58,6 +59,16 @@ public class CitaService implements ICita {
         List<Cita> citas = citaRepository.findAll();
         if (citas.isEmpty())
             throw new RecursoNoEncontrado("No existen citas");
+        return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
+    }
+
+    @Override
+    public List<CitaDTO> findAllByParams(CitaDTO citaDTO) {
+        List<Cita> citas = citaRepository.findAll(CitaSearch.builder()
+                .cita(ObjectMapperUtils.map(citaDTO, Cita.class))
+                .build());
+        if (citas.isEmpty())
+            throw new RecursoNoEncontrado("No existen citas con los parametros enviados");
         return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
     }
 }

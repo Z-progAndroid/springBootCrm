@@ -1,5 +1,7 @@
 package com.inmozara.crm.utils;
 
+import com.inmozara.crm.cita.model.Cita;
+import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.tarea.model.Tarea;
@@ -26,10 +28,50 @@ public class ObjectMapperUtils {
         modelMapper.addMappings(CONTRATODTO_TO_CONTRATO());
         modelMapper.addMappings(CONTRATO_TO_CONTRATODTO());
         modelMapper.addMappings(TAREADTO_TO_TAREA());
-        modelMapper.addMappings(TARE_TO_TAREADTO());
+        modelMapper.addMappings(TAREA_TO_TAREADTO());
+        modelMapper.addMappings(CITADTO_TO_CITA());
+        modelMapper.addMappings(CITA_TO_CITADTO());
     }
 
-    private static PropertyMap<Tarea, TareaDTO> TARE_TO_TAREADTO() {
+    private static PropertyMap<Cita, CitaDTO> CITA_TO_CITADTO() {
+        return new PropertyMap<Cita, CitaDTO>() {
+            @Override
+            protected void configure() {
+                map().setIdCita(source.getIdCita());
+                map().setDescripcion(source.getDescripcion());
+                map().setFechaCita(source.getFechaCita());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().setIdTipoCita(source.getTipoCita().getIdTipoCita());
+                map().setIdEstadoCita(source.getEstadoCita().getIdEstadoCita());
+                map().setIdInmueble(source.getInmueble().getIdInmueble());
+                map().setIdUsuarioAgente(source.getAgente().getIdUsuario());
+                map().setIdUsuarioCliente(source.getCliente().getIdUsuario());
+            }
+        };
+    }
+
+    private static PropertyMap<CitaDTO, Cita> CITADTO_TO_CITA() {
+        return new PropertyMap<CitaDTO, Cita>() {
+            @Override
+            protected void configure() {
+                map().setIdCita(source.getIdCita());
+                map().setDescripcion(source.getDescripcion());
+                map().setFechaCita(source.getFechaCita());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().getTipoCita().setIdTipoCita(source.getIdTipoCita());
+                map().getEstadoCita().setIdEstadoCita(source.getIdEstadoCita());
+                map().getInmueble().setIdInmueble(source.getIdInmueble());
+                map().getAgente().setIdUsuario(source.getIdUsuarioAgente());
+                map().getCliente().setIdUsuario(source.getIdUsuarioCliente());
+            }
+        };
+    }
+
+    private static PropertyMap<Tarea, TareaDTO> TAREA_TO_TAREADTO() {
         return new PropertyMap<Tarea, TareaDTO>() {
             @Override
             protected void configure() {

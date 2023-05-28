@@ -4,12 +4,16 @@ import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity(name = "citas")
 public class Cita {
     @Id
@@ -19,11 +23,11 @@ public class Cita {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "FECHA_CITA")
-    private String fechaCita;
+    private Date fechaCita;
     @Column(name = "FECHA_CREACION")
-    private String fechaCreacion;
+    private Date fechaCreacion;
     @Column(name = "FECHA_MODIFICACION")
-    private String fechaModificacion;
+    private Date fechaModificacion;
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
