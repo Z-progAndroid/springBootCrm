@@ -3,7 +3,9 @@ package com.inmozara.crm.usuario.service;
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.EstadoUsuario;
+import com.inmozara.crm.usuario.model.Usuario;
 import com.inmozara.crm.usuario.model.dto.EstadoUsuarioDTO;
+import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.EstadoUsuarioRepository;
 import com.inmozara.crm.usuario.service.interfaces.IEstadoUsuario;
 import com.inmozara.crm.utils.ObjectMapperUtils;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 public class EstadoUsuarioService implements IEstadoUsuario {
     @Autowired
     private EstadoUsuarioRepository estadoUsuarioRepository;
+    @Autowired
+    UsuarioService usuarioService;
 
     @Override
     public EstadoUsuarioDTO save(EstadoUsuarioDTO estadoUsuarioDTO) {
@@ -39,6 +43,16 @@ public class EstadoUsuarioService implements IEstadoUsuario {
     public MensajeDTO delete(Integer integer) {
         if (!estadoUsuarioRepository.existsById(integer)) {
             throw new RecursoNoEncontrado("No se encontro el estado del usuario");
+        }
+        EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById(0)
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el estado del usuario por el id" + integer));
+        List<UsuarioDTO> usuarios = usuarioService.findAllBYParams(UsuarioDTO.builder().idEstadoUsuario(integer).build());
+        if (!usuarios.isEmpty()) {
+            List<Usuario> usuarioList = ObjectMapperUtils.mapAll(usuarios, Usuario.class);
+            usuarioList.forEach(usuario -> {
+                usuario.setEstadoUsuario(estadoUsuario);
+                usuarioService.save(ObjectMapperUtils.map(usuario, UsuarioDTO.class));
+            });
         }
         estadoUsuarioRepository.deleteById(integer);
         return MensajeDTO.builder()
@@ -63,11 +77,12 @@ public class EstadoUsuarioService implements IEstadoUsuario {
         }
         return ObjectMapperUtils.mapAll(estadoUsuarios, EstadoUsuarioDTO.class);
     }
-    public Map<Integer,String> findAllMap(){
+
+    public Map<Integer, String> findAllMap() {
         List<EstadoUsuario> estadoUsuarios = estadoUsuarioRepository.findAll();
         if (estadoUsuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron estados de usuarios");
         }
-        return estadoUsuarios.stream().collect(Collectors.toMap(EstadoUsuario::getIdEstadoUsuario,EstadoUsuario::getEstadoUsuario));
+        return estadoUsuarios.stream().collect(Collectors.toMap(EstadoUsuario::getIdEstadoUsuario, EstadoUsuario::getEstadoUsuario));
     }
 }

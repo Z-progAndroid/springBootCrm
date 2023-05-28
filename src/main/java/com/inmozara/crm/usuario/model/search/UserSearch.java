@@ -46,10 +46,10 @@ public class UserSearch implements Specification<Usuario>, Serializable {
             predicates.add(cb.like(root.get("direccion"), "%" + usuario.getDireccion() + "%"));
         }
         if (usuario != null && usuario.getRol().getIdRol() != 0) {
-            predicates.add(cb.equal(root.get("estadoUsuario"), usuario.getRol().getIdRol()));
+            predicates.add(cb.equal(root.get("rol").get("idRol"), usuario.getRol().getIdRol()));
         }
         if (usuario != null && usuario.getEstadoUsuario().getIdEstadoUsuario() != 0) {
-            predicates.add(cb.equal(root.get("estadoUsuario"), usuario.getEstadoUsuario().getIdEstadoUsuario()));
+            predicates.add(cb.equal(root.get("estadoUsuario").get("idEstadoUsuario"), usuario.getEstadoUsuario().getIdEstadoUsuario()));
         }
         if (roles != null && !roles.isEmpty()) {
             predicates.add(root.get("rol").get("idRol").in(roles));
