@@ -29,7 +29,7 @@ public class Provincia {
     //Relaciones
     @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY)
     private List<Inmueble> inmuebles;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PAIS")
     private Pais pais;
     @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY)
