@@ -4,16 +4,14 @@ import com.inmozara.crm.cita.model.Cita;
 import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
-import com.inmozara.crm.inmueble.model.Barrio;
-import com.inmozara.crm.inmueble.model.Inmueble;
-import com.inmozara.crm.inmueble.model.Municipio;
-import com.inmozara.crm.inmueble.model.Provincia;
-import com.inmozara.crm.inmueble.model.dto.BarrioDTO;
-import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
-import com.inmozara.crm.inmueble.model.dto.MunicipoDTO;
-import com.inmozara.crm.inmueble.model.dto.ProvinciaDTO;
+import com.inmozara.crm.inmueble.model.*;
+import com.inmozara.crm.inmueble.model.dto.*;
+import com.inmozara.crm.seguimiento.model.Seguimiento;
+import com.inmozara.crm.seguimiento.model.dto.SeguimientoDTO;
 import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
+import com.inmozara.crm.usuario.model.Usuario;
+import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.NamingConventions;
@@ -41,43 +39,88 @@ public class ObjectMapperUtils {
         modelMapper.addMappings(CITA_TO_CITADTO());
         modelMapper.addMappings(INMUEBLEDTO_TO_INMUEBLE());
         modelMapper.addMappings(INMUEBLE_TO_INMUEBLEDTO());
-        modelMapper.addMappings(PROVINCIATOPROVINCIADTO());
-        modelMapper.addMappings(PROVINCIADTOTOPROVINCIA());
-        modelMapper.addMappings(new PropertyMap<Municipio, MunicipoDTO>() {
+        modelMapper.addMappings(PROVINCIA_TO_PROVINCIADTO());
+        modelMapper.addMappings(PROVINCIAD_TO_PROVINCIA());
+        modelMapper.addMappings(MUNICIPIO_TO_MUNICIPIODTO());
+        modelMapper.addMappings(MUNICIPIODTO_TO_MUNICIPIO());
+        modelMapper.addMappings(BARRIO_TO_BARRIODTO());
+        modelMapper.addMappings(BARRIODTO_TO_BARRIO());
+        modelMapper.addMappings(USUARIODTO_TO_USUARIO());
+        modelMapper.addMappings(USUARIO_TO_USUARIODTO());
+        modelMapper.addMappings(PAISDTO_TO_PAIS());
+        modelMapper.addMappings(PAIS_TO_PAISDTO());
+        modelMapper.addMappings(new PropertyMap<Seguimiento, SeguimientoDTO>() {
             @Override
             protected void configure() {
-                map().setIdMunicipio(source.getIdMunicipio());
-                map().setMunicipio(source.getMunicipio());
-                map().setIdProvincia(source.getProvincia().getIdProvincia());
+                map().setIdSeguimiento(source.getIdSeguimiento());
+                map().setDescripcion(source.getDescripcion());
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
                 map().setModificado(source.getModificado());
+                map().setIdTipoSeguimiento(source.getTipoSeguimiento().getIdTipoSeguimiento());
+                map().setIdInmueble(source.getInmueble().getIdInmueble());
             }
         });
-        modelMapper.addMappings(new PropertyMap<MunicipoDTO, Municipio>() {
+        modelMapper.addMappings(new PropertyMap<SeguimientoDTO, Seguimiento>() {
             @Override
             protected void configure() {
-              map().setIdMunicipio(source.getIdMunicipio());
-                map().setMunicipio(source.getMunicipio());
+                map().setIdSeguimiento(source.getIdSeguimiento());
+                map().setDescripcion(source.getDescripcion());
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
                 map().setModificado(source.getModificado());
-                map().getProvincia().setIdProvincia(source.getIdProvincia());
+                map().getTipoSeguimiento().setIdTipoSeguimiento(source.getIdTipoSeguimiento());
+                map().getInmueble().setIdInmueble(source.getIdInmueble());
             }
         });
-        modelMapper.addMappings(new PropertyMap<Barrio, BarrioDTO>() {
-            @Override
-            protected void configure() {
-                map().setIdBarrio(source.getIdBarrio());
-                map().setBarrio(source.getBarrio());
-                map().setIdMunicipio(source.getMunicipio().getIdMunicipio());
-                map().setFechaCreacion(source.getFechaCreacion());
-                map().setFechaModificacion(source.getFechaModificacion());
-                map().setModificado(source.getModificado());
+    }
 
+    private static PropertyMap<Usuario, UsuarioDTO> USUARIO_TO_USUARIODTO() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                map().setIdUsuario(source.getIdUsuario());
+                map().setNombre(source.getNombre());
+                map().setApellido(source.getApellido());
+                map().setEmail(source.getEmail());
+                map().setUsername(source.getUsername());
+                map().setPassword(source.getPassword());
+                map().setTelefono(source.getTelefono());
+                map().setDireccion(source.getDireccion());
+                map().setDni(source.getDni());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().setIdEstadoUsuario(source.getEstadoUsuario().getIdEstadoUsuario());
+                map().setIdRol(source.getRol().getIdRol());
             }
-        });
-        modelMapper.addMappings(new PropertyMap<BarrioDTO, Barrio>() {
+        };
+    }
+
+    private static PropertyMap<UsuarioDTO, Usuario> USUARIODTO_TO_USUARIO() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                map().setIdUsuario(source.getIdUsuario());
+                map().setNombre(source.getNombre());
+                map().setApellido(source.getApellido());
+                map().setEmail(source.getEmail());
+                map().setUsername(source.getUsername());
+                map().setPassword(source.getPassword());
+                map().setTelefono(source.getTelefono());
+                map().setDireccion(source.getDireccion());
+                map().setDni(source.getDni());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().getEstadoUsuario().setIdEstadoUsuario(source.getIdEstadoUsuario());
+                map().getRol().setIdRol(source.getIdRol());
+            }
+        };
+    }
+
+    private static PropertyMap<BarrioDTO, Barrio> BARRIODTO_TO_BARRIO() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdBarrio(source.getIdBarrio());
@@ -87,12 +130,53 @@ public class ObjectMapperUtils {
                 map().setModificado(source.getModificado());
                 map().getMunicipio().setIdMunicipio(source.getIdMunicipio());
             }
-        });
-
+        };
     }
 
-    private static PropertyMap<ProvinciaDTO, Provincia> PROVINCIADTOTOPROVINCIA() {
-        return new PropertyMap<ProvinciaDTO, Provincia>() {
+    private static PropertyMap<Barrio, BarrioDTO> BARRIO_TO_BARRIODTO() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                map().setIdBarrio(source.getIdBarrio());
+                map().setBarrio(source.getBarrio());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().setIdMunicipio(source.getMunicipio().getIdMunicipio());
+            }
+        };
+    }
+
+    private static PropertyMap<MunicipoDTO, Municipio> MUNICIPIODTO_TO_MUNICIPIO() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                map().setIdMunicipio(source.getIdMunicipio());
+                map().setMunicipio(source.getMunicipio());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+                map().getProvincia().setIdProvincia(source.getIdProvincia());
+            }
+        };
+    }
+
+    private static PropertyMap<Municipio, MunicipoDTO> MUNICIPIO_TO_MUNICIPIODTO() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                map().setIdMunicipio(source.getIdMunicipio());
+                map().setMunicipio(source.getMunicipio());
+                map().setIdProvincia(source.getProvincia().getIdProvincia());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+            }
+        };
+    }
+
+    private static PropertyMap<ProvinciaDTO, Provincia> PROVINCIAD_TO_PROVINCIA() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdProvincia(source.getIdProvincia());
@@ -100,13 +184,13 @@ public class ObjectMapperUtils {
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
                 map().setModificado(source.getModificado());
-                map().getPais().setIdPais(source.getIdPais());
+                map().getPais().setPais(source.getIdPais());
             }
         };
     }
 
-    private static PropertyMap<Provincia, ProvinciaDTO> PROVINCIATOPROVINCIADTO() {
-        return new PropertyMap<Provincia, ProvinciaDTO>() {
+    private static PropertyMap<Provincia, ProvinciaDTO> PROVINCIA_TO_PROVINCIADTO() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdProvincia(source.getIdProvincia());
@@ -115,12 +199,37 @@ public class ObjectMapperUtils {
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
                 map().setModificado(source.getModificado());
+            }
+        };
+    }
+
+    private static PropertyMap<PaisDTO, Pais> PAISDTO_TO_PAIS() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                map().setIdPais(source.getIdPais());
+                map().setPais(source.getPais());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
+            }
+        };
+    }
+
+    private static PropertyMap<Pais, PaisDTO> PAIS_TO_PAISDTO() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                map().setIdPais(source.getIdPais());
+                map().setPais(source.getPais());
+                map().setFechaCreacion(source.getFechaCreacion());
+                map().setFechaModificacion(source.getFechaModificacion());
             }
         };
     }
 
     private static PropertyMap<Inmueble, InmuebleDTO> INMUEBLE_TO_INMUEBLEDTO() {
-        return new PropertyMap<Inmueble, InmuebleDTO>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdInmueble(source.getIdInmueble());
@@ -129,30 +238,30 @@ public class ObjectMapperUtils {
                 map().setCodigoPostal(source.getCodigoPostal());
                 map().setPrecio_venta(source.getPrecio_venta());
                 map().setPrecio_alquiler(source.getPrecio_alquiler());
-                map().setNumBanos(source.getNumBanos());
                 map().setNumHabitaciones(source.getNumHabitaciones());
+                map().setNumBanos(source.getNumBanos());
                 map().setMetros_cuadrados(source.getMetros_cuadrados());
                 map().setAno_construccion(source.getAno_construccion());
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
                 map().setModificado(source.getModificado());
-                map().setImagen1(source.getImagen1());
-                map().setImagen2(source.getImagen2());
-                map().setImagen3(source.getImagen3());
-                map().setImagen4(source.getImagen4());
                 map().setIdTipoInmueble(source.getTipoInmueble().getId());
                 map().setIdEstadoInmueble(source.getEstadoInmueble().getIdEstadoInmueble());
                 map().setIdPais(source.getPais().getIdPais());
                 map().setIdProvincia(source.getProvincia().getIdProvincia());
                 map().setIdMunicipio(source.getMunicipio().getIdMunicipio());
-                map().setIdBarrio(source.getBarrio().getIdBarrio());
                 map().setIdUsuario(source.getUsuario().getIdUsuario());
+                map().setIdBarrio(source.getBarrio().getIdBarrio());
+                map().setImagen1(source.getImagen1());
+                map().setImagen2(source.getImagen2());
+                map().setImagen3(source.getImagen3());
+                map().setImagen4(source.getImagen4());
             }
         };
     }
 
     private static PropertyMap<InmuebleDTO, Inmueble> INMUEBLEDTO_TO_INMUEBLE() {
-        return new PropertyMap<InmuebleDTO, Inmueble>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdInmueble(source.getIdInmueble());
@@ -161,8 +270,8 @@ public class ObjectMapperUtils {
                 map().setCodigoPostal(source.getCodigoPostal());
                 map().setPrecio_venta(source.getPrecio_venta());
                 map().setPrecio_alquiler(source.getPrecio_alquiler());
-                map().setNumBanos(source.getNumBanos());
                 map().setNumHabitaciones(source.getNumHabitaciones());
+                map().setNumBanos(source.getNumBanos());
                 map().setMetros_cuadrados(source.getMetros_cuadrados());
                 map().setAno_construccion(source.getAno_construccion());
                 map().setFechaCreacion(source.getFechaCreacion());
@@ -184,7 +293,7 @@ public class ObjectMapperUtils {
     }
 
     private static PropertyMap<Cita, CitaDTO> CITA_TO_CITADTO() {
-        return new PropertyMap<Cita, CitaDTO>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdCita(source.getIdCita());
@@ -203,7 +312,7 @@ public class ObjectMapperUtils {
     }
 
     private static PropertyMap<CitaDTO, Cita> CITADTO_TO_CITA() {
-        return new PropertyMap<CitaDTO, Cita>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdCita(source.getIdCita());
@@ -222,7 +331,7 @@ public class ObjectMapperUtils {
     }
 
     private static PropertyMap<Tarea, TareaDTO> TAREA_TO_TAREADTO() {
-        return new PropertyMap<Tarea, TareaDTO>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdTarea(source.getIdTarea());
@@ -240,7 +349,7 @@ public class ObjectMapperUtils {
     }
 
     private static PropertyMap<TareaDTO, Tarea> TAREADTO_TO_TAREA() {
-        return new PropertyMap<TareaDTO, Tarea>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdTarea(source.getIdTarea());
@@ -258,7 +367,7 @@ public class ObjectMapperUtils {
     }
 
     private static PropertyMap<Contrato, ContratoDTO> CONTRATO_TO_CONTRATODTO() {
-        return new PropertyMap<Contrato, ContratoDTO>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdContrato(source.getIdContrato());
@@ -283,7 +392,7 @@ public class ObjectMapperUtils {
     }
 
     private static PropertyMap<ContratoDTO, Contrato> CONTRATODTO_TO_CONTRATO() {
-        return new PropertyMap<ContratoDTO, Contrato>() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
                 map().setIdContrato(source.getIdContrato());
