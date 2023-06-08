@@ -7,7 +7,6 @@ import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.tarea.model.repository.EstadoTareaRepository;
 import com.inmozara.crm.tarea.model.repository.TareaRepository;
-import com.inmozara.crm.tarea.model.search.TareasSearch;
 import com.inmozara.crm.tarea.service.interfaces.IEstadoTarea;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -16,9 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class EstadoService implements IEstadoTarea {
+public class EstadoTareaService implements IEstadoTarea {
     @Autowired
     private EstadoTareaRepository estadoTareaRepository;
     @Autowired
@@ -43,9 +43,7 @@ public class EstadoService implements IEstadoTarea {
         if (!estadoTareaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No existe el estado con id: " + id);
         }
-        List<Tarea> tareas = tareaRepository.findAll(TareasSearch.builder()
-                .tarea(Tarea.builder().estadoTarea(
-                        EstadoTarea.builder().idEstadoTarea(id).build()).build()).build());
+        List<Tarea> tareas = tareaRepository.findAllTareaConIdEstado(id);
         if (!tareas.isEmpty()) {
             tareas.forEach(tarea -> {
                 tarea.setEstadoTarea(EstadoTarea.builder().idEstadoTarea(0).build());
@@ -72,6 +70,9 @@ public class EstadoService implements IEstadoTarea {
         List<EstadoTarea> estados = estadoTareaRepository.findAll();
         if (estados.isEmpty())
             throw new RecursoNoEncontrado("No existen estados");
-        return ObjectMapperUtils.mapAll(estados, EstadoTareaDTO.class);
+        List<EstadoTarea> estadoTareas = estados.stream()
+                .filter(estadoTarea -> estadoTarea.getIdEstadoTarea() != 0)
+                .collect(Collectors.toList());
+        return ObjectMapperUtils.mapAll(estadoTareas, EstadoTareaDTO.class);
     }
 }
