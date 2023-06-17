@@ -35,13 +35,13 @@ public class CitaService implements ICita {
     }
 
     @Override
-    public MensajeDTO delete(Integer integer) {
-        if (!citaRepository.existsById(integer)) {
+    public MensajeDTO delete(Integer idCita) {
+        if (!citaRepository.existsById(idCita)) {
             throw new RecursoNoEncontrado("No existe la cita");
         }
-        citaRepository.deleteById(integer);
+        citaRepository.deleteById(idCita);
         return MensajeDTO.builder()
-                .mensaje("La cita se ha eliminado correctamente con el id: " + integer)
+                .mensaje("La cita se ha eliminado correctamente con el id: " + idCita)
                 .estado(HttpStatus.OK.value())
                 .fecha(UtilsDates.now())
                 .build();

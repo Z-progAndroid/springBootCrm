@@ -1,7 +1,5 @@
 package com.inmozara.crm.cita.service;
 
-import com.inmozara.crm.cita.model.Cita;
-import com.inmozara.crm.cita.model.CitaSearch;
 import com.inmozara.crm.cita.model.EstadoCita;
 import com.inmozara.crm.cita.model.dto.EstadoCitaDTO;
 import com.inmozara.crm.cita.model.repository.CitaRepository;
@@ -16,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EstadoCitaService implements IEstadoCita {
@@ -43,16 +42,7 @@ public class EstadoCitaService implements IEstadoCita {
         if (!estadoCitaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No se encontro el estado de la cita");
         }
-
-        List<Cita> citas = citaRepository.findAll(CitaSearch.builder()
-                .cita(Cita.builder().estadoCita(EstadoCita.builder()
-                        .idEstadoCita(id).build()).build()).build());
-        if (!citas.isEmpty()) {
-            citas.forEach(cita -> {
-                cita.setEstadoCita(EstadoCita.builder().idEstadoCita(0).build());
-                citaRepository.save(cita);
-            });
-        }
+        citaRepository.actualizarCitasPorEstado(EstadoCita.builder().idEstadoCita(id).build(), EstadoCita.builder().idEstadoCita(0).build());
         estadoCitaRepository.deleteById(id);
         return MensajeDTO.builder()
                 .mensaje("Se elimino el estado de la cita con id: " + id)
@@ -74,6 +64,10 @@ public class EstadoCitaService implements IEstadoCita {
         if (estadoCitas.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron estados de citas");
         }
+        estadoCitas = estadoCitas.
+                stream()
+                .filter(estadoCita -> estadoCita.getIdEstadoCita() != 0)
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(estadoCitas, EstadoCitaDTO.class);
     }
 }
