@@ -1,9 +1,6 @@
 package com.inmozara.crm.contrato.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +27,7 @@ public class EstadoContrato {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @OneToMany(mappedBy = "estadoContrato")
+    @OneToMany(mappedBy = "estadoContrato" ,fetch = FetchType.LAZY)
     private List<Contrato> contratos;
 
 }
