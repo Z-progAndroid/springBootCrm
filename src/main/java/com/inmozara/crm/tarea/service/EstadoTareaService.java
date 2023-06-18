@@ -3,7 +3,6 @@ package com.inmozara.crm.tarea.service;
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.tarea.model.EstadoTarea;
-import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.tarea.model.repository.EstadoTareaRepository;
 import com.inmozara.crm.tarea.model.repository.TareaRepository;
@@ -39,20 +38,14 @@ public class EstadoTareaService implements IEstadoTarea {
     }
 
     @Override
-    public MensajeDTO delete(Integer id) {
-        if (!estadoTareaRepository.existsById(id)) {
-            throw new RecursoNoEncontrado("No existe el estado con id: " + id);
+    public MensajeDTO delete(Integer idEstadoTarea) {
+        if (!estadoTareaRepository.existsById(idEstadoTarea)) {
+            throw new RecursoNoEncontrado("No existe el estado con id: " + idEstadoTarea);
         }
-        List<Tarea> tareas = tareaRepository.findAllTareaConIdEstado(id);
-        if (!tareas.isEmpty()) {
-            tareas.forEach(tarea -> {
-                tarea.setEstadoTarea(EstadoTarea.builder().idEstadoTarea(0).build());
-                tareaRepository.save(tarea);
-            });
-        }
-        estadoTareaRepository.deleteById(id);
+        tareaRepository.actualizarTareasPorEstado(EstadoTarea.builder().idEstadoTarea(idEstadoTarea).build(), EstadoTarea.builder().idEstadoTarea(0).build());
+        estadoTareaRepository.deleteById(idEstadoTarea);
         return MensajeDTO.builder()
-                .mensaje("Estado eliminado correctamente con el id: " + id)
+                .mensaje("Estado eliminado correctamente con el id: " + idEstadoTarea)
                 .estado(HttpStatus.OK.value())
                 .fecha(UtilsDates.now())
                 .build();
