@@ -5,6 +5,7 @@ import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.EstadoInmueble;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
+import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
 import com.inmozara.crm.inmueble.service.interfaces.IEstadoInmueble;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -14,12 +15,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class EstadoInmuebleService implements IEstadoInmueble {
     @Autowired
     EstadoInmuebleRepository estadoInmuebleRepository;
+    @Autowired
+    private InmuebleRepository inmuebleRepository;
 
     @Override
     public EstadoInmuebleDTO save(EstadoInmuebleDTO estadoInmuebleDTO) {
@@ -40,6 +44,7 @@ public class EstadoInmuebleService implements IEstadoInmueble {
         if (!estadoInmuebleRepository.existsById(idEstadoInmueble)) {
             throw new RecursoNoEncontrado("No existe el estado inmueble con el id: " + idEstadoInmueble);
         }
+        inmuebleRepository.actualizarInmueblesPorEstado(EstadoInmueble.builder().idEstadoInmueble(idEstadoInmueble).build(), EstadoInmueble.builder().idEstadoInmueble(0).build());
         estadoInmuebleRepository.deleteById(idEstadoInmueble);
         return MensajeDTO.builder()
                 .mensaje("Se elimino el estado de inmueble con id: " + idEstadoInmueble)
@@ -61,6 +66,10 @@ public class EstadoInmuebleService implements IEstadoInmueble {
         if (estadoInmuebles.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron estados de inmuebles");
         }
+        estadoInmuebles = estadoInmuebles
+                .stream()
+                .filter(estadoInmueble -> estadoInmueble.getIdEstadoInmueble() != 0)
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(estadoInmuebles, EstadoInmuebleDTO.class);
     }
 }

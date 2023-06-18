@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,11 +18,11 @@ public class CitaDTO {
     @NotEmpty(message = "El campo descripcion no puede estar vacio")
     private String descripcion;
     @NotNull(message = "El campo fechaCita no puede estar vacio")
-    private String fechaCita;
+    private Date fechaCita;
     @NotNull(message = "El campo horaCita no puede estar vacio")
-    private String fechaCreacion;
+    private Date fechaCreacion;
     @NotEmpty(message = "El campo horaCita no puede estar vacio")
-    private String fechaModificacion;
+    private Date fechaModificacion;
     @NotEmpty(message = "El campo horaCita no puede estar vacio")
     private String modificado;
     @NotNull(message = "El campo horaCita no puede estar vacio")
@@ -28,7 +30,7 @@ public class CitaDTO {
     @NotNull(message = "El campo horaCita no puede estar vacio")
     private int idEstadoCita;
     @NotNull(message = "El campo horaCita no puede estar vacio")
-    private Long idInmueble;
+    private int idInmueble;
     private int idUsuarioAgente;
     private int idUsuarioCliente;
 }

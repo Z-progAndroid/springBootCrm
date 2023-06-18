@@ -1,9 +1,12 @@
 package com.inmozara.crm.contrato.service;
 
 import com.inmozara.crm.config.MensajeDTO;
+import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.TipoPago;
 import com.inmozara.crm.contrato.model.dto.TipoPagoDTO;
+import com.inmozara.crm.contrato.model.repository.ContratoRepository;
 import com.inmozara.crm.contrato.model.repository.TipoPagoRepository;
+import com.inmozara.crm.contrato.model.search.ContratoSearch;
 import com.inmozara.crm.contrato.service.interfaces.ITipoPago;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
@@ -18,6 +21,8 @@ import java.util.List;
 public class TipoPagoService implements ITipoPago {
     @Autowired
     private TipoPagoRepository tipoPagoRepository;
+    @Autowired
+    private ContratoRepository contratoRepository;
 
     @Override
     public TipoPagoDTO save(TipoPagoDTO tipoPagoDTO) {
@@ -38,18 +43,21 @@ public class TipoPagoService implements ITipoPago {
         if (!tipoPagoRepository.existsById(idTipoPago)) {
             throw new RecursoNoEncontrado("El tipo de pago no existe");
         }
+        List<Contrato> contratos = contratoRepository.findAll(ContratoSearch.builder()
+                .contrato(Contrato.builder().tipoPago(TipoPago.builder().idTipoPago(idTipoPago).build()).build()).build());
+        if (!contratos.isEmpty()) {
+            contratos.forEach(contrato -> {
+                contrato.setTipoPago(TipoPago.builder().idTipoPago(0L).build());
+                contratoRepository.save(contrato);
+            });
+        }
         tipoPagoRepository.deleteById(idTipoPago);
-        return MensajeDTO.builder()
-                .mensaje("El tipo de pago se ha eliminado correctamente con el id: " + idTipoPago)
-                .estado(HttpStatus.OK.value())
-                .fecha(UtilsDates.now())
-                .build();
+        return MensajeDTO.builder().mensaje("El tipo de pago se ha eliminado correctamente con el id: " + idTipoPago).estado(HttpStatus.OK.value()).fecha(UtilsDates.now()).build();
     }
 
     @Override
     public TipoPagoDTO find(Long idTipoPago) {
-        TipoPago tipoPago = tipoPagoRepository.findById(idTipoPago)
-                .orElseThrow(() -> new RecursoNoEncontrado("El tipo de pago no existe"));
+        TipoPago tipoPago = tipoPagoRepository.findById(idTipoPago).orElseThrow(() -> new RecursoNoEncontrado("El tipo de pago no existe"));
         return ObjectMapperUtils.map(tipoPago, TipoPagoDTO.class);
     }
 

@@ -22,5 +22,5 @@ public class SeguimientoDTO {
     @NotNull(message = "El id del tipo de seguimiento no puede estar vacío")
     private Long idTipoSeguimiento;
     @NotNull(message = "El id del inmueble no puede estar vacío")
-    private Long idInmueble;
+    private int idInmueble;
 }

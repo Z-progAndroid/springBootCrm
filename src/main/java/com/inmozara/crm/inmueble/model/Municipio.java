@@ -27,7 +27,7 @@ public class Municipio {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PROVINCIA")
     private Provincia provincia;
     @OneToMany(mappedBy = "municipio")

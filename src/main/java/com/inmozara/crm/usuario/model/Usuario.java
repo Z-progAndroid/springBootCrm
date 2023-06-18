@@ -3,6 +3,7 @@ package com.inmozara.crm.usuario.model;
 import com.inmozara.crm.cita.model.Cita;
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.inmueble.model.Inmueble;
+import com.inmozara.crm.tarea.model.Tarea;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -59,5 +60,7 @@ public class Usuario {
     private List<Contrato> ciontratoomoCliente;
     @OneToMany(mappedBy = "usuario")
     private List<Inmueble> inmuebles;
+    @OneToMany(mappedBy = "usuario")
+    private List<Tarea> tareas;
 
 }

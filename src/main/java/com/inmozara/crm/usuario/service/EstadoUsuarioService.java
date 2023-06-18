@@ -5,6 +5,7 @@ import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.usuario.model.EstadoUsuario;
 import com.inmozara.crm.usuario.model.dto.EstadoUsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.EstadoUsuarioRepository;
+import com.inmozara.crm.usuario.model.repository.UsuarioRepository;
 import com.inmozara.crm.usuario.service.interfaces.IEstadoUsuario;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 public class EstadoUsuarioService implements IEstadoUsuario {
     @Autowired
     private EstadoUsuarioRepository estadoUsuarioRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @Override
     public EstadoUsuarioDTO save(EstadoUsuarioDTO estadoUsuarioDTO) {
@@ -36,13 +39,14 @@ public class EstadoUsuarioService implements IEstadoUsuario {
     }
 
     @Override
-    public MensajeDTO delete(Integer integer) {
-        if (!estadoUsuarioRepository.existsById(integer)) {
+    public MensajeDTO delete(Integer idEstadoUsuario) {
+        if (!estadoUsuarioRepository.existsById(idEstadoUsuario)) {
             throw new RecursoNoEncontrado("No se encontro el estado del usuario");
         }
-        estadoUsuarioRepository.deleteById(integer);
+        usuarioRepository.actualizarUsuariosPorEstado(EstadoUsuario.builder().idEstadoUsuario(idEstadoUsuario).build(), EstadoUsuario.builder().idEstadoUsuario(0).build());
+        estadoUsuarioRepository.deleteById(idEstadoUsuario);
         return MensajeDTO.builder()
-                .mensaje("Estado del usuario eliminado correctamente con el id: " + integer)
+                .mensaje("Estado del usuario eliminado correctamente con el id: " + idEstadoUsuario)
                 .estado(HttpStatus.OK.value())
                 .fecha(UtilsDates.now())
                 .build();
@@ -61,13 +65,18 @@ public class EstadoUsuarioService implements IEstadoUsuario {
         if (estadoUsuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron estados de usuarios");
         }
+        estadoUsuarios = estadoUsuarios
+                .stream()
+                .filter(estadoUsuario -> estadoUsuario.getIdEstadoUsuario() != 0)
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(estadoUsuarios, EstadoUsuarioDTO.class);
     }
-    public Map<Integer,String> findAllMap(){
+
+    public Map<Integer, String> findAllMap() {
         List<EstadoUsuario> estadoUsuarios = estadoUsuarioRepository.findAll();
         if (estadoUsuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron estados de usuarios");
         }
-        return estadoUsuarios.stream().collect(Collectors.toMap(EstadoUsuario::getIdEstadoUsuario,EstadoUsuario::getEstadoUsuario));
+        return estadoUsuarios.stream().collect(Collectors.toMap(EstadoUsuario::getIdEstadoUsuario, EstadoUsuario::getEstadoUsuario));
     }
 }

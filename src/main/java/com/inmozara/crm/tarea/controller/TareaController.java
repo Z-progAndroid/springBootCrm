@@ -45,4 +45,10 @@ public class TareaController implements ITarea {
     public List<TareaDTO> findAll() {
         return tareaService.findAll();
     }
+
+    @Override
+    @PostMapping("/search")
+    public List<TareaDTO> findAllByParams(@RequestBody TareaDTO tareaDTO) {
+        return tareaService.findAllByParams(tareaDTO);
+    }
 }

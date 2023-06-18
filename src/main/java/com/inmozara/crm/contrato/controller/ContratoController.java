@@ -18,7 +18,7 @@ public class ContratoController implements IContrato {
 
     @Override
     @PostMapping
-    public ContratoDTO save(@Valid  @RequestBody ContratoDTO contratoDTO) {
+    public ContratoDTO save(@Valid @RequestBody ContratoDTO contratoDTO) {
         return contratoService.save(contratoDTO);
     }
 
@@ -44,5 +44,11 @@ public class ContratoController implements IContrato {
     @GetMapping("/all")
     public List<ContratoDTO> findAll() {
         return contratoService.findAll();
+    }
+
+    @Override
+    @PostMapping("/search")
+    public List<ContratoDTO> findAllByParams(@RequestBody ContratoDTO contratoDTO) {
+        return contratoService.findAllByParams(contratoDTO);
     }
 }

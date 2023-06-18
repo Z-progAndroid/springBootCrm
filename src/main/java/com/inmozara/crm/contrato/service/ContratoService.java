@@ -4,6 +4,7 @@ import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.contrato.model.repository.ContratoRepository;
+import com.inmozara.crm.contrato.model.search.ContratoSearch;
 import com.inmozara.crm.contrato.service.interfaces.IContrato;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
@@ -57,6 +58,17 @@ public class ContratoService implements IContrato {
         List<Contrato> contratos = contratoRepository.findAll();
         if (contratos.isEmpty()) {
             throw new RecursoNoEncontrado("No hay contratos");
+        }
+        return ObjectMapperUtils.mapAll(contratos, ContratoDTO.class);
+    }
+
+    @Override
+    public List<ContratoDTO> findAllByParams(ContratoDTO contratoDTO) {
+       List<Contrato> contratos= contratoRepository.findAll(ContratoSearch.builder()
+                .contrato(ObjectMapperUtils.map(contratoDTO, Contrato.class))
+                .build());
+        if (contratos.isEmpty()) {
+            throw new RecursoNoEncontrado("No hay contratos con los parametros enviados");
         }
         return ObjectMapperUtils.mapAll(contratos, ContratoDTO.class);
     }

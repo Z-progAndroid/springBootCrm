@@ -1,6 +1,5 @@
 package com.inmozara.crm.contrato.model.dto;
 
-import com.inmozara.crm.contrato.model.Contrato;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -19,10 +18,8 @@ public class EstadoContratoDTO {
     private Long idestadoContrato;
     @NotEmpty(message = "El estado del contrato no puede ser vacio")
     private String estado;
-    @NotEmpty(message = "El estado del contrato no puede ser vacio")
-    private String fechaCreacion;
-    private String fechaModificacion;
+    @NotEmpty(message = "La fecha de creacion del estado del contrato no puede ser vacia")
+    private Date fechaCreacion;
+    private Date fechaModificacion;
     private String modificado;
-    //Relaciones
-    private List<Contrato> contratos;
 }

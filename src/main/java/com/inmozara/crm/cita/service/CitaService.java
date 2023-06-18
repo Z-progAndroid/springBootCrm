@@ -1,6 +1,7 @@
 package com.inmozara.crm.cita.service;
 
 import com.inmozara.crm.cita.model.Cita;
+import com.inmozara.crm.cita.model.CitaSearch;
 import com.inmozara.crm.cita.model.dto.CitaDTO;
 import com.inmozara.crm.cita.model.repository.CitaRepository;
 import com.inmozara.crm.cita.service.interfaces.ICita;
@@ -34,13 +35,13 @@ public class CitaService implements ICita {
     }
 
     @Override
-    public MensajeDTO delete(Integer integer) {
-        if (!citaRepository.existsById(integer)) {
+    public MensajeDTO delete(Integer idCita) {
+        if (!citaRepository.existsById(idCita)) {
             throw new RecursoNoEncontrado("No existe la cita");
         }
-        citaRepository.deleteById(integer);
+        citaRepository.deleteById(idCita);
         return MensajeDTO.builder()
-                .mensaje("La cita se ha eliminado correctamente con el id: " + integer)
+                .mensaje("La cita se ha eliminado correctamente con el id: " + idCita)
                 .estado(HttpStatus.OK.value())
                 .fecha(UtilsDates.now())
                 .build();
@@ -58,6 +59,16 @@ public class CitaService implements ICita {
         List<Cita> citas = citaRepository.findAll();
         if (citas.isEmpty())
             throw new RecursoNoEncontrado("No existen citas");
+        return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
+    }
+
+    @Override
+    public List<CitaDTO> findAllByParams(CitaDTO citaDTO) {
+        List<Cita> citas = citaRepository.findAll(CitaSearch.builder()
+                .cita(ObjectMapperUtils.map(citaDTO, Cita.class))
+                .build());
+        if (citas.isEmpty())
+            throw new RecursoNoEncontrado("No existen citas con los parametros enviados");
         return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
     }
 }

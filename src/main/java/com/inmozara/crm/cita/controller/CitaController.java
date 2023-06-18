@@ -45,4 +45,10 @@ public class CitaController implements ICita {
     public List<CitaDTO> findAll() {
         return citaService.findAll();
     }
+
+    @Override
+    @PostMapping("/search")
+    public List<CitaDTO> findAllByParams(@RequestBody CitaDTO citaDTO) {
+        return citaService.findAllByParams(citaDTO);
+    }
 }

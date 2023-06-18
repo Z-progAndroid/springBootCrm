@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProvinciaService implements IProvincia {
@@ -61,7 +60,7 @@ public class ProvinciaService implements IProvincia {
 
     @Override
     public ProvinciaDTO find(Integer integer) {
-        Provincia provincia = Optional.of(provinciaRepository.getReferenceById(integer))
+        Provincia provincia = provinciaRepository.findById(integer)
                 .orElseThrow(() -> new RecursoNoEncontrado("No se encontro la provincia con id: " + integer));
         return ObjectMapperUtils.map(provincia, ProvinciaDTO.class);
     }

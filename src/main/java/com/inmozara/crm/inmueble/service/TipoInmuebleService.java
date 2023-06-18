@@ -2,9 +2,12 @@ package com.inmozara.crm.inmueble.service;
 
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
+import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.TipoInmueble;
 import com.inmozara.crm.inmueble.model.dto.TipoInmuebleDTO;
+import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
 import com.inmozara.crm.inmueble.model.repository.TipoInmuebleRespository;
+import com.inmozara.crm.inmueble.model.search.InmuebleSearch;
 import com.inmozara.crm.inmueble.service.interfaces.ITipoInmueble;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -18,6 +21,8 @@ import java.util.List;
 public class TipoInmuebleService implements ITipoInmueble {
     @Autowired
     TipoInmuebleRespository tipoInmuebleRespository;
+    @Autowired
+    InmuebleRepository inmuebleRepository;
 
     @Override
     public TipoInmuebleDTO save(TipoInmuebleDTO tipoInmuebleDTO) {
@@ -37,7 +42,17 @@ public class TipoInmuebleService implements ITipoInmueble {
     public MensajeDTO delete(Long idTipoInmueble) {
         if (!tipoInmuebleRespository.existsById(idTipoInmueble)) {
             throw new RecursoNoEncontrado("No existe un tipo inmueble con el id:" + idTipoInmueble);
-
+        }
+        Inmueble inmueble1 = Inmueble.builder().tipoInmueble(TipoInmueble.builder().id(idTipoInmueble).build()).build();
+        TipoInmueble tipoInmueble = TipoInmueble.builder().id(0L).build();
+        List<Inmueble> list = inmuebleRepository.findAll(InmuebleSearch
+                .builder()
+                .inmueble(inmueble1).build());
+        if (!list.isEmpty()) {
+            list.forEach(inmueble -> {
+                inmueble.setTipoInmueble(tipoInmueble);
+                inmuebleRepository.save(inmueble);
+            });
         }
         tipoInmuebleRespository.deleteById(idTipoInmueble);
         return MensajeDTO.builder()

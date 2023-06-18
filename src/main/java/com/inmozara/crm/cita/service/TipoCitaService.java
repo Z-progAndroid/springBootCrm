@@ -1,7 +1,11 @@
 package com.inmozara.crm.cita.service;
 
+import com.inmozara.crm.cita.model.Cita;
+import com.inmozara.crm.cita.model.CitaSearch;
+import com.inmozara.crm.cita.model.EstadoCita;
 import com.inmozara.crm.cita.model.TipoCita;
 import com.inmozara.crm.cita.model.dto.TipoCitaDTO;
+import com.inmozara.crm.cita.model.repository.CitaRepository;
 import com.inmozara.crm.cita.model.repository.TipoCitaRepository;
 import com.inmozara.crm.cita.service.interfaces.ITipoCita;
 import com.inmozara.crm.config.MensajeDTO;
@@ -18,6 +22,8 @@ import java.util.List;
 public class TipoCitaService implements ITipoCita {
     @Autowired
     private TipoCitaRepository tipoCitaRepository;
+    @Autowired
+    private CitaRepository citaRepository;
 
     @Override
     public TipoCitaDTO save(TipoCitaDTO tipoCitaDTO) {
@@ -37,6 +43,15 @@ public class TipoCitaService implements ITipoCita {
     public MensajeDTO delete(Integer id) {
         if (!tipoCitaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No se encontro el tipo de la cita");
+        }
+        List<Cita> citas = citaRepository.findAll(CitaSearch.builder()
+                .cita(Cita.builder().tipoCita(TipoCita.builder()
+                        .idTipoCita(id).build()).build()).build());
+        if (!citas.isEmpty()) {
+            citas.forEach(cita -> {
+                cita.setEstadoCita(EstadoCita.builder().idEstadoCita(0).build());
+                citaRepository.save(cita);
+            });
         }
         tipoCitaRepository.deleteById(id);
         return MensajeDTO.builder()

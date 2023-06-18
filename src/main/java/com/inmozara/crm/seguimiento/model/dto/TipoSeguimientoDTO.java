@@ -1,6 +1,5 @@
 package com.inmozara.crm.seguimiento.model.dto;
 
-import com.inmozara.crm.seguimiento.model.Seguimiento;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +22,4 @@ public class TipoSeguimientoDTO {
     private Date fechaModificacion;
     @NotEmpty(message = "El campo modificado no puede estar vacío")
     private String modificado;
-    List<Seguimiento> seguimientos;
 }

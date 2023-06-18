@@ -1,9 +1,12 @@
 package com.inmozara.crm.contrato.service;
 
 import com.inmozara.crm.config.MensajeDTO;
+import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.TipoContrato;
 import com.inmozara.crm.contrato.model.dto.TipoContratoDTO;
+import com.inmozara.crm.contrato.model.repository.ContratoRepository;
 import com.inmozara.crm.contrato.model.repository.TipoContratoRepository;
+import com.inmozara.crm.contrato.model.search.ContratoSearch;
 import com.inmozara.crm.contrato.service.interfaces.ITipoContrato;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
@@ -18,7 +21,8 @@ import java.util.List;
 public class TipoContratoService implements ITipoContrato {
     @Autowired
     private TipoContratoRepository tipoContratoRepository;
-
+    @Autowired
+    private ContratoRepository contratoRepository;
     @Override
     public TipoContratoDTO save(TipoContratoDTO tipoContratoDTO) {
         TipoContrato tipoContrato = ObjectMapperUtils.map(tipoContratoDTO, TipoContrato.class);
@@ -37,6 +41,14 @@ public class TipoContratoService implements ITipoContrato {
     public MensajeDTO delete(Long idTipoContrato) {
         if (!tipoContratoRepository.existsById(idTipoContrato)) {
             throw new RecursoNoEncontrado("El tipo de contrato no existe");
+        }
+        List<Contrato> contratos = contratoRepository.findAll(ContratoSearch.builder()
+                .contrato(Contrato.builder().tipoContrato(TipoContrato.builder().idTipoContrato(idTipoContrato).build()).build()).build());
+        if (!contratos.isEmpty()) {
+            contratos.forEach(contrato -> {
+                contrato.setTipoContrato(TipoContrato.builder().idTipoContrato(0L).build());
+                contratoRepository.save(contrato);
+            });
         }
         tipoContratoRepository.deleteById(idTipoContrato);
         return MensajeDTO.builder()
