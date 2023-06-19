@@ -2,6 +2,7 @@ package com.inmozara.crm.inmueble.model.repository;
 
 import com.inmozara.crm.inmueble.model.EstadoInmueble;
 import com.inmozara.crm.inmueble.model.Inmueble;
+import com.inmozara.crm.inmueble.model.TipoInmueble;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -43,4 +44,9 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
     @Modifying
     @Query("UPDATE INMUEBLES i SET i.estadoInmueble = :nuevoEstado WHERE i.estadoInmueble = :estadoActual")
     void actualizarInmueblesPorEstado(@Param("estadoActual") EstadoInmueble estadoActual, @Param("nuevoEstado") EstadoInmueble nuevoEstado);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE INMUEBLES i SET i.tipoInmueble = :nuevoEstado WHERE i.tipoInmueble = :estadoActual")
+    void actualizarInmueblesPorTipo(@Param("estadoActual") TipoInmueble estadoActual, @Param("nuevoEstado") TipoInmueble nuevoEstado);
 }
