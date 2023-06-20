@@ -2,6 +2,7 @@ package com.inmozara.crm.cita.model.repository;
 
 import com.inmozara.crm.cita.model.Cita;
 import com.inmozara.crm.cita.model.EstadoCita;
+import com.inmozara.crm.cita.model.TipoCita;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,5 +19,9 @@ public interface CitaRepository extends JpaRepository<Cita, Integer>, JpaSpecifi
     @Query("UPDATE citas c SET c.estadoCita = :nuevoEstado WHERE c.estadoCita = :estadoActual")
     void actualizarCitasPorEstado(@Param("estadoActual") EstadoCita estadoActual, @Param("nuevoEstado") EstadoCita nuevoEstado);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE citas c SET c.tipoCita = :nuevoEstado WHERE c.tipoCita = :estadoActual")
+    void actualizarCitasPorTipo(@Param("estadoActual") TipoCita estadoActual, @Param("nuevoEstado") TipoCita nuevoEstado);
 
 }
