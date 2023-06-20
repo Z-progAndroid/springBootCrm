@@ -2,12 +2,10 @@ package com.inmozara.crm.seguimiento.service;
 
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
-import com.inmozara.crm.seguimiento.model.Seguimiento;
 import com.inmozara.crm.seguimiento.model.TipoSeguimiento;
 import com.inmozara.crm.seguimiento.model.dto.TipoSeguimientoDTO;
 import com.inmozara.crm.seguimiento.model.repository.SeguimientoRepository;
 import com.inmozara.crm.seguimiento.model.repository.TipoSeguimientoRepository;
-import com.inmozara.crm.seguimiento.model.search.SeguimientoSearch;
 import com.inmozara.crm.seguimiento.service.interfaces.ITipoSeguimiento;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
@@ -16,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TipoSeguimientoService implements ITipoSeguimiento {
@@ -43,16 +42,9 @@ public class TipoSeguimientoService implements ITipoSeguimiento {
         if (!tipoSeguimientoRepository.existsById(idTipoSeguimiento)) {
             throw new RecursoNoEncontrado("No existe el tipo de seguimiento");
         }
-        TipoSeguimiento tipoSeguimiento = TipoSeguimiento.builder().idTipoSeguimiento(idTipoSeguimiento).build();
-        Seguimiento seguimiento = Seguimiento.builder().tipoSeguimiento(tipoSeguimiento).build();
-        List<Seguimiento> seguimientos = seguimientoRepository.findAll(SeguimientoSearch.builder().seguimiento(seguimiento).build());
-        if (!seguimientos.isEmpty()) {
-            seguimientos.forEach(seguimiento1 -> {
-                seguimiento1.setTipoSeguimiento(TipoSeguimiento.builder().idTipoSeguimiento(0L).build());
-                seguimientoRepository.save(seguimiento1);
-            });
-        }
-
+        seguimientoRepository.actualizarSegimientosPorTipo(
+                TipoSeguimiento.builder().idTipoSeguimiento(idTipoSeguimiento).build(),
+                TipoSeguimiento.builder().idTipoSeguimiento(0L).build());
         tipoSeguimientoRepository.deleteById(idTipoSeguimiento);
         return MensajeDTO.builder()
                 .mensaje("Tipo de seguimiento eliminado correctamente con el id: " + idTipoSeguimiento)
@@ -74,6 +66,10 @@ public class TipoSeguimientoService implements ITipoSeguimiento {
         if (tipoSeguimientos.isEmpty()) {
             throw new RecursoNoEncontrado("No existen tipos de seguimientos");
         }
+        tipoSeguimientos = tipoSeguimientos
+                .stream()
+                .filter(tipoSeguimiento -> tipoSeguimiento.getIdTipoSeguimiento() != 0)
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(tipoSeguimientos, TipoSeguimientoDTO.class);
     }
 }

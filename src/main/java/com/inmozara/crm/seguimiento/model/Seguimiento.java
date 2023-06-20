@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "seguimientos")
 public class Seguimiento {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_SEGUIMIENTO")
     private Long idSeguimiento;
     @Column(name = "DESCRIPCION")
