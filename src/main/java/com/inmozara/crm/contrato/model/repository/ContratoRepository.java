@@ -2,6 +2,8 @@ package com.inmozara.crm.contrato.model.repository;
 
 import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.EstadoContrato;
+import com.inmozara.crm.contrato.model.TipoContrato;
+import com.inmozara.crm.contrato.model.TipoPago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,4 +18,14 @@ public interface ContratoRepository extends JpaRepository<Contrato, Long>, JpaSp
     @Modifying
     @Query(value = "UPDATE CONTRATOS c SET c.estadoContrato = :nuevoEstado WHERE c.estadoContrato= :estadoActual")
     void actualizarContratosPorEstado(@Param("estadoActual") EstadoContrato estadoActual, @Param("nuevoEstado") EstadoContrato nuevoEstado);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE CONTRATOS c SET c.tipoContrato = :nuevoEstado WHERE c.tipoContrato= :estadoActual")
+    void actualizarContratosPorTipo(@Param("estadoActual") TipoContrato estadoActual, @Param("nuevoEstado") TipoContrato nuevoEstado);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE CONTRATOS c SET c.tipoPago = :nuevoEstado WHERE c.tipoPago= :estadoActual")
+    void actualizarContratosPorTipoPago(@Param("estadoActual") TipoPago estadoActual, @Param("nuevoEstado") TipoPago nuevoEstado);
 }

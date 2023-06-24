@@ -1,8 +1,5 @@
 package com.inmozara.crm.cita.service;
 
-import com.inmozara.crm.cita.model.Cita;
-import com.inmozara.crm.cita.model.CitaSearch;
-import com.inmozara.crm.cita.model.EstadoCita;
 import com.inmozara.crm.cita.model.TipoCita;
 import com.inmozara.crm.cita.model.dto.TipoCitaDTO;
 import com.inmozara.crm.cita.model.repository.CitaRepository;
@@ -17,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TipoCitaService implements ITipoCita {
@@ -44,15 +42,7 @@ public class TipoCitaService implements ITipoCita {
         if (!tipoCitaRepository.existsById(id)) {
             throw new RecursoNoEncontrado("No se encontro el tipo de la cita");
         }
-        List<Cita> citas = citaRepository.findAll(CitaSearch.builder()
-                .cita(Cita.builder().tipoCita(TipoCita.builder()
-                        .idTipoCita(id).build()).build()).build());
-        if (!citas.isEmpty()) {
-            citas.forEach(cita -> {
-                cita.setEstadoCita(EstadoCita.builder().idEstadoCita(0).build());
-                citaRepository.save(cita);
-            });
-        }
+        citaRepository.actualizarCitasPorTipo(TipoCita.builder().idTipoCita(id).build(), TipoCita.builder().idTipoCita(0).build());
         tipoCitaRepository.deleteById(id);
         return MensajeDTO.builder()
                 .mensaje("El tipo de la cita se ha eliminado correctamente con el id: " + id)
@@ -74,6 +64,10 @@ public class TipoCitaService implements ITipoCita {
         if (tipoCitas.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron tipos de citas");
         }
+        tipoCitas = tipoCitas
+                .stream()
+                .filter(tipoCita -> tipoCita.getIdTipoCita() != 0)
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(tipoCitas, TipoCitaDTO.class);
     }
 }
