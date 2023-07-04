@@ -5,6 +5,7 @@ import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Pais;
 import com.inmozara.crm.inmueble.model.Provincia;
 import com.inmozara.crm.inmueble.model.dto.ProvinciaDTO;
+import com.inmozara.crm.inmueble.model.repository.MunicipoReprository;
 import com.inmozara.crm.inmueble.model.repository.ProvinciaRepository;
 import com.inmozara.crm.inmueble.service.interfaces.IProvincia;
 import com.inmozara.crm.utils.ObjectMapperUtils;
@@ -19,6 +20,8 @@ import java.util.List;
 public class ProvinciaService implements IProvincia {
     @Autowired
     ProvinciaRepository provinciaRepository;
+    @Autowired
+    MunicipoReprository municipoReprository;
 
     @Override
     public List<ProvinciaDTO> findAllByPais(String idPais) {
@@ -34,6 +37,12 @@ public class ProvinciaService implements IProvincia {
 
     @Override
     public ProvinciaDTO save(ProvinciaDTO provinciaDTO) {
+        if (provinciaDTO.getIdProvinciaExistente() != 0 && provinciaRepository.existsById(provinciaDTO.getIdProvinciaExistente())) {
+            Provincia provincia = provinciaRepository.save(ObjectMapperUtils.map(provinciaDTO, Provincia.class));
+            municipoReprository.actualizarProvincia(Provincia.builder().idProvincia(provinciaDTO.getIdProvinciaExistente()).build(), Provincia.builder().idProvincia(provinciaDTO.getIdProvincia()).build());
+            provinciaRepository.deleteById(provinciaDTO.getIdProvinciaExistente());
+            return ObjectMapperUtils.map(provincia, ProvinciaDTO.class);
+        }
         Provincia provincia = provinciaRepository.save(ObjectMapperUtils.map(provinciaDTO, Provincia.class));
         return ObjectMapperUtils.map(provincia, ProvinciaDTO.class);
     }
