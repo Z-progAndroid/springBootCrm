@@ -1,9 +1,6 @@
 package com.inmozara.crm.inmueble.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,6 +29,6 @@ public class Pais {
     //Relaciones
     @OneToMany(mappedBy = "pais")
     private List<Inmueble> inmuebles;
-    @OneToMany(mappedBy = "pais")
+    @OneToMany(mappedBy = "pais", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Provincia> provincias;
 }

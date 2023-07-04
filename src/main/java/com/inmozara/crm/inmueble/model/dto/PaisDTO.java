@@ -16,13 +16,13 @@ import java.util.Date;
 public class PaisDTO {
     @NotEmpty(message = "El id del pais no puede estar vacio")
     private String idPais;
-    @NotNull(message = "El pais no puede ser nulo")
-    @NotEmpty(message = "El pais no puede estar vacio")
+    @NotEmpty(message = "El nombre del pais no puede estar vacio")
     private String pais;
-    @NotNull(message = "La fecha de creacion no puede ser nula")
+    @NotNull(message = "La fecha de creacion no puede estar vacia")
     private Date fechaCreacion;
-    @NotNull(message = "La fecha de modificacion no puede ser nula")
+    @NotNull(message = "La fecha de modificacion no puede estar vacia")
     private Date fechaModificacion;
     @NotEmpty(message = "El campo modificado no puede estar vacio")
     private String modificado;
+    private String idPaisExistente;
 }
