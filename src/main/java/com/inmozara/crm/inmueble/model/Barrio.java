@@ -30,6 +30,6 @@ public class Barrio {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_MUNICIPIO")
     private Municipio municipio;
-    @OneToMany(mappedBy = "barrio")
+    @OneToMany(mappedBy = "barrio", fetch = FetchType.LAZY)
     private List<Inmueble> inmuebles;
 }
