@@ -32,6 +32,6 @@ public class Municipio {
     private Provincia provincia;
     @OneToMany(mappedBy = "municipio")
     private List<Inmueble> inmuebles;
-    @OneToMany(mappedBy = "municipio")
+    @OneToMany(mappedBy = "municipio" , fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Barrio> barrios;
 }
