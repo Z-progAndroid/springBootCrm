@@ -32,6 +32,6 @@ public class Provincia {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PAIS")
     private Pais pais;
-    @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Municipio> municipios;
 }

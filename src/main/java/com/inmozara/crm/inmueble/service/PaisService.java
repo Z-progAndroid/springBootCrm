@@ -5,8 +5,10 @@ import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Pais;
 import com.inmozara.crm.inmueble.model.dto.PaisDTO;
 import com.inmozara.crm.inmueble.model.repository.PaisRepository;
+import com.inmozara.crm.inmueble.model.repository.ProvinciaRepository;
 import com.inmozara.crm.inmueble.service.interfaces.IPais;
 import com.inmozara.crm.utils.ObjectMapperUtils;
+import com.inmozara.crm.utils.Utils;
 import com.inmozara.crm.utils.UtilsDates;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PaisService implements IPais {
     @Autowired
     private PaisRepository paisRepository;
 
+    @Autowired
+    private ProvinciaRepository provinciaRepository;
 
     @Override
     public PaisDTO findByIdPais(String idPais) {
@@ -30,6 +33,12 @@ public class PaisService implements IPais {
 
     @Override
     public PaisDTO save(@Valid PaisDTO paisDTO) {
+        if (!Utils.isNullOrEmpty(paisDTO.getIdPaisExistente()) && paisRepository.existsById(paisDTO.getIdPaisExistente())) {
+            Pais pais = paisRepository.save(ObjectMapperUtils.map(paisDTO, Pais.class));
+            provinciaRepository.actualizarPais(Pais.builder().idPais(paisDTO.getIdPaisExistente()).build(), Pais.builder().idPais(paisDTO.getIdPais()).build());
+            paisRepository.deleteById(paisDTO.getIdPaisExistente());
+            return ObjectMapperUtils.map(pais, PaisDTO.class);
+        }
         Pais pais = paisRepository.save(ObjectMapperUtils.map(paisDTO, Pais.class));
         return ObjectMapperUtils.map(pais, PaisDTO.class);
     }
@@ -44,7 +53,6 @@ public class PaisService implements IPais {
     public MensajeDTO delete(String idPais) {
         if (!paisRepository.existsById(idPais)) {
             throw new RecursoNoEncontrado("No existe un pais con el id:" + idPais);
-
         }
         paisRepository.deleteById(idPais);
         return MensajeDTO.builder()
@@ -56,7 +64,8 @@ public class PaisService implements IPais {
 
     @Override
     public PaisDTO find(String id) {
-        Pais pais = Optional.of(paisRepository.getReferenceById(id)).orElseThrow(() -> new RecursoNoEncontrado("No se encontro el pais con id: " + id));
+        Pais pais = paisRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el pais con id: " + id));
         return ObjectMapperUtils.map(pais, PaisDTO.class);
 
     }

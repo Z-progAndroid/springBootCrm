@@ -224,6 +224,7 @@ public class ObjectMapperUtils {
                 map().setPais(source.getPais());
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
+                map().setModificado(source.getModificado());
             }
         };
     }

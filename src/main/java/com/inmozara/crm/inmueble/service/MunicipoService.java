@@ -5,6 +5,7 @@ import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.inmueble.model.Municipio;
 import com.inmozara.crm.inmueble.model.Provincia;
 import com.inmozara.crm.inmueble.model.dto.MunicipoDTO;
+import com.inmozara.crm.inmueble.model.repository.BarrioRepository;
 import com.inmozara.crm.inmueble.model.repository.MunicipoReprository;
 import com.inmozara.crm.inmueble.service.interfaces.IMunicipo;
 import com.inmozara.crm.utils.ObjectMapperUtils;
@@ -21,6 +22,8 @@ import java.util.List;
 public class MunicipoService implements IMunicipo {
     @Autowired
     MunicipoReprository municipoReprository;
+    @Autowired
+    BarrioRepository barrioRepository;
 
     @Override
 
@@ -37,9 +40,13 @@ public class MunicipoService implements IMunicipo {
 
     @Override
     public MunicipoDTO save(MunicipoDTO municipoDTO) {
-        Municipio municipio = ObjectMapperUtils.map(municipoDTO, Municipio.class);
-        Municipio municipio1 = municipoReprository.save(municipio);
-        return ObjectMapperUtils.map(municipio1, MunicipoDTO.class);
+        Municipio municipio = municipoReprository.save(ObjectMapperUtils.map(municipoDTO, Municipio.class));
+        if (municipoDTO.getIdMunicipioExistente() != 0 && municipoReprository.existsById(municipoDTO.getIdMunicipioExistente())) {
+            barrioRepository.actualizarMunicipio(Municipio.builder().idMunicipio(municipoDTO.getIdMunicipioExistente()).build(), Municipio.builder().idMunicipio(municipoDTO.getIdMunicipio()).build());
+            municipoReprository.deleteById(municipoDTO.getIdMunicipioExistente());
+            return ObjectMapperUtils.map(municipio, MunicipoDTO.class);
+        }
+        return ObjectMapperUtils.map(municipio, MunicipoDTO.class);
     }
 
     @Override

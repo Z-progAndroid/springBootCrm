@@ -28,4 +28,5 @@ public class ProvinciaDTO {
     private Date fechaModificacion;
     @NotEmpty(message = "El campo modificado no puede estar vacio")
     private String modificado;
+    private int idProvinciaExistente;
 }
