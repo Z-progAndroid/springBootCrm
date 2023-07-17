@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,16 +60,13 @@ public class RolService implements IRol {
         if (roles.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron roles");
         }
+        roles = roles
+                .stream()
+                .filter(rol -> rol.getIdRol() != 0)
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(roles, RolDTO.class);
     }
-    public Map<Integer,String> findAllMap(){
-        List<Rol> roles = rolRepository.findAll();
-        if (roles.isEmpty()) {
-            throw new RecursoNoEncontrado("No se encontraron roles");
-        }
-        return roles.stream().collect(Collectors.toMap(Rol::getIdRol, Rol::getRol));
-    }
-    List<RolDTO> rolesAdminYAgente(){
+    List<RolDTO> rolesAdminYAgente() {
         List<Rol> roles = rolRepository.findRolesAgenteYAdmin();
         if (roles.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron roles");

@@ -3,6 +3,7 @@ package com.inmozara.crm.inmueble.model.repository;
 import com.inmozara.crm.inmueble.model.EstadoInmueble;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.TipoInmueble;
+import com.inmozara.crm.usuario.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -45,7 +46,10 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
     @Modifying
     @Query("UPDATE INMUEBLES i SET i.tipoInmueble = :nuevoEstado WHERE i.tipoInmueble = :estadoActual")
     void actualizarInmueblesPorTipo(@Param("estadoActual") TipoInmueble estadoActual, @Param("nuevoEstado") TipoInmueble nuevoEstado);
-
+    @Transactional
+    @Modifying
+    @Query("UPDATE INMUEBLES i SET i.usuario = :nuevoEstado WHERE i.usuario = :estadoActual")
+    void actualizarAgenteInmuebles(@Param("estadoActual") Usuario estadoActual, @Param("nuevoEstado") Usuario nuevoEstado);
     @Transactional
     @Modifying
     @Query("UPDATE INMUEBLES i SET i.imagen1 = CASE WHEN :fieldName = 'imagen1' THEN :bytes ELSE i.imagen1 END, " +
@@ -54,5 +58,7 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
             "i.imagen4 = CASE WHEN :fieldName = 'imagen4' THEN :bytes ELSE i.imagen4 END " +
             "WHERE i.idInmueble = :idInmueble")
     void actualizarImagen(@Param("idInmueble") Long idInmueble, @Param("fieldName") String fieldName, @Param("bytes") byte[] bytes);
+
+
 
 }
