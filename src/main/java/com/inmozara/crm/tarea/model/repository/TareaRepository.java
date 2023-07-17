@@ -2,6 +2,7 @@ package com.inmozara.crm.tarea.model.repository;
 
 import com.inmozara.crm.tarea.model.EstadoTarea;
 import com.inmozara.crm.tarea.model.Tarea;
+import com.inmozara.crm.usuario.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,4 +17,9 @@ public interface TareaRepository extends JpaRepository<Tarea, Integer>, JpaSpeci
     @Modifying
     @Query("UPDATE tareas t SET t.estadoTarea = :nuevoEstado WHERE t.estadoTarea = :estadoActual")
     void actualizarTareasPorEstado(@Param("estadoActual") EstadoTarea estadoActual, @Param("nuevoEstado") EstadoTarea nuevoEstado);
+    @Transactional
+    @Modifying
+    @Query("UPDATE tareas t SET t.usuario = :nuevoEstado WHERE t.usuario = :estadoActual")
+    void actualizarUsuarioTarea(@Param("estadoActual") Usuario estadoActual, @Param("nuevoEstado") Usuario nuevoEstado);
+
 }

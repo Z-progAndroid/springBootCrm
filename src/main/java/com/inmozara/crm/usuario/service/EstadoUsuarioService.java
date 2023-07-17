@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,13 +69,5 @@ public class EstadoUsuarioService implements IEstadoUsuario {
                 .filter(estadoUsuario -> estadoUsuario.getIdEstadoUsuario() != 0)
                 .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(estadoUsuarios, EstadoUsuarioDTO.class);
-    }
-
-    public Map<Integer, String> findAllMap() {
-        List<EstadoUsuario> estadoUsuarios = estadoUsuarioRepository.findAll();
-        if (estadoUsuarios.isEmpty()) {
-            throw new RecursoNoEncontrado("No se encontraron estados de usuarios");
-        }
-        return estadoUsuarios.stream().collect(Collectors.toMap(EstadoUsuario::getIdEstadoUsuario, EstadoUsuario::getEstadoUsuario));
     }
 }

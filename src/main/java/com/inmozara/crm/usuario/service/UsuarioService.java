@@ -1,9 +1,11 @@
 package com.inmozara.crm.usuario.service;
 
 import com.inmozara.crm.config.MensajeDTO;
+import com.inmozara.crm.contrato.model.repository.ContratoRepository;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
+import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
+import com.inmozara.crm.tarea.model.repository.TareaRepository;
 import com.inmozara.crm.usuario.model.Usuario;
-import com.inmozara.crm.usuario.model.dto.RolDTO;
 import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import com.inmozara.crm.usuario.model.repository.UsuarioRepository;
 import com.inmozara.crm.usuario.model.search.UserSearch;
@@ -15,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService implements IUsuario {
@@ -26,6 +26,13 @@ public class UsuarioService implements IUsuario {
     private EstadoUsuarioService estadoUsuarioService;
     @Autowired
     private RolService rolService;
+
+    @Autowired
+    private TareaRepository tareaRepository;
+    @Autowired
+    private ContratoRepository contratoRepository;
+    @Autowired
+    private InmuebleRepository inmuebleRepository;
 
     @Override
     public UsuarioDTO save(UsuarioDTO usuarioDTO) {
@@ -46,9 +53,14 @@ public class UsuarioService implements IUsuario {
         if (!usuarioRepository.existsById(integer)) {
             throw new RecursoNoEncontrado("No se encontro el usuario");
         }
+        Usuario usuario = usuarioRepository.obtenerUsuarioPorDefecto()
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el usuario por defecto"));
+        tareaRepository.actualizarUsuarioTarea(Usuario.builder().idUsuario(integer).build(), Usuario.builder().idUsuario(usuario.getIdUsuario()).build());
+        contratoRepository.actualizarAgenteContrato(Usuario.builder().idUsuario(integer).build(), Usuario.builder().idUsuario(usuario.getIdUsuario()).build());
+        inmuebleRepository.actualizarAgenteInmuebles(Usuario.builder().idUsuario(integer).build(), Usuario.builder().idUsuario(usuario.getIdUsuario()).build());
         usuarioRepository.deleteById(integer);
         return MensajeDTO.builder()
-                .mensaje("Usuario eliminado correctamente con el id: " + integer)
+                .mensaje("Usuario eliminado correctamente")
                 .estado(HttpStatus.OK.value())
                 .fecha(UtilsDates.now())
                 .build();
@@ -58,12 +70,7 @@ public class UsuarioService implements IUsuario {
     public UsuarioDTO find(Integer integer) {
         Usuario usuario = usuarioRepository.findById(integer)
                 .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el usuario"));
-        Map<Integer, String> rol = rolService.findAllMap();
-        Map<Integer, String> estadoUsuario = estadoUsuarioService.findAllMap();
-        UsuarioDTO usuarioDTOS = ObjectMapperUtils.map(usuario, UsuarioDTO.class);
-        usuarioDTOS.setRol(rol.get(usuarioDTOS.getIdRol()));
-        usuarioDTOS.setEstadoUsuario(estadoUsuario.get(usuarioDTOS.getIdEstadoUsuario()));
-        return usuarioDTOS;
+        return ObjectMapperUtils.map(usuario, UsuarioDTO.class);
     }
 
     @Override
@@ -72,15 +79,7 @@ public class UsuarioService implements IUsuario {
         if (usuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron usuarios");
         }
-        Map<Integer, String> rol = rolService.findAllMap();
-        Map<Integer, String> estadoUsuario = estadoUsuarioService.findAllMap();
-        List<UsuarioDTO> usuarioDTOS = ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
-
-        return usuarioDTOS.stream().map(usuarioDTO -> {
-            usuarioDTO.setRol(rol.get(usuarioDTO.getIdRol()));
-            usuarioDTO.setEstadoUsuario(estadoUsuario.get(usuarioDTO.getIdEstadoUsuario()));
-            return usuarioDTO;
-        }).collect(Collectors.toList());
+        return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }
 
     @Override
@@ -92,32 +91,14 @@ public class UsuarioService implements IUsuario {
         if (usuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron usuarios por los parametros ingresados");
         }
-        Map<Integer, String> rol = rolService.findAllMap();
-        Map<Integer, String> estadoUsuario = estadoUsuarioService.findAllMap();
-        List<UsuarioDTO> usuarioDTOS = ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
-        return usuarioDTOS.stream().map(user -> {
-            user.setRol(rol.get(user.getIdRol()));
-            user.setEstadoUsuario(estadoUsuario.get(user.getIdEstadoUsuario()));
-            return user;
-        }).collect(Collectors.toList());
+        return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }
 
     public List<UsuarioDTO> findAllUserAdminORAgente() {
-        List<Usuario> usuarios = usuarioRepository.findAll(UserSearch.builder()
-                .roles(rolService.rolesAdminYAgente()
-                        .stream().map(RolDTO::getIdRol)
-                        .collect(Collectors.toList()))
-                .build());
+        List<Usuario> usuarios = usuarioRepository.obtenerAgentesYAdministradores();
         if (usuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron usuarios por los parametros ingresados");
         }
-        Map<Integer, String> rol = rolService.findAllMap();
-        Map<Integer, String> estadoUsuario = estadoUsuarioService.findAllMap();
-        List<UsuarioDTO> usuarioDTOS = ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
-        return usuarioDTOS.stream().map(user -> {
-            user.setRol(rol.get(user.getIdRol()));
-            user.setEstadoUsuario(estadoUsuario.get(user.getIdEstadoUsuario()));
-            return user;
-        }).collect(Collectors.toList());
+        return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }
 }

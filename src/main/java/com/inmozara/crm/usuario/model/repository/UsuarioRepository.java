@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaSpecificationExecutor<Usuario> {
     @Transactional
@@ -18,5 +19,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
     void actualizarUsuariosPorEstado(@Param("estadoActual") EstadoUsuario estadoActual, @Param("nuevoEstado") EstadoUsuario nuevoEstado);
     @Query("SELECT u FROM usuarios u LEFT JOIN FETCH u.rol r WHERE r.rol = 'ADMIN' OR r.rol = 'AGENTE'")
     List<Usuario> obtenerAgentesYAdministradores();
+    @Query("SELECT u FROM usuarios u  WHERE u.nombre = 'DEFECTO_ADMIN' OR u.apellido = 'DEFECTO_ADMIN' OR u.email = 'DEFECTO_ADMIN@DEFECTO_ADMIN.COM' ")
+    Optional<Usuario> obtenerUsuarioPorDefecto();
+
 
 }
