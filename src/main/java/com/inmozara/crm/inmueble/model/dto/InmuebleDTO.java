@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -53,10 +52,10 @@ public class InmuebleDTO {
     private int idUsuario;
     @NotNull(message = "El id del barrio no puede estar vacío")
     private int idBarrio;
-    private String imagen1;
-    private String imagen2;
-    private String imagen3;
-    private String imagen4;
+    private byte[] imagen1;
+    private byte[] imagen2;
+    private byte[] imagen3;
+    private byte[] imagen4;
     //PARA FRONT
     private String barrio;
     private String estadoInmueble;
@@ -64,6 +63,4 @@ public class InmuebleDTO {
     private String pais;
     private String provincia;
     private String tipoInmueble;
-    private List<String> imagenes;
-
 }
