@@ -2,14 +2,15 @@ package com.inmozara.crm.inmueble.controller;
 
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
-import com.inmozara.crm.inmueble.service.ImagenService;
 import com.inmozara.crm.inmueble.service.InmuebleService;
 import com.inmozara.crm.inmueble.service.interfaces.IInmueble;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -17,8 +18,6 @@ import java.util.List;
 public class InmuebleController implements IInmueble {
     @Autowired
     InmuebleService inmuebleService;
-    @Autowired
-    private ImagenService imagenService;
 
     @Override
     @PostMapping
@@ -35,8 +34,6 @@ public class InmuebleController implements IInmueble {
     @Override
     @DeleteMapping
     public MensajeDTO delete(@RequestParam Long idInmueble) {
-        Arrays.stream(inmuebleService.obtenerimagenes(idInmueble).split(","))
-                .forEach(imageName -> imagenService.deleteImage(imageName, idInmueble.toString()));
         return inmuebleService.delete(idInmueble);
     }
 
@@ -60,5 +57,22 @@ public class InmuebleController implements IInmueble {
     @PutMapping("/actualizarEstadoInmuebles")
     public MensajeDTO actulizarEstadoInmuebles(@RequestParam int nuevoIdEstado, @RequestParam int idEstadoAntiguo) {
         return inmuebleService.actualizarEstadoInmuebles(nuevoIdEstado, idEstadoAntiguo);
+    }
+
+    @PostMapping("/uploadImage")
+    public ResponseEntity<MensajeDTO> uploadImage(@RequestParam("idInmueble") String idInmueble, @RequestParam("idImagen") String idImagen, @RequestParam("file") MultipartFile file) {
+        inmuebleService.guardarImagen(idInmueble, idImagen, file);
+        return ResponseEntity.ok().body(MensajeDTO.builder()
+                .mensaje("Imagen subida correctamente")
+                .estado(HttpStatus.OK.value())
+                .build());
+    }
+    @DeleteMapping("/deleteImage")
+    public ResponseEntity<MensajeDTO> deleteImage(@RequestParam String idInmueble, @RequestParam String idImagen) {
+        inmuebleService.borrarImagen(idInmueble, idImagen);
+        return ResponseEntity.ok().body(MensajeDTO.builder()
+                .mensaje("Imagen subida correctamente")
+                .estado(HttpStatus.OK.value())
+                .build());
     }
 }

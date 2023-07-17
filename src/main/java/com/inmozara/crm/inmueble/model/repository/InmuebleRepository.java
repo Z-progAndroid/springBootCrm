@@ -36,10 +36,6 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
             "LEFT JOIN FETCH i.usuario" +
             " WHERE i.idInmueble = ?1")
     Optional<Inmueble> findByIdInmueble(Long idInmueble);
-
-    @Query("SELECT i.imagen1, i.imagen2, i.imagen3, i.imagen4 FROM INMUEBLES i WHERE i.idInmueble = ?1")
-    Optional<String> obtenerimagenes(Long idInmueble);
-
     @Transactional
     @Modifying
     @Query("UPDATE INMUEBLES i SET i.estadoInmueble = :nuevoEstado WHERE i.estadoInmueble = :estadoActual")
@@ -49,4 +45,14 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
     @Modifying
     @Query("UPDATE INMUEBLES i SET i.tipoInmueble = :nuevoEstado WHERE i.tipoInmueble = :estadoActual")
     void actualizarInmueblesPorTipo(@Param("estadoActual") TipoInmueble estadoActual, @Param("nuevoEstado") TipoInmueble nuevoEstado);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE INMUEBLES i SET i.imagen1 = CASE WHEN :fieldName = 'imagen1' THEN :bytes ELSE i.imagen1 END, " +
+            "i.imagen2 = CASE WHEN :fieldName = 'imagen2' THEN :bytes ELSE i.imagen2 END, " +
+            "i.imagen3 = CASE WHEN :fieldName = 'imagen3' THEN :bytes ELSE i.imagen3 END, " +
+            "i.imagen4 = CASE WHEN :fieldName = 'imagen4' THEN :bytes ELSE i.imagen4 END " +
+            "WHERE i.idInmueble = :idInmueble")
+    void actualizarImagen(@Param("idInmueble") Long idInmueble, @Param("fieldName") String fieldName, @Param("bytes") byte[] bytes);
+
 }

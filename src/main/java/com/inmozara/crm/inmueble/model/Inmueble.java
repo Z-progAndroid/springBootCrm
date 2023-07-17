@@ -47,14 +47,19 @@ public class Inmueble {
     private Date fechaModificacion;
     @Column(name = "MODIFICADO")
     private String modificado;
-    @Column(name = "IMAGEN1", length = 200)
-    private String imagen1;
-    @Column(name = "IMAGEN2", length = 200)
-    private String imagen2;
-    @Column(name = "IMAGEN3", length = 200)
-    private String imagen3;
-    @Column(name = "IMAGEN4", length = 200)
-    private String imagen4;
+    @Lob
+    @Column(name = "IMAGEN1", columnDefinition = "LONGBLOB")
+    private byte[] imagen1;
+    @Lob
+    @Column(name = "IMAGEN2", columnDefinition = "LONGBLOB")
+    private byte[] imagen2;
+    @Lob
+    @Column(name = "IMAGEN3", columnDefinition = "LONGBLOB")
+    private byte[] imagen3;
+    @Lob
+    @Column(name = "IMAGEN4", columnDefinition = "LONGBLOB")
+    private byte[] imagen4;
+
 
     //Relaciones
     @ManyToOne(fetch = FetchType.EAGER)

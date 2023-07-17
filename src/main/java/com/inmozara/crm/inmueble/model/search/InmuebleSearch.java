@@ -25,6 +25,7 @@ public class InmuebleSearch implements Specification<Inmueble>, Serializable {
     @Override
     public Predicate toPredicate(Root<Inmueble> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
+
         if (inmueble != null && inmueble.getIdInmueble() != 0) {
             predicates.add(cb.equal(root.get("idInmueble"), inmueble.getIdInmueble()));
         }
@@ -55,18 +56,6 @@ public class InmuebleSearch implements Specification<Inmueble>, Serializable {
         if (inmueble != null && inmueble.getAno_construccion() != 0) {
             predicates.add(cb.equal(root.get("ano_construccion"), inmueble.getAno_construccion()));
         }
-        if (inmueble != null && inmueble.getImagen1() != null && !inmueble.getImagen1().isEmpty()) {
-            predicates.add(cb.like(root.get("imagen1"), "%" + inmueble.getImagen1() + "%"));
-        }
-        if (inmueble != null && inmueble.getImagen2() != null && !inmueble.getImagen2().isEmpty()) {
-            predicates.add(cb.like(root.get("imagen2"), "%" + inmueble.getImagen2() + "%"));
-        }
-        if (inmueble != null && inmueble.getImagen3() != null && !inmueble.getImagen3().isEmpty()) {
-            predicates.add(cb.like(root.get("imagen3"), "%" + inmueble.getImagen3() + "%"));
-        }
-        if (inmueble != null && inmueble.getImagen4() != null && !inmueble.getImagen4().isEmpty()) {
-            predicates.add(cb.like(root.get("imagen4"), "%" + inmueble.getImagen4() + "%"));
-        }
         if (inmueble != null && inmueble.getTipoInmueble() != null && inmueble.getTipoInmueble().getId() != 0) {
             predicates.add(cb.equal(root.get("tipoInmueble").get("id"), inmueble.getTipoInmueble().getId()));
         }
@@ -84,6 +73,9 @@ public class InmuebleSearch implements Specification<Inmueble>, Serializable {
         }
         if (inmueble != null && inmueble.getBarrio() != null && inmueble.getBarrio().getIdBarrio() != 0) {
             predicates.add(cb.equal(root.get("barrio").get("idBarrio"), inmueble.getBarrio().getIdBarrio()));
+        }
+        if (inmueble != null && inmueble.getUsuario() != null && inmueble.getUsuario().getIdUsuario() != 0) {
+            predicates.add(cb.equal(root.get("usuario").get("idUsuario"), inmueble.getUsuario().getIdUsuario()));
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }
