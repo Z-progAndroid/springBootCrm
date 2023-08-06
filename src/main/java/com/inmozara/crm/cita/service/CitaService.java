@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CitaService implements ICita {
@@ -69,6 +72,34 @@ public class CitaService implements ICita {
                 .build());
         if (citas.isEmpty())
             throw new RecursoNoEncontrado("No existen citas con los parametros enviados");
+        return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
+    }
+
+    public MensajeDTO checkAvailability(String startDateStr, String endDateStr, int idInmueble) {
+        List<Cita> conflictingCitas = citaRepository.countConflictingCitas(
+                LocalDateTime.parse(startDateStr, DateTimeFormatter.ISO_DATE_TIME),
+                LocalDateTime.parse(endDateStr, DateTimeFormatter.ISO_DATE_TIME),
+                idInmueble);
+        String horarios = conflictingCitas
+                .stream()
+                .map(cita ->cita.getFechaInicio().format(UtilsDates.DATE_TIME_FORMATTER_DD_MM_YYYY_HH_MM_SS) + " - " + cita.getFechaFin().format(UtilsDates.DATE_TIME_FORMATTER_DD_MM_YYYY_HH_MM_SS))
+                .collect(Collectors.joining(" , "));
+        String mensaje = conflictingCitas.size() > 1
+                ? "El inmueble no esta disponible en el horario seleccionado ya hay " + conflictingCitas.size() + "citas con horarios \n" + horarios
+                : "El inmueble no esta disponible en el horario seleccionado ya hay una cita con horario \n" + horarios;
+
+        return MensajeDTO.builder()
+                .error(conflictingCitas.size() == 0)
+                .mensaje(mensaje)
+                .estado(HttpStatus.OK.value())
+                .fecha(UtilsDates.now())
+                .build();
+    }
+
+    public List<CitaDTO> findAllPendienteYActivas() {
+        List<Cita> citas = citaRepository.findCitasPendientesYActivas();
+        if (citas.isEmpty())
+            throw new RecursoNoEncontrado("No existen citas");
         return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
     }
 }

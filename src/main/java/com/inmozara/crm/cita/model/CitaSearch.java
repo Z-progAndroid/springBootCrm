@@ -32,20 +32,23 @@ public class CitaSearch implements Specification<Cita>, Serializable {
         if (cita != null && cita.getDescripcion() != null && !cita.getDescripcion().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("descripcion")), "%" + cita.getDescripcion() + "%"));
         }
-        if (cita != null && cita.getFechaCita() != null) {
+        if (cita != null && cita.getFechaInicio() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String fechaFinalizacionStr = sdf.format(cita.getFechaCita());
+            String fechaFinalizacionStr = sdf.format(cita.getFechaInicio());
             String fechaFinalizacionSql = fechaFinalizacionStr.substring(0, 10);
-            predicates.add(cb.equal(cb.function("DATE", String.class, root.get("fechaCita")), fechaFinalizacionSql));
+            predicates.add(cb.equal(cb.function("DATE", String.class, root.get("fechaIncio")), fechaFinalizacionSql));
+        }
+        if (cita != null && cita.getFechaFin() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String fechaFinalizacionStr = sdf.format(cita.getFechaFin());
+            String fechaFinalizacionSql = fechaFinalizacionStr.substring(0, 10);
+            predicates.add(cb.equal(cb.function("DATE", String.class, root.get("fechaFin")), fechaFinalizacionSql));
         }
         if (cita != null && cita.getTipoCita() != null && cita.getTipoCita().getIdTipoCita() != 0) {
             predicates.add(cb.equal(root.get("tipoCita").get("idTipoCita"), cita.getTipoCita().getIdTipoCita()));
         }
         if (cita != null && cita.getEstadoCita() != null && cita.getEstadoCita().getIdEstadoCita() != 0) {
             predicates.add(cb.equal(root.get("estadoCita").get("idEstadoCita"), cita.getEstadoCita().getIdEstadoCita()));
-        }
-        if (cita != null && cita.getAgente() != null && cita.getAgente().getIdUsuario() != 0) {
-            predicates.add(cb.equal(root.get("agente").get("idUsuario"), cita.getAgente().getIdUsuario()));
         }
         if (cita != null && cita.getCliente() != null && cita.getCliente().getIdUsuario() != 0) {
             predicates.add(cb.equal(root.get("cliente").get("idUsuario"), cita.getCliente().getIdUsuario()));

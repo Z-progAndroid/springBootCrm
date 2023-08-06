@@ -11,4 +11,5 @@ public class MensajeDTO {
     private String fecha;
     private String mensaje;
     private String description;
+    private boolean error;
 }

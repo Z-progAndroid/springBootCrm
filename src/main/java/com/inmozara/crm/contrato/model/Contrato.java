@@ -54,9 +54,6 @@ public class Contrato {
     @JoinColumn(name = "ID_ESTADO_CONTRATO")
     private EstadoContrato estadoContrato;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_AGENTE", referencedColumnName = "ID_USUARIO")
-    private Usuario agente;
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_USUARIO")
     private Usuario cliente;
 }

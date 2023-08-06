@@ -33,8 +33,6 @@ public class ContratoDTO {
     private int idInmueble;
     @NotNull(message = "El estado del contrato no puede ser nulo")
     private Long idEstadoContrato;
-    @NotNull(message = "El agente no puede ser nulo")
-    private int agente;
     @NotNull(message = "El cliente no puede ser nulo")
     private int cliente;
 }

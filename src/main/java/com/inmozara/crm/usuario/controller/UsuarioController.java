@@ -57,4 +57,9 @@ public class UsuarioController implements IUsuario {
     public List<UsuarioDTO> findAllUserAdminORAgente() {
         return usuarioService.findAllUserAdminORAgente();
     }
+    @Override
+    @GetMapping("/all/usuarios")
+    public List<UsuarioDTO> findAllUsuarios() {
+        return usuarioService.findAllUsuarios();
+    }
 }
