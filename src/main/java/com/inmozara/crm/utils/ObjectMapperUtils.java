@@ -345,6 +345,10 @@ public class ObjectMapperUtils {
                 map().setModificado(source.getModificado());
                 map().setIdEstadoTarea(source.getEstadoTarea().getIdEstadoTarea());
                 map().setIdUsuario(source.getUsuario().getIdUsuario());
+                map().setEstadoTarea(source.getEstadoTarea().getEstadoTarea());
+                map().setNombre(source.getUsuario().getNombre());
+                map().setApellido(source.getUsuario().getApellido());
+
             }
         };
     }
