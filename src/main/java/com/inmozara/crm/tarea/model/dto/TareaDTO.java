@@ -32,4 +32,7 @@ public class TareaDTO {
     @NotNull(message = "El id del estado de la tarea no puede ser nulo")
     private int idEstadoTarea;
     private int idUsuario;
+    private String estadoTarea;
+    private String nombre;
+    private String apellido;
 }

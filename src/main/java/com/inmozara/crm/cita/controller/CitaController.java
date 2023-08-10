@@ -51,4 +51,16 @@ public class CitaController implements ICita {
     public List<CitaDTO> findAllByParams(@RequestBody CitaDTO citaDTO) {
         return citaService.findAllByParams(citaDTO);
     }
+
+    @GetMapping("/checkAvailability")
+    public MensajeDTO checkAvailability(@RequestParam("startDate") String startDateStr,
+                                     @RequestParam("endDate") String endDateStr,
+                                     @RequestParam("idInmueble") int idInmueble)  {
+        return citaService.checkAvailability(startDateStr, endDateStr, idInmueble);
+    }
+    @GetMapping("/pendientesYActivas")
+    public List<CitaDTO> findAllPendienteYActivas() {
+        return citaService.findAllPendienteYActivas();
+    }
 }
+

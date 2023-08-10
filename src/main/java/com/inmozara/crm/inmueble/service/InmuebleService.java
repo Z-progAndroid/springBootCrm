@@ -79,8 +79,6 @@ public class InmuebleService implements IInmueble {
         }
         return ObjectMapperUtils.mapAll(inmuebles, InmuebleDTO.class);
     }
-
-
     public MensajeDTO actualizarEstadoInmuebles(int nuevoIdEstado, int idEstadoAntiguo) {
 
 

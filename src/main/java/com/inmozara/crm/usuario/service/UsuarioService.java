@@ -56,7 +56,6 @@ public class UsuarioService implements IUsuario {
         Usuario usuario = usuarioRepository.obtenerUsuarioPorDefecto()
                 .orElseThrow(() -> new RecursoNoEncontrado("No se encontro el usuario por defecto"));
         tareaRepository.actualizarUsuarioTarea(Usuario.builder().idUsuario(integer).build(), Usuario.builder().idUsuario(usuario.getIdUsuario()).build());
-        contratoRepository.actualizarAgenteContrato(Usuario.builder().idUsuario(integer).build(), Usuario.builder().idUsuario(usuario.getIdUsuario()).build());
         inmuebleRepository.actualizarAgenteInmuebles(Usuario.builder().idUsuario(integer).build(), Usuario.builder().idUsuario(usuario.getIdUsuario()).build());
         usuarioRepository.deleteById(integer);
         return MensajeDTO.builder()
@@ -97,7 +96,14 @@ public class UsuarioService implements IUsuario {
     public List<UsuarioDTO> findAllUserAdminORAgente() {
         List<Usuario> usuarios = usuarioRepository.obtenerAgentesYAdministradores();
         if (usuarios.isEmpty()) {
-            throw new RecursoNoEncontrado("No se encontraron usuarios por los parametros ingresados");
+            throw new RecursoNoEncontrado("No se encontraron usuarios con rol de administrador o agente");
+        }
+        return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
+    }
+    public List<UsuarioDTO> findAllUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.obtenerUsuarios();
+        if (usuarios.isEmpty()) {
+            throw new RecursoNoEncontrado("No se encontraron usuarios con rol de usuarios");
         }
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }

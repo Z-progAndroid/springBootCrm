@@ -72,11 +72,6 @@ public class ContratoSearch implements Specification<Contrato>, Serializable {
         if (contrato != null && contrato.getCliente() != null && contrato.getCliente().getIdUsuario() != 0) {
             predicates.add(cb.equal(root.get("cliente").get("idUsuario"), contrato.getCliente().getIdUsuario()));
         }
-
-        if (contrato != null && contrato.getAgente() != null && contrato.getAgente().getIdUsuario() != 0) {
-            predicates.add(cb.equal(root.get("agente").get("idUsuario"), contrato.getAgente().getIdUsuario()));
-        }
-
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }
 }

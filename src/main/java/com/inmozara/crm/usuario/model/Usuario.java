@@ -50,14 +50,10 @@ public class Usuario {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ROL")
     private Rol rol;
-    @OneToMany(mappedBy = "agente")
-    private List<Cita> citasComoAgente;
     @OneToMany(mappedBy = "cliente")
     private List<Cita> citasComoCliente;
-    @OneToMany(mappedBy = "agente")
-    private List<Contrato> contratoComoAgente;
     @OneToMany(mappedBy = "cliente")
-    private List<Contrato> ciontratoomoCliente;
+    private List<Contrato> contratosComoCliente;
     @OneToMany(mappedBy = "usuario")
     private List<Inmueble> inmuebles;
     @OneToMany(mappedBy = "usuario")

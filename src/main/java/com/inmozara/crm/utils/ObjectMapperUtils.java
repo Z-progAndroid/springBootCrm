@@ -299,14 +299,14 @@ public class ObjectMapperUtils {
             protected void configure() {
                 map().setIdCita(source.getIdCita());
                 map().setDescripcion(source.getDescripcion());
-                map().setFechaCita(source.getFechaCita());
+                map().setFechaIncio(source.getFechaInicio());
+                map().setFechaFin(source.getFechaFin());
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
                 map().setModificado(source.getModificado());
                 map().setIdTipoCita(source.getTipoCita().getIdTipoCita());
                 map().setIdEstadoCita(source.getEstadoCita().getIdEstadoCita());
                 map().setIdInmueble(source.getInmueble().getIdInmueble());
-                map().setIdUsuarioAgente(source.getAgente().getIdUsuario());
                 map().setIdUsuarioCliente(source.getCliente().getIdUsuario());
             }
         };
@@ -318,14 +318,14 @@ public class ObjectMapperUtils {
             protected void configure() {
                 map().setIdCita(source.getIdCita());
                 map().setDescripcion(source.getDescripcion());
-                map().setFechaCita(source.getFechaCita());
+                map().setFechaInicio(source.getFechaIncio());
+                map().setFechaFin(source.getFechaFin());
                 map().setFechaCreacion(source.getFechaCreacion());
                 map().setFechaModificacion(source.getFechaModificacion());
                 map().setModificado(source.getModificado());
                 map().getTipoCita().setIdTipoCita(source.getIdTipoCita());
                 map().getEstadoCita().setIdEstadoCita(source.getIdEstadoCita());
                 map().getInmueble().setIdInmueble(source.getIdInmueble());
-                map().getAgente().setIdUsuario(source.getIdUsuarioAgente());
                 map().getCliente().setIdUsuario(source.getIdUsuarioCliente());
             }
         };
@@ -345,6 +345,10 @@ public class ObjectMapperUtils {
                 map().setModificado(source.getModificado());
                 map().setIdEstadoTarea(source.getEstadoTarea().getIdEstadoTarea());
                 map().setIdUsuario(source.getUsuario().getIdUsuario());
+                map().setEstadoTarea(source.getEstadoTarea().getEstadoTarea());
+                map().setNombre(source.getUsuario().getNombre());
+                map().setApellido(source.getUsuario().getApellido());
+
             }
         };
     }
@@ -386,7 +390,6 @@ public class ObjectMapperUtils {
                 map().setIdTipoPago(source.getTipoPago().getIdTipoPago());
                 map().setIdInmueble(source.getInmueble().getIdInmueble());
                 map().setIdEstadoContrato(source.getEstadoContrato().getIdEstadoContrato());
-                map().setAgente(source.getAgente().getIdUsuario());
                 map().setCliente(source.getCliente().getIdUsuario());
             }
         };
@@ -411,7 +414,6 @@ public class ObjectMapperUtils {
                 map().getTipoPago().setIdTipoPago(source.getIdTipoPago());
                 map().getInmueble().setIdInmueble(source.getIdInmueble());
                 map().getEstadoContrato().setIdEstadoContrato(source.getIdEstadoContrato());
-                map().getAgente().setIdUsuario(source.getAgente());
                 map().getCliente().setIdUsuario(source.getCliente());
             }
         };

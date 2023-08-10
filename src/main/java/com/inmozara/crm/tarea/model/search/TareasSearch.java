@@ -41,15 +41,15 @@ public class TareasSearch implements Specification<Tarea>, Serializable {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String fechaFinalizacionStr = sdf.format(tarea.getFechaInicio());
             String fechaFinalizacionSql = fechaFinalizacionStr.substring(0, 10);
-            predicates.add(cb.equal(cb.function("DATE", String.class, root.get("fechaInicio")), fechaFinalizacionSql));
+            predicates.add(cb.greaterThanOrEqualTo(cb.function("DATE", String.class, root.get("fechaInicio")), fechaFinalizacionSql));
         }
         if (tarea != null && tarea.getFechaFin() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String fechaFinalizacionStr = sdf.format(tarea.getFechaFin());
             String fechaFinalizacionSql = fechaFinalizacionStr.substring(0, 10); // Obtener solo la parte de la fecha
-            predicates.add(cb.equal(cb.function("DATE", String.class, root.get("fechaFin")), fechaFinalizacionSql));
+            predicates.add(cb.lessThanOrEqualTo(cb.function("DATE", String.class, root.get("fechaFin")), fechaFinalizacionSql));
         }
-        if (tarea != null && tarea.getEstadoTarea() !=null ) {
+        if (tarea != null && tarea.getEstadoTarea() != null && tarea.getEstadoTarea().getIdEstadoTarea() != 0) {
             predicates.add(cb.equal(root.get("estadoTarea").get("idEstadoTarea"), tarea.getEstadoTarea().getIdEstadoTarea()));
         }
         if (tarea != null && tarea.getUsuario() != null && tarea.getUsuario().getIdUsuario() != 0) {
