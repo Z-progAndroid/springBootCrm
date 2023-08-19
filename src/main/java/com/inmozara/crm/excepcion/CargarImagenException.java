@@ -1,4 +1,4 @@
-package com.inmozara.crm.inmueble.exception;
+package com.inmozara.crm.excepcion;
 
 import java.io.Serial;
 

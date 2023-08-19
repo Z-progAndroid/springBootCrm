@@ -1,7 +1,7 @@
 package com.inmozara.crm.cita.service.interfaces;
 
 import com.inmozara.crm.cita.model.dto.CitaDTO;
-import com.inmozara.crm.utils.comon.IService;
+import com.inmozara.crm.utils.IService;
 
 import java.util.List;
 
