@@ -3,10 +3,7 @@ package com.inmozara.crm.contrato.model;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -41,18 +38,23 @@ public class Contrato {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_TIPO_CONTRATO")
     private TipoContrato tipoContrato;
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_TIPO_PAGO")
     private TipoPago tipoPago;
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_INMUEBLE")
     private Inmueble inmueble;
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ESTADO_CONTRATO")
     private EstadoContrato estadoContrato;
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_USUARIO")
     private Usuario cliente;

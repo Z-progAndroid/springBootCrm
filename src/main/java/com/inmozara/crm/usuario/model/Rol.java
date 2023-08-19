@@ -1,10 +1,11 @@
 package com.inmozara.crm.usuario.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +25,4 @@ public class Rol {
     private Date fechaModificacion;
     @Column(name = "MODIFICADO")
     private String modificado;
-    @OneToMany(mappedBy = "rol" ,fetch = FetchType.LAZY)
-    private List<Usuario> usuarios;
 }

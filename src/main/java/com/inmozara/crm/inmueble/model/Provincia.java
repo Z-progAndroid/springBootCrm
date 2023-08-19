@@ -1,10 +1,7 @@
 package com.inmozara.crm.inmueble.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -27,11 +24,11 @@ public class Provincia {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY)
-    private List<Inmueble> inmuebles;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PAIS")
     private Pais pais;
+    @ToString.Exclude
     @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Municipio> municipios;
 }

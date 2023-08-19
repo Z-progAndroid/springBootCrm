@@ -1,17 +1,10 @@
 package com.inmozara.crm.inmueble.model;
 
-import com.inmozara.crm.cita.model.Cita;
-import com.inmozara.crm.contrato.model.Contrato;
-import com.inmozara.crm.seguimiento.model.Seguimiento;
 import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -48,46 +41,49 @@ public class Inmueble {
     @Column(name = "MODIFICADO")
     private String modificado;
     @Lob
+    @ToString.Exclude
     @Column(name = "IMAGEN1", columnDefinition = "LONGBLOB")
     private byte[] imagen1;
     @Lob
+    @ToString.Exclude
     @Column(name = "IMAGEN2", columnDefinition = "LONGBLOB")
     private byte[] imagen2;
     @Lob
+    @ToString.Exclude
     @Column(name = "IMAGEN3", columnDefinition = "LONGBLOB")
     private byte[] imagen3;
     @Lob
+    @ToString.Exclude
     @Column(name = "IMAGEN4", columnDefinition = "LONGBLOB")
     private byte[] imagen4;
 
-
     //Relaciones
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_TIPO_INMUEBLE")
     private TipoInmueble tipoInmueble;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ESTADO_INMUEBLE")
     private EstadoInmueble estadoInmueble;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PAIS")
     private Pais pais;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PROVINCIA")
     private Provincia provincia;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_MUNICIPIO")
     private Municipio municipio;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_BARRIO")
     private Barrio barrio;
-    @OneToMany(mappedBy = "inmueble")
-    private List<Seguimiento> seguimientos;
-    @OneToMany(mappedBy = "inmueble")
-    private List<Contrato> contratos;
-    @OneToMany(mappedBy = "inmueble")
-    private List<Cita> citas;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
-
 }
