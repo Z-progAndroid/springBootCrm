@@ -28,4 +28,8 @@ public interface ContratoRepository extends JpaRepository<Contrato, Long>, JpaSp
     @Modifying
     @Query(value = "UPDATE CONTRATOS c SET c.tipoPago = :nuevoEstado WHERE c.tipoPago= :estadoActual")
     void actualizarContratosPorTipoPago(@Param("estadoActual") TipoPago estadoActual, @Param("nuevoEstado") TipoPago nuevoEstado);
+    @Query("SELECT COUNT(*) FROM CONTRATOS c WHERE c.inmueble.idInmueble = :idInmueble AND c.estadoContrato.idEstadoContrato = 2")
+    int checkContratosExistentes(@Param("idInmueble") int idInmueble);
+    @Query("SELECT COUNT(*) FROM CONTRATOS c WHERE c.idContrato = :idContrato AND c.estadoContrato.idEstadoContrato = 2")
+    int esContratoActivo(@Param("idContrato") Long idContrato);
 }

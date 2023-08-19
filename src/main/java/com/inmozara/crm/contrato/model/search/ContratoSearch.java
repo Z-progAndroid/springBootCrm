@@ -37,13 +37,13 @@ public class ContratoSearch implements Specification<Contrato>, Serializable {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String fechaInicioStr = sdf.format(contrato.getFechaInicio());
             String fechaInicioSql = fechaInicioStr.substring(0, 10); // Obtener solo la parte de la fecha
-            predicates.add(cb.equal(cb.function("DATE", String.class, root.get("fechaInicio")), fechaInicioSql));
+            predicates.add(cb.greaterThanOrEqualTo(cb.function("DATE", String.class, root.get("fechaInicio")), fechaInicioSql));
         }
         if (contrato != null && contrato.getFechaFinalizacion() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String fechaFinalizacionStr = sdf.format(contrato.getFechaFinalizacion());
             String fechaFinalizacionSql = fechaFinalizacionStr.substring(0, 10); // Obtener solo la parte de la fecha
-            predicates.add(cb.equal(cb.function("DATE", String.class, root.get("fechaFinalizacion")), fechaFinalizacionSql));
+            predicates.add(cb.lessThanOrEqualTo(cb.function("DATE", String.class, root.get("fechaFinalizacion")), fechaFinalizacionSql));
         }
         if (contrato != null && contrato.getDescripcion() != null && !contrato.getDescripcion().isEmpty()) {
             predicates.add(cb.like(root.get("descripcion"), "%" + contrato.getDescripcion() + "%"));
@@ -54,19 +54,19 @@ public class ContratoSearch implements Specification<Contrato>, Serializable {
         if (contrato != null && contrato.getValor() != 0) {
             predicates.add(cb.equal(root.get("valor"), contrato.getValor()));
         }
-        if(contrato != null && contrato.getObservaciones() != null && !contrato.getObservaciones().isEmpty()){
+        if (contrato != null && contrato.getObservaciones() != null && !contrato.getObservaciones().isEmpty()) {
             predicates.add(cb.like(root.get("observaciones"), "%" + contrato.getObservaciones() + "%"));
         }
-        if(contrato != null && contrato.getTipoPago() != null && contrato.getTipoPago().getIdTipoPago() != null){
+        if (contrato != null && contrato.getTipoPago() != null && contrato.getTipoPago().getIdTipoPago() != null && contrato.getTipoPago().getIdTipoPago() != 0) {
             predicates.add(cb.equal(root.get("tipoPago").get("idTipoPago"), contrato.getTipoPago().getIdTipoPago()));
         }
-        if(contrato != null && contrato.getEstadoContrato() != null && contrato.getEstadoContrato().getIdEstadoContrato() != null){
+        if (contrato != null && contrato.getEstadoContrato() != null && contrato.getEstadoContrato().getIdEstadoContrato() != null && contrato.getEstadoContrato().getIdEstadoContrato() != 0) {
             predicates.add(cb.equal(root.get("estadoContrato").get("idEstadoContrato"), contrato.getEstadoContrato().getIdEstadoContrato()));
         }
-        if(contrato != null && contrato.getTipoContrato() != null && contrato.getTipoContrato().getIdTipoContrato()!= null){
+        if (contrato != null && contrato.getTipoContrato() != null && contrato.getTipoContrato().getIdTipoContrato() != null && contrato.getTipoContrato().getIdTipoContrato() != 0) {
             predicates.add(cb.equal(root.get("tipoContrato").get("idTipoContrato"), contrato.getTipoContrato().getIdTipoContrato()));
         }
-        if(contrato != null && contrato.getInmueble() != null && contrato.getInmueble().getIdInmueble() != 0){
+        if (contrato != null && contrato.getInmueble() != null && contrato.getInmueble().getIdInmueble() != 0) {
             predicates.add(cb.equal(root.get("inmueble").get("idInmueble"), contrato.getInmueble().getIdInmueble()));
         }
         if (contrato != null && contrato.getCliente() != null && contrato.getCliente().getIdUsuario() != 0) {
