@@ -6,8 +6,6 @@ import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.inmueble.model.*;
 import com.inmozara.crm.inmueble.model.dto.*;
-import com.inmozara.crm.seguimiento.model.Seguimiento;
-import com.inmozara.crm.seguimiento.model.dto.SeguimientoDTO;
 import com.inmozara.crm.tarea.model.Tarea;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import com.inmozara.crm.usuario.model.Usuario;
@@ -49,30 +47,6 @@ public class ObjectMapperUtils {
         modelMapper.addMappings(USUARIO_TO_USUARIODTO());
         modelMapper.addMappings(PAISDTO_TO_PAIS());
         modelMapper.addMappings(PAIS_TO_PAISDTO());
-        modelMapper.addMappings(new PropertyMap<Seguimiento, SeguimientoDTO>() {
-            @Override
-            protected void configure() {
-                map().setIdSeguimiento(source.getIdSeguimiento());
-                map().setDescripcion(source.getDescripcion());
-                map().setFechaCreacion(source.getFechaCreacion());
-                map().setFechaModificacion(source.getFechaModificacion());
-                map().setModificado(source.getModificado());
-                map().setIdTipoSeguimiento(source.getTipoSeguimiento().getIdTipoSeguimiento());
-                map().setIdInmueble(source.getInmueble().getIdInmueble());
-            }
-        });
-        modelMapper.addMappings(new PropertyMap<SeguimientoDTO, Seguimiento>() {
-            @Override
-            protected void configure() {
-                map().setIdSeguimiento(source.getIdSeguimiento());
-                map().setDescripcion(source.getDescripcion());
-                map().setFechaCreacion(source.getFechaCreacion());
-                map().setFechaModificacion(source.getFechaModificacion());
-                map().setModificado(source.getModificado());
-                map().getTipoSeguimiento().setIdTipoSeguimiento(source.getIdTipoSeguimiento());
-                map().getInmueble().setIdInmueble(source.getIdInmueble());
-            }
-        });
     }
 
     private static PropertyMap<Usuario, UsuarioDTO> USUARIO_TO_USUARIODTO() {
@@ -391,6 +365,7 @@ public class ObjectMapperUtils {
                 map().setIdInmueble(source.getInmueble().getIdInmueble());
                 map().setIdEstadoContrato(source.getEstadoContrato().getIdEstadoContrato());
                 map().setCliente(source.getCliente().getIdUsuario());
+                map().setEstadoContrato(source.getEstadoContrato().getEstado());
             }
         };
     }
