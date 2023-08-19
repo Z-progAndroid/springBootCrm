@@ -11,7 +11,7 @@ import java.util.List;
 public class ContratosExcel extends ExcelBase {
     @Override
     public String getTitulo() {
-        return "CONTRATOS";
+        return "LISTADO DE CONTRATOS";
     }
 
     @Override

@@ -67,6 +67,8 @@ public class ObjectMapperUtils {
                 map().setModificado(source.getModificado());
                 map().setIdEstadoUsuario(source.getEstadoUsuario().getIdEstadoUsuario());
                 map().setIdRol(source.getRol().getIdRol());
+                map().setEstadoUsuario(source.getEstadoUsuario().getEstadoUsuario());
+                map().setRol(source.getRol().getRol());
             }
         };
     }
