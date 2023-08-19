@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -39,15 +36,19 @@ public class Cita {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_TIPO_CITA")
     private TipoCita tipoCita;
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ESTADO_CITA")
     private EstadoCita estadoCita;
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_INMUEBLE")
     private Inmueble inmueble;
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_USUARIO")
     private Usuario cliente;

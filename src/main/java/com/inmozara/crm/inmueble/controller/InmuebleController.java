@@ -54,11 +54,6 @@ public class InmuebleController implements IInmueble {
         return inmuebleService.search(search);
     }
 
-    @PutMapping("/actualizarEstadoInmuebles")
-    public MensajeDTO actulizarEstadoInmuebles(@RequestParam int nuevoIdEstado, @RequestParam int idEstadoAntiguo) {
-        return inmuebleService.actualizarEstadoInmuebles(nuevoIdEstado, idEstadoAntiguo);
-    }
-
     @PostMapping("/uploadImage")
     public ResponseEntity<MensajeDTO> uploadImage(@RequestParam("idInmueble") String idInmueble, @RequestParam("idImagen") String idImagen, @RequestParam("file") MultipartFile file) {
         inmuebleService.guardarImagen(idInmueble, idImagen, file);

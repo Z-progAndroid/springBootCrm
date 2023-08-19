@@ -1,8 +1,11 @@
 package com.inmozara.crm.config;
 
+import com.inmozara.crm.excepcion.ContratoException;
+import com.inmozara.crm.excepcion.ExcelGenerationException;
+import com.inmozara.crm.excepcion.PdfGeneracionException;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
-import com.inmozara.crm.inmueble.exception.CargarImagenException;
-import com.inmozara.crm.inmueble.exception.GuardarImagenException;
+import com.inmozara.crm.excepcion.CargarImagenException;
+import com.inmozara.crm.excepcion.GuardarImagenException;
 import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -71,6 +74,39 @@ public class ControllerExceptionHandler {
                 .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
                 .mensaje(e.getMessage())
+                .description(request.getDescription(false))
+                .build();
+    }
+
+    @ExceptionHandler(ContratoException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public MensajeDTO contratoActivoException(ContratoException e, WebRequest request) {
+        return MensajeDTO.builder()
+                .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .mensaje(e.getMessage())
+                .description(request.getDescription(false))
+                .build();
+    }
+
+    @ExceptionHandler(PdfGeneracionException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public MensajeDTO pdfGeneracionException(PdfGeneracionException e, WebRequest request) {
+        return MensajeDTO.builder()
+                .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .mensaje("Se producido un error al generar el pdf " + e.getMessage())
+                .description(request.getDescription(false))
+                .build();
+    }
+
+    @ExceptionHandler(ExcelGenerationException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public MensajeDTO excelGenerationException(ExcelGenerationException e, WebRequest request) {
+        return MensajeDTO.builder()
+                .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .mensaje("Se producido un error al generar el exacel " + e.getMessage())
                 .description(request.getDescription(false))
                 .build();
     }

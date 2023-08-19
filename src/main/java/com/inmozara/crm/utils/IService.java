@@ -1,4 +1,4 @@
-package com.inmozara.crm.utils.comon;
+package com.inmozara.crm.utils;
 
 import com.inmozara.crm.config.MensajeDTO;
 

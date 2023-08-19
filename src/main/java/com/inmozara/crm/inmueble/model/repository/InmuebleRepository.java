@@ -26,7 +26,8 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
             "LEFT JOIN FETCH i.barrio " +
             "LEFT JOIN FETCH i.usuario")
     List<Inmueble> findAllWithRelations();
-
+    @Query("SELECT i.idInmueble, i.descripcion, i.direccion, i.codigoPostal, i.precio_venta, i.precio_alquiler, i.numHabitaciones, i.numBanos, i.metros_cuadrados, i.ano_construccion, i.fechaCreacion, i.fechaModificacion, i.modificado FROM INMUEBLES i WHERE i.idInmueble = :id")
+    Object[] findInmuebleDataById(@Param("id") int id);
     @Query("SELECT i FROM INMUEBLES i " +
             "LEFT JOIN FETCH i.tipoInmueble " +
             "LEFT JOIN FETCH i.estadoInmueble " +

@@ -1,13 +1,7 @@
 package com.inmozara.crm.cita.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +23,8 @@ public class EstadoCita {
     private Date fechaModificacion;
     @Column(name = "MODIFICADO")
     private String modificado;
-    @OneToMany(mappedBy = "estadoCita")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "estadoCita",fetch = FetchType.LAZY)
     private List<Cita> citas;
 }
 

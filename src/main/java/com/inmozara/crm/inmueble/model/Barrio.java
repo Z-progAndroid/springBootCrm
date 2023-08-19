@@ -1,13 +1,9 @@
 package com.inmozara.crm.inmueble.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,9 +23,8 @@ public class Barrio {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_MUNICIPIO")
     private Municipio municipio;
-    @OneToMany(mappedBy = "barrio", fetch = FetchType.LAZY)
-    private List<Inmueble> inmuebles;
 }

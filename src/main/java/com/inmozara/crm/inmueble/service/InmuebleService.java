@@ -2,7 +2,7 @@ package com.inmozara.crm.inmueble.service;
 
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
-import com.inmozara.crm.inmueble.exception.GuardarImagenException;
+import com.inmozara.crm.excepcion.GuardarImagenException;
 import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
@@ -79,16 +79,6 @@ public class InmuebleService implements IInmueble {
         }
         return ObjectMapperUtils.mapAll(inmuebles, InmuebleDTO.class);
     }
-    public MensajeDTO actualizarEstadoInmuebles(int nuevoIdEstado, int idEstadoAntiguo) {
-
-
-        return MensajeDTO.builder()
-                .mensaje("Se han actualizado los estados de los inmuebles correctamente")
-                .estado(HttpStatus.OK.value())
-                .fecha(UtilsDates.now())
-                .build();
-    }
-
     public MensajeDTO guardarImagen(String idInmueble, String idImagen, MultipartFile file) {
         try {
             if (file == null || file.isEmpty()) {

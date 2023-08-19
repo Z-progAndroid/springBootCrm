@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity(name = "usuarios")
 public class Usuario {
     @Id
@@ -44,19 +45,25 @@ public class Usuario {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ESTADO_USUARIO")
     private EstadoUsuario estadoUsuario;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ROL")
     private Rol rol;
-    @OneToMany(mappedBy = "cliente")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Cita> citasComoCliente;
-    @OneToMany(mappedBy = "cliente")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Contrato> contratosComoCliente;
-    @OneToMany(mappedBy = "usuario")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Inmueble> inmuebles;
-    @OneToMany(mappedBy = "usuario")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Tarea> tareas;
 
 }

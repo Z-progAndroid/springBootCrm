@@ -2,10 +2,7 @@ package com.inmozara.crm.tarea.model;
 
 import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -33,10 +30,12 @@ public class Tarea {
     private Date fechaModificacion;
     @Column(name = "MODIFICADO")
     private String modificado;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ESTADO_TAREA")
     private EstadoTarea estadoTarea;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
 }
