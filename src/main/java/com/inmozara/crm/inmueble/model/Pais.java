@@ -25,6 +25,9 @@ public class Pais {
     private String modificado;
     //Relaciones
     @ToString.Exclude
+    @OneToMany(mappedBy = "pais",fetch = FetchType.LAZY)
+    private List<Inmueble> inmuebles;
+    @ToString.Exclude
     @OneToMany(mappedBy = "pais", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Provincia> provincias;
 }

@@ -16,4 +16,9 @@ public interface BarrioRepository extends JpaRepository<Barrio, Integer> {
     @Modifying
     @Query("UPDATE BARRIOS c SET c.municipio = :nuevoEstado WHERE c.municipio = :estadoActual")
     void actualizarMunicipio(@Param("estadoActual") Municipio municipioActual, @Param("nuevoEstado") Municipio nuevoMunicipio);
+     @Transactional
+    @Modifying
+    @Query("UPDATE BARRIOS c SET c.municipio = :nuevoEstado WHERE c.municipio = :estadoActual")
+    void actualizarinbuebles(@Param("estadoActual") Municipio municipioActual, @Param("nuevoEstado") Municipio nuevoMunicipio);
+
 }

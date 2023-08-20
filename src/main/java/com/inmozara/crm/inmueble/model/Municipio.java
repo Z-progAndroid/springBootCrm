@@ -24,11 +24,14 @@ public class Municipio {
     @Column(name = "MODIFICADO")
     private String modificado;
     //Relaciones
-     @ToString.Exclude
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PROVINCIA")
     private Provincia provincia;
-     @ToString.Exclude
-    @OneToMany(mappedBy = "municipio" , fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "municipio" ,fetch = FetchType.LAZY)
+    private List<Inmueble> inmuebles;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "municipio", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Barrio> barrios;
 }

@@ -29,6 +29,9 @@ public class Provincia {
     @JoinColumn(name = "ID_PAIS")
     private Pais pais;
     @ToString.Exclude
+    @OneToMany(mappedBy = "provincia",fetch = FetchType.LAZY)
+    private List<Inmueble> inmuebles;
+    @ToString.Exclude
     @OneToMany(mappedBy = "provincia", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Municipio> municipios;
 }

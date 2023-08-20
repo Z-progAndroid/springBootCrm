@@ -71,19 +71,19 @@ public class Inmueble {
     private EstadoInmueble estadoInmueble;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_PAIS")
+    @JoinColumn(name = "ID_PAIS",nullable = true)
     private Pais pais;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_PROVINCIA")
+    @JoinColumn(name = "ID_PROVINCIA",nullable = true)
     private Provincia provincia;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_MUNICIPIO")
+    @JoinColumn(name = "ID_MUNICIPIO",nullable = true)
     private Municipio municipio;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_BARRIO")
+    @JoinColumn(name = "ID_BARRIO",nullable = true)
     private Barrio barrio;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
