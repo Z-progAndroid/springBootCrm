@@ -26,12 +26,16 @@ public class ContratosExcel extends ExcelBase {
     public void crearContenidoTablaListado(List contenidoTablaListado) {
         SimpleDateFormat dateFormat =new SimpleDateFormat(DD_MM_YYYY);
         for (ContratoDTO dto : (List<ContratoDTO>) contenidoTablaListado) {
-            getHoja().setColumnWidth(this.columna, 8618);
             creaCeldaNormal(this.columna++, dto.getTitulo(), this.row);
+            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dateFormat.format(dto.getFechaInicio()), this.row);
+            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dateFormat.format(dto.getFechaFinalizacion()), this.row);
+            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, String.valueOf(dto.getValor()), this.row);
+            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dto.getEstadoContrato(), this.row);
+            getHoja().autoSizeColumn(this.columna);
             amuentarFila(++this.fila);
         }
     }

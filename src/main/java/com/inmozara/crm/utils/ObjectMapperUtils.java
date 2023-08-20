@@ -233,6 +233,8 @@ public class ObjectMapperUtils {
                 map().setImagen2(source.getImagen2());
                 map().setImagen3(source.getImagen3());
                 map().setImagen4(source.getImagen4());
+                map().setEstadoInmueble(source.getEstadoInmueble().getEstado());
+                map().setTipoInmueble(source.getTipoInmueble().getTipo());
             }
         };
     }

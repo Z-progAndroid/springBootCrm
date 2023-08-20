@@ -1,10 +1,13 @@
 package com.inmozara.crm.inmueble.model;
 
+import com.inmozara.crm.cita.model.Cita;
+import com.inmozara.crm.contrato.model.Contrato;
 import com.inmozara.crm.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -86,4 +89,10 @@ public class Inmueble {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Contrato> contratos;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Cita> citas;
 }
