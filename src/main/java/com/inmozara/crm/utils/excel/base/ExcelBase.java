@@ -33,7 +33,7 @@ public abstract class ExcelBase {
     protected XSSFCellStyle dateStyle;
     protected int ultimaColumnaCabecera = 6;
     protected boolean isCustomWidthColumn = false;
-    protected int customWidthColumn = 9000;
+    protected int customWidth = 9000;
     protected int fila;
     public int columna;
 
@@ -99,7 +99,7 @@ public abstract class ExcelBase {
         celdaEncabezado.setCellValue(valor);
         celdaEncabezado.setCellStyle(estiloCeldaNormal());
         if (isCustomWidthColumn()) {
-            getHoja().setColumnWidth(celdaEncabezado.getColumnIndex(), getCustomWidthColumn());
+            getHoja().setColumnWidth(celdaEncabezado.getColumnIndex(), getCustomWidth());
         } else {
             getHoja().autoSizeColumn(celdaEncabezado.getColumnIndex());
         }

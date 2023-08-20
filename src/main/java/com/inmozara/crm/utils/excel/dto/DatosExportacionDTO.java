@@ -3,6 +3,7 @@ package com.inmozara.crm.utils.excel.dto;
 import com.inmozara.crm.cita.model.dto.EstadoCitaDTO;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.contrato.model.dto.EstadoContratoDTO;
+import com.inmozara.crm.contrato.model.dto.TipoContratoDTO;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
@@ -25,4 +26,5 @@ public class DatosExportacionDTO {
     List<EstadoTareaDTO>estadosTareas;
     List<EstadoUsuarioDTO>estadosUsuario;
     List<EstadoCitaDTO> estadosCitas;
+    List<TipoContratoDTO>tiposContrato;
 }
