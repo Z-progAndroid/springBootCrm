@@ -33,4 +33,5 @@ public class DatosExportacionDTO {
     List<TipoCitaDTO> tipoCita;
     List<PaisDTO> paises;
     List<ProvinciaDTO> provincias;
+    List<MunicipoDTO> municipios;
 }
