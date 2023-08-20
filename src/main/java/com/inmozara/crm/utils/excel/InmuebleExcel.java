@@ -24,13 +24,9 @@ public class InmuebleExcel extends ExcelBase {
     public void crearContenidoTablaListado(List contenidoTablaListado) {
         for (InmuebleDTO dto : (List<InmuebleDTO>) contenidoTablaListado) {
             creaCeldaNormal(this.columna++, dto.getDireccion(), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, String.valueOf(dto.getPrecio_venta()), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, String.valueOf(dto.getPrecio_alquiler()), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dto.getTipoInmueble(), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dto.getEstadoInmueble(), this.row);
             amuentarFila(++this.fila);
         }

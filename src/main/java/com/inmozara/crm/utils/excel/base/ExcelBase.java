@@ -31,7 +31,9 @@ public abstract class ExcelBase {
     protected XSSFCellStyle estiloEncabezadoTabla;
     protected XSSFCellStyle normalStyleAlignLeftConBordes;
     protected XSSFCellStyle dateStyle;
-    protected int ultimaColumnaCabecera=6;
+    protected int ultimaColumnaCabecera = 6;
+    protected boolean isCustomWidthColumn = false;
+    protected int customWidthColumn = 9000;
     protected int fila;
     public int columna;
 
@@ -96,7 +98,11 @@ public abstract class ExcelBase {
         Cell celdaEncabezado = row.createCell(numCelda);
         celdaEncabezado.setCellValue(valor);
         celdaEncabezado.setCellStyle(estiloCeldaNormal());
-        getHoja().autoSizeColumn(numCelda);
+        if (isCustomWidthColumn()) {
+            getHoja().setColumnWidth(celdaEncabezado.getColumnIndex(), getCustomWidthColumn());
+        } else {
+            getHoja().autoSizeColumn(celdaEncabezado.getColumnIndex());
+        }
     }
 
     private CellStyle estiloEncabezadoTabla() {

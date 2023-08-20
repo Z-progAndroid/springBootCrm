@@ -27,15 +27,10 @@ public class TareaExcel extends ExcelBase {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DD_MM_YYYY);
         for (TareaDTO dto : (List<TareaDTO>) contenidoTablaListado) {
             creaCeldaNormal(this.columna++, dto.getTitulo(), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dto.getDescripcion(), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dateFormat.format(dto.getFechaInicio()), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dateFormat.format(dto.getFechaFin()), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dto.getEstadoTarea(), this.row);
-            getHoja().autoSizeColumn(this.columna);
             creaCeldaNormal(this.columna++, dto.getNombre(), this.row);
             amuentarFila(++this.fila);
         }
