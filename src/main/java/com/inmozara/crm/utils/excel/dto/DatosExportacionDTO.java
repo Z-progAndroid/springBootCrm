@@ -4,6 +4,7 @@ import com.inmozara.crm.cita.model.dto.EstadoCitaDTO;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.contrato.model.dto.EstadoContratoDTO;
 import com.inmozara.crm.contrato.model.dto.TipoContratoDTO;
+import com.inmozara.crm.contrato.model.dto.TipoPagoDTO;
 import com.inmozara.crm.inmueble.model.dto.EstadoInmuebleDTO;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
 import com.inmozara.crm.inmueble.model.dto.TipoInmuebleDTO;
@@ -29,4 +30,5 @@ public class DatosExportacionDTO {
     List<EstadoCitaDTO> estadosCitas;
     List<TipoContratoDTO>tiposContrato;
     List<TipoInmuebleDTO> tiposInmueble;
+    List<TipoPagoDTO>tiposPago;
 }
