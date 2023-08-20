@@ -2,6 +2,7 @@ package com.inmozara.crm.utils.excel.dto;
 
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.inmueble.model.dto.InmuebleDTO;
+import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import com.inmozara.crm.usuario.model.dto.UsuarioDTO;
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class DatosExportacionDTO {
     List<ContratoDTO> contratos;
     List<UsuarioDTO> usuarios;
     List<InmuebleDTO> inmuebles;
+    List<TareaDTO> tareas;
 }

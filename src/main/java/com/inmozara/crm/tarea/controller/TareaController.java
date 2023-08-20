@@ -4,10 +4,17 @@ import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
 import com.inmozara.crm.tarea.service.TareaService;
 import com.inmozara.crm.tarea.service.interfaces.ITarea;
+import com.inmozara.crm.utils.excel.TareaExcel;
+import com.inmozara.crm.utils.excel.dto.DatosExportacionDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 @RestController
@@ -50,5 +57,20 @@ public class TareaController implements ITarea {
     @PostMapping("/search")
     public List<TareaDTO> findAllByParams(@RequestBody TareaDTO tareaDTO) {
         return tareaService.findAllByParams(tareaDTO);
+    }
+    @PostMapping(value = "/download-excel")
+    public ResponseEntity<ByteArrayResource> downloadExcel(@RequestBody DatosExportacionDTO datosExportacion) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=archivo.xlsx");
+        ByteArrayOutputStream outputStream = TareaExcel.builder()
+                .build().generarExcel(datosExportacion.getCabeceras(), datosExportacion.getTareas());
+        ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(outputStream.size())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }
