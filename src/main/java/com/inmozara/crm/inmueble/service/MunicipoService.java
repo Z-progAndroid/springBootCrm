@@ -85,7 +85,4 @@ public class MunicipoService implements IMunicipo {
         }
         return ObjectMapperUtils.mapAll(municipos, MunicipoDTO.class);
     }
-
-    public static class BarrioService {
-    }
 }

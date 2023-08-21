@@ -2,6 +2,7 @@ package com.inmozara.crm.utils.excel.base;
 
 import com.inmozara.crm.excepcion.ExcelGenerationException;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
+@Setter
 public abstract class ExcelBase {
     protected static int FILA_INICIO_DE_LA_TABLA = 7;
     private static final int COLUMNA_INICIO_DEL_TITULO = 2;
@@ -29,6 +31,9 @@ public abstract class ExcelBase {
     protected XSSFCellStyle estiloEncabezadoTabla;
     protected XSSFCellStyle normalStyleAlignLeftConBordes;
     protected XSSFCellStyle dateStyle;
+    protected int ultimaColumnaCabecera = 6;
+    protected boolean isCustomWidthColumn = false;
+    protected int customWidth = 9000;
     protected int fila;
     public int columna;
 
@@ -75,7 +80,7 @@ public abstract class ExcelBase {
         Cell titulo = row2.createCell(2);
         titulo.setCellValue(getTitulo());
         titulo.setCellStyle(estiloEncabezadoTabla());
-        CellRangeAddress titlemerge = new CellRangeAddress(6, 6, 2, 6);
+        CellRangeAddress titlemerge = new CellRangeAddress(6, 6, 2, ultimaColumnaCabecera);
         getHoja().addMergedRegion(titlemerge);
         for (int col = 8; col <= 11; col++) {
             getHoja().autoSizeColumn(col);
@@ -93,7 +98,11 @@ public abstract class ExcelBase {
         Cell celdaEncabezado = row.createCell(numCelda);
         celdaEncabezado.setCellValue(valor);
         celdaEncabezado.setCellStyle(estiloCeldaNormal());
-        getHoja().autoSizeColumn(numCelda);
+        if (isCustomWidthColumn()) {
+            getHoja().setColumnWidth(celdaEncabezado.getColumnIndex(), getCustomWidth());
+        } else {
+            getHoja().autoSizeColumn(celdaEncabezado.getColumnIndex());
+        }
     }
 
     private CellStyle estiloEncabezadoTabla() {

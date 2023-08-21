@@ -67,6 +67,8 @@ public class ObjectMapperUtils {
                 map().setModificado(source.getModificado());
                 map().setIdEstadoUsuario(source.getEstadoUsuario().getIdEstadoUsuario());
                 map().setIdRol(source.getRol().getIdRol());
+                map().setEstadoUsuario(source.getEstadoUsuario().getEstadoUsuario());
+                map().setRol(source.getRol().getRol());
             }
         };
     }
@@ -231,6 +233,8 @@ public class ObjectMapperUtils {
                 map().setImagen2(source.getImagen2());
                 map().setImagen3(source.getImagen3());
                 map().setImagen4(source.getImagen4());
+                map().setEstadoInmueble(source.getEstadoInmueble().getEstado());
+                map().setTipoInmueble(source.getTipoInmueble().getTipo());
             }
         };
     }

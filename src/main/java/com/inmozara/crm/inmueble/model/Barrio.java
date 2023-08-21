@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,4 +28,7 @@ public class Barrio {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_MUNICIPIO")
     private Municipio municipio;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "barrio", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    private List<Inmueble> inmuebles;
 }

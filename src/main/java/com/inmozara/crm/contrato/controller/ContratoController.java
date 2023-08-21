@@ -63,7 +63,7 @@ public class ContratoController implements IContrato {
     public ResponseEntity<ByteArrayResource> downloadPdf(@RequestParam Long idContrato) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=archivo.pdf");
-        ByteArrayOutputStream outputStream = contratoService.generarContratoPdf(null);
+        ByteArrayOutputStream outputStream = contratoService.generarContratoPdf(idContrato);
         ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
         return ResponseEntity.ok()
                 .headers(headers)
