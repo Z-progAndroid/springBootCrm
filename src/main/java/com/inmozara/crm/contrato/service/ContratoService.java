@@ -2,14 +2,19 @@ package com.inmozara.crm.contrato.service;
 
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.contrato.model.Contrato;
+import com.inmozara.crm.contrato.model.TipoContrato;
 import com.inmozara.crm.contrato.model.dto.ContratoDTO;
 import com.inmozara.crm.contrato.model.repository.ContratoRepository;
+import com.inmozara.crm.contrato.model.repository.EstadoContratoRepository;
 import com.inmozara.crm.contrato.model.repository.TipoContratoRepository;
 import com.inmozara.crm.contrato.model.search.ContratoSearch;
 import com.inmozara.crm.contrato.service.interfaces.IContrato;
 import com.inmozara.crm.excepcion.ContratoException;
 import com.inmozara.crm.excepcion.PdfGeneracionException;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
+import com.inmozara.crm.inmueble.model.EstadoInmueble;
+import com.inmozara.crm.inmueble.model.Inmueble;
+import com.inmozara.crm.inmueble.model.repository.EstadoInmuebleRepository;
 import com.inmozara.crm.inmueble.model.repository.InmuebleRepository;
 import com.inmozara.crm.usuario.model.repository.UsuarioRepository;
 import com.inmozara.crm.utils.ObjectMapperUtils;
@@ -30,19 +35,46 @@ public class ContratoService implements IContrato {
     @Autowired
     private InmuebleRepository inmuebleRepository;
     @Autowired
+    private EstadoInmuebleRepository estadoInmuebleRepository;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
     private TipoContratoRepository tipoContratoRepository;
+    @Autowired
+    private EstadoContratoRepository estadoContratoRepository;
 
 
     @Override
     public ContratoDTO save(ContratoDTO contratoDTO) {
-        if (this.checkContratosActivos(contratoDTO.getIdInmueble())&&!esContratoActivo(contratoDTO.getIdContrato())) {
+        if (this.checkContratosActivos(contratoDTO.getIdInmueble()) && !esContratoActivo(contratoDTO.getIdContrato())) {
             throw new ContratoException("El inmueble tiene un contrato activo, reviselo antes de asignar uno nuevo");
         }
         Contrato contrato = ObjectMapperUtils.map(contratoDTO, Contrato.class);
         contrato = contratoRepository.save(contrato);
+
+        actulizarEstadoInumeble(Optional.ofNullable(contrato).map(Contrato::getInmueble).map(Inmueble::getIdInmueble)
+                , Optional.ofNullable(contrato).map(Contrato::getTipoContrato).map(TipoContrato::getIdTipoContrato));
         return ObjectMapperUtils.map(contrato, ContratoDTO.class);
+    }
+
+    private void actulizarEstadoInumeble(Optional<Integer> idInmueble, Optional<Long> idTipoContrato) {
+        List<EstadoInmueble> estadoInmuebles = estadoInmuebleRepository.findAll();
+        Optional<EstadoInmueble> estadoAquilado = estadoInmuebles
+                .stream()
+                .filter(estado -> estado.getEstado().contains("ALQUILADO"))
+                .findFirst();
+        Optional<EstadoInmueble> estadoVendido = estadoInmuebles
+                .stream()
+                .filter(estado -> estado.getEstado().contains("VENDIDO"))
+                .findFirst();
+        Optional<TipoContrato> tipoContrato = tipoContratoRepository.findById(idTipoContrato.get());
+        if (tipoContrato.isPresent() && idInmueble.isPresent() && tipoContrato.get().getTipo().contains("ARRENDAMIENTO") && estadoAquilado.isPresent()) {
+            inmuebleRepository.actualizarInmueblesEstado(idInmueble.get(), estadoAquilado.get());
+        }
+        if (tipoContrato.isPresent() && idInmueble.isPresent() && !tipoContrato.get().getTipo().contains("ARRENDAMIENTO") && estadoVendido.isPresent()) {
+            inmuebleRepository.actualizarInmueblesEstado(idInmueble.get(), estadoVendido.get());
+        }
     }
 
     @Override
@@ -95,6 +127,7 @@ public class ContratoService implements IContrato {
         int contratos = contratoRepository.checkContratosExistentes(idInmueble);
         return contratos > 0;
     }
+
     private boolean esContratoActivo(Long idContrato) {
         int contratos = contratoRepository.esContratoActivo(idContrato);
         return contratos > 0;
@@ -133,6 +166,6 @@ public class ContratoService implements IContrato {
                     .build()
                     .generarPdf();
         }
-        throw new PdfGeneracionException("No se ha encontrado el pdf por el tipo de contrato "+contrato.getTipoContrato().getTipo());
+        throw new PdfGeneracionException("No se ha encontrado el pdf por el tipo de contrato " + contrato.getTipoContrato().getTipo());
     }
 }

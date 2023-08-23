@@ -1,11 +1,6 @@
 package com.inmozara.crm.config;
 
-import com.inmozara.crm.excepcion.ContratoException;
-import com.inmozara.crm.excepcion.ExcelGenerationException;
-import com.inmozara.crm.excepcion.PdfGeneracionException;
-import com.inmozara.crm.excepcion.RecursoNoEncontrado;
-import com.inmozara.crm.excepcion.CargarImagenException;
-import com.inmozara.crm.excepcion.GuardarImagenException;
+import com.inmozara.crm.excepcion.*;
 import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -107,6 +102,17 @@ public class ControllerExceptionHandler {
                 .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
                 .mensaje("Se producido un error al generar el exacel " + e.getMessage())
+                .description(request.getDescription(false))
+                .build();
+    }
+
+    @ExceptionHandler(GenerarGraficoException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public MensajeDTO generarGraficoException(GenerarGraficoException e, WebRequest request) {
+        return MensajeDTO.builder()
+                .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                .mensaje("Se producido un error al generar el grafico"+e.getMessage())
                 .description(request.getDescription(false))
                 .build();
     }
