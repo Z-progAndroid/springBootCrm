@@ -12,6 +12,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
+
 @Repository
 public interface ContratoRepository extends JpaRepository<Contrato, Long>, JpaSpecificationExecutor<Contrato> {
     @Transactional
@@ -28,8 +31,16 @@ public interface ContratoRepository extends JpaRepository<Contrato, Long>, JpaSp
     @Modifying
     @Query(value = "UPDATE CONTRATOS c SET c.tipoPago = :nuevoEstado WHERE c.tipoPago= :estadoActual")
     void actualizarContratosPorTipoPago(@Param("estadoActual") TipoPago estadoActual, @Param("nuevoEstado") TipoPago nuevoEstado);
+
     @Query("SELECT COUNT(*) FROM CONTRATOS c WHERE c.inmueble.idInmueble = :idInmueble AND c.estadoContrato.idEstadoContrato = 2")
     int checkContratosExistentes(@Param("idInmueble") int idInmueble);
+
     @Query("SELECT COUNT(*) FROM CONTRATOS c WHERE c.idContrato = :idContrato AND c.estadoContrato.idEstadoContrato = 2")
     int esContratoActivo(@Param("idContrato") Long idContrato);
+
+    @Query("SELECT c FROM CONTRATOS c WHERE MONTH(c.fechaCreacion) = MONTH(:fechaActual) AND YEAR(c.fechaCreacion) = YEAR(:fechaActual)")
+    List<Contrato> findContratosCreadosEsteMes(@Param("fechaActual") Date fechaActual);
+
+    @Query("SELECT c FROM CONTRATOS c WHERE MONTH(c.fechaCreacion) = MONTH(:fechaActual) AND YEAR(c.fechaCreacion) = YEAR(:fechaActual) AND c.inmueble.usuario.idUsuario=:idUsuario ")
+    List<Contrato> findContratosCreadosEsteMesPorUsuario(@Param("fechaActual") Date fechaActual, @Param("idUsuario") int idUsuario);
 }

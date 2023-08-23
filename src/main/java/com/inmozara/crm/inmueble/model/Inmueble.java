@@ -19,7 +19,7 @@ public class Inmueble {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_INMUEBLE")
     private int idInmueble;
-    @Column(name = "DESCRIPCION", length = 200)
+    @Column(name = "DESCRIPCION", length = 2000)
     private String descripcion;
     @Column(name = "DIRECCION", length = 200)
     private String direccion;
@@ -71,28 +71,28 @@ public class Inmueble {
     private EstadoInmueble estadoInmueble;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_PAIS",nullable = true)
+    @JoinColumn(name = "ID_PAIS", nullable = true)
     private Pais pais;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_PROVINCIA",nullable = true)
+    @JoinColumn(name = "ID_PROVINCIA", nullable = true)
     private Provincia provincia;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_MUNICIPIO",nullable = true)
+    @JoinColumn(name = "ID_MUNICIPIO", nullable = true)
     private Municipio municipio;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_BARRIO",nullable = true)
+    @JoinColumn(name = "ID_BARRIO", nullable = true)
     private Barrio barrio;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
     @ToString.Exclude
-    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "inmueble", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Contrato> contratos;
     @ToString.Exclude
-    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "inmueble", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Cita> citas;
 }

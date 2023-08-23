@@ -24,17 +24,6 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
             "LEFT JOIN FETCH i.provincia " +
             "LEFT JOIN FETCH i.municipio " +
             "LEFT JOIN FETCH i.barrio " +
-            "LEFT JOIN FETCH i.usuario")
-    List<Inmueble> findAllWithRelations();
-    @Query("SELECT i.idInmueble, i.descripcion, i.direccion, i.codigoPostal, i.precio_venta, i.precio_alquiler, i.numHabitaciones, i.numBanos, i.metros_cuadrados, i.ano_construccion, i.fechaCreacion, i.fechaModificacion, i.modificado FROM INMUEBLES i WHERE i.idInmueble = :id")
-    Object[] findInmuebleDataById(@Param("id") int id);
-    @Query("SELECT i FROM INMUEBLES i " +
-            "LEFT JOIN FETCH i.tipoInmueble " +
-            "LEFT JOIN FETCH i.estadoInmueble " +
-            "LEFT JOIN FETCH i.pais " +
-            "LEFT JOIN FETCH i.provincia " +
-            "LEFT JOIN FETCH i.municipio " +
-            "LEFT JOIN FETCH i.barrio " +
             "LEFT JOIN FETCH i.usuario" +
             " WHERE i.idInmueble = ?1")
     Optional<Inmueble> findByIdInmueble(Long idInmueble);
@@ -42,6 +31,10 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
     @Modifying
     @Query("UPDATE INMUEBLES i SET i.estadoInmueble = :nuevoEstado WHERE i.estadoInmueble = :estadoActual")
     void actualizarInmueblesPorEstado(@Param("estadoActual") EstadoInmueble estadoActual, @Param("nuevoEstado") EstadoInmueble nuevoEstado);
+    @Transactional
+    @Modifying
+    @Query("UPDATE INMUEBLES i SET i.estadoInmueble = :nuevoEstado WHERE i.idInmueble = :idInmueble")
+    void actualizarInmueblesEstado(@Param("idInmueble") int idInmueble, @Param("nuevoEstado") EstadoInmueble nuevoEstado);
 
     @Transactional
     @Modifying
@@ -59,7 +52,7 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
             "i.imagen4 = CASE WHEN :fieldName = 'imagen4' THEN :bytes ELSE i.imagen4 END " +
             "WHERE i.idInmueble = :idInmueble")
     void actualizarImagen(@Param("idInmueble") Long idInmueble, @Param("fieldName") String fieldName, @Param("bytes") byte[] bytes);
-
-
+    @Query("SELECT i FROM INMUEBLES i WHERE i.usuario.idUsuario = :idUsuario")
+    List<Inmueble> findInmueblesByUsuarioId(@Param("idUsuario") Long idUsuario);
 
 }

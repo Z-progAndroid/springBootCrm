@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,7 +30,14 @@ public interface CitaRepository extends JpaRepository<Cita, Integer>, JpaSpecifi
 
     @Query("SELECT c FROM citas c WHERE c.inmueble.idInmueble = :idInmueble AND c.fechaInicio BETWEEN :startDate AND :endDate")
     List<Cita> countConflictingCitas(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("idInmueble") int idInmueble);
+
     @Query("SELECT c FROM citas c WHERE c.estadoCita.estadoCita IN ('PENDIENTE', 'ACTIVA')")
     List<Cita> findCitasPendientesYActivas();
+
+    @Query("SELECT c FROM citas c WHERE MONTH(c.fechaCreacion) = MONTH(:fechaActual) AND YEAR(c.fechaCreacion) = YEAR(:fechaActual)")
+    List<Cita> findCitasCreadasEsteMes(@Param("fechaActual") Date fechaActual);
+
+    @Query("SELECT c FROM citas c WHERE MONTH(c.fechaCreacion) = MONTH(:fechaActual) AND YEAR(c.fechaCreacion) = YEAR(:fechaActual) AND c.inmueble.usuario.idUsuario=:idUsuario")
+    List<Cita> findCitasCreadasEsteMesPorUsuario(@Param("fechaActual") Date fechaActual, @Param("idUsuario") int idUsuario);
 
 }
