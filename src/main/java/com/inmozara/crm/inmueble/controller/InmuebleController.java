@@ -55,9 +55,19 @@ public class InmuebleController implements IInmueble {
         return inmuebleService.findAll();
     }
 
+    @GetMapping("/findAllRelaciones")
+    public List<InmuebleDTO> findAllSinRelaciones() {
+        return inmuebleService.findAllSinRelaciones();
+    }
+
     @PostMapping("/search")
     public List<InmuebleDTO> search(@RequestBody InmuebleDTO search) {
         return inmuebleService.search(search);
+    }
+
+    @PostMapping("/searchSinRelaciones")
+    public List<InmuebleDTO> searchSinRelaciones(@RequestBody InmuebleDTO search) {
+        return inmuebleService.searchSinRelaciones(search);
     }
 
     @PostMapping("/uploadImage")
@@ -68,6 +78,7 @@ public class InmuebleController implements IInmueble {
                 .estado(HttpStatus.OK.value())
                 .build());
     }
+
     @DeleteMapping("/deleteImage")
     public ResponseEntity<MensajeDTO> deleteImage(@RequestParam String idInmueble, @RequestParam String idImagen) {
         inmuebleService.borrarImagen(idInmueble, idImagen);
@@ -76,6 +87,19 @@ public class InmuebleController implements IInmueble {
                 .estado(HttpStatus.OK.value())
                 .build());
     }
+    @GetMapping(value = "/download-pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<ByteArrayResource> downloadPdf(@RequestParam Long idInmueble) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=archivo.pdf");
+        ByteArrayOutputStream outputStream = inmuebleService.generaPdfDetalle(idInmueble);
+        ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(outputStream.size())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
+    }
+
     @PostMapping(value = "/download-excel")
     public ResponseEntity<ByteArrayResource> downloadExcel(@RequestBody DatosExportacionDTO datosExportacion) {
         HttpHeaders headers = new HttpHeaders();
