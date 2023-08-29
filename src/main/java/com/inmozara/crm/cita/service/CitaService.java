@@ -9,13 +9,16 @@ import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
+import com.inmozara.crm.utils.pdf.CitaDetallePdf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,7 +85,7 @@ public class CitaService implements ICita {
                 idInmueble);
         String horarios = conflictingCitas
                 .stream()
-                .map(cita ->cita.getFechaInicio().format(UtilsDates.DATE_TIME_FORMATTER_DD_MM_YYYY_HH_MM_SS) + " - " + cita.getFechaFin().format(UtilsDates.DATE_TIME_FORMATTER_DD_MM_YYYY_HH_MM_SS))
+                .map(cita -> cita.getFechaInicio().format(UtilsDates.DATE_TIME_FORMATTER_DD_MM_YYYY_HH_MM_SS) + " - " + cita.getFechaFin().format(UtilsDates.DATE_TIME_FORMATTER_DD_MM_YYYY_HH_MM_SS))
                 .collect(Collectors.joining(" , "));
         String mensaje = conflictingCitas.size() > 1
                 ? "El inmueble no esta disponible en el horario seleccionado ya hay " + conflictingCitas.size() + "citas con horarios \n" + horarios
@@ -101,5 +104,22 @@ public class CitaService implements ICita {
         if (citas.isEmpty())
             throw new RecursoNoEncontrado("No existen citas");
         return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
+    }
+
+    public List<CitaDTO> obtenerCitasUsuarioNoEliminadas(Integer userId) {
+        List<Cita> citas = citaRepository.findCitasByUserIdAndEstadoIn(userId);
+        if (citas.isEmpty())
+            throw new RecursoNoEncontrado("No existen citas");
+        return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
+    }
+
+    public ByteArrayOutputStream generarCitaPdf(int idCita) {
+        Cita cita = citaRepository.findById(idCita)
+                .orElseThrow(() -> new RecursoNoEncontrado("No se encontro la cita para generar el pdf"));
+        return CitaDetallePdf
+                .builder()
+                .cita(Optional.ofNullable(cita))
+                .build()
+                .generarPdf();
     }
 }

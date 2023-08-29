@@ -6,8 +6,13 @@ import com.inmozara.crm.cita.service.interfaces.ICita;
 import com.inmozara.crm.config.MensajeDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 @RestController
@@ -61,6 +66,22 @@ public class CitaController implements ICita {
     @GetMapping("/pendientesYActivas")
     public List<CitaDTO> findAllPendienteYActivas() {
         return citaService.findAllPendienteYActivas();
+    }
+    @GetMapping("/citasUsuarioNoEliminadas")
+    public List<CitaDTO> obtenerCitasUsuarioNoEliminadas(Integer idUsuario) {
+        return citaService.obtenerCitasUsuarioNoEliminadas(idUsuario);
+    }
+    @GetMapping(value = "/download-pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<ByteArrayResource> downloadPdf(@RequestParam int idCita) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=archivo.pdf");
+        ByteArrayOutputStream outputStream = citaService.generarCitaPdf(idCita);
+        ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(outputStream.size())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
     }
 }
 

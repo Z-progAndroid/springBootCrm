@@ -39,5 +39,7 @@ public interface CitaRepository extends JpaRepository<Cita, Integer>, JpaSpecifi
 
     @Query("SELECT c FROM citas c WHERE MONTH(c.fechaCreacion) = MONTH(:fechaActual) AND YEAR(c.fechaCreacion) = YEAR(:fechaActual) AND c.inmueble.usuario.idUsuario=:idUsuario")
     List<Cita> findCitasCreadasEsteMesPorUsuario(@Param("fechaActual") Date fechaActual, @Param("idUsuario") int idUsuario);
+    @Query("SELECT c FROM citas c WHERE c.cliente.idUsuario = :userId AND c.estadoCita.idEstadoCita IN (1, 2, 3, 4, 5, 7)")
+    List<Cita> findCitasByUserIdAndEstadoIn(Integer userId);
 
 }

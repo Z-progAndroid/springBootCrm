@@ -35,4 +35,6 @@ public class CitaDTO {
     private int idEstadoCita;
     private int idInmueble;
     private int idUsuarioCliente;
+    private String tipoCita;
+    private String estadoCita;
 }

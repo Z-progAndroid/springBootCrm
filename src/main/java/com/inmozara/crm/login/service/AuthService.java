@@ -35,10 +35,9 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-        String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .idUsuario(Integer.parseInt(user.getAuthorities().stream().skip(2).findFirst().get().getAuthority()))
-                .token(token)
+                .token(jwtService.getToken(user))
                 .username(user.getUsername())
                 .rol(user.getAuthorities().stream().findFirst().get().getAuthority())
                 .estadoUsuario(user.getAuthorities().stream().skip(1).findFirst().get().getAuthority())
