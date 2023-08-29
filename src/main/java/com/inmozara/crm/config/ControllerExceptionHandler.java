@@ -3,6 +3,7 @@ package com.inmozara.crm.config;
 import com.inmozara.crm.excepcion.*;
 import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -112,8 +113,17 @@ public class ControllerExceptionHandler {
         return MensajeDTO.builder()
                 .estado(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .fecha(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
-                .mensaje("Se producido un error al generar el grafico"+e.getMessage())
+                .mensaje("Se producido un error al generar el grafico" + e.getMessage())
                 .description(request.getDescription(false))
                 .build();
     }
+
+    @ExceptionHandler(TokenExpirationException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> tokenExpirationException(TokenExpirationException e, WebRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("El token ha expirado");
+    }
+
 }

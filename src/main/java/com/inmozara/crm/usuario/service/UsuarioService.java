@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService implements IUsuario {
@@ -100,11 +101,16 @@ public class UsuarioService implements IUsuario {
         }
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }
+
     public List<UsuarioDTO> findAllUsuarios() {
         List<Usuario> usuarios = usuarioRepository.obtenerUsuarios();
         if (usuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron usuarios con rol de usuarios");
         }
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
+    }
+
+    public Optional<Usuario> findByUsername(String username) {
+        return usuarioRepository.findByUsername(username);
     }
 }
