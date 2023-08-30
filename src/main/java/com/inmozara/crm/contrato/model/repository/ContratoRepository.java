@@ -43,4 +43,6 @@ public interface ContratoRepository extends JpaRepository<Contrato, Long>, JpaSp
 
     @Query("SELECT c FROM CONTRATOS c WHERE MONTH(c.fechaCreacion) = MONTH(:fechaActual) AND YEAR(c.fechaCreacion) = YEAR(:fechaActual) AND c.inmueble.usuario.idUsuario=:idUsuario ")
     List<Contrato> findContratosCreadosEsteMesPorUsuario(@Param("fechaActual") Date fechaActual, @Param("idUsuario") int idUsuario);
+    @Query("SELECT c FROM CONTRATOS c WHERE  c.inmueble.usuario.idUsuario=:idUsuario AND estadoContrato.idEstadoContrato IN(1,2,3,4,5,6)")
+    List<Contrato> obtenerContratosPorUsuario(@Param("idUsuario") int idUsuario);
 }

@@ -112,6 +112,12 @@ public class CitaService implements ICita {
             throw new RecursoNoEncontrado("No existen citas");
         return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
     }
+    public List<CitaDTO> findCitasCreadasParaElAgente(Integer userId) {
+        List<Cita> citas = citaRepository.findCitasCreadasParaElAgente(userId);
+        if (citas.isEmpty())
+            throw new RecursoNoEncontrado("No existen citas");
+        return ObjectMapperUtils.mapAll(citas, CitaDTO.class);
+    }
 
     public ByteArrayOutputStream generarCitaPdf(int idCita) {
         Cita cita = citaRepository.findById(idCita)

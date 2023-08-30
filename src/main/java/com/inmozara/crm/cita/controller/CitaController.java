@@ -71,6 +71,10 @@ public class CitaController implements ICita {
     public List<CitaDTO> obtenerCitasUsuarioNoEliminadas(Integer idUsuario) {
         return citaService.obtenerCitasUsuarioNoEliminadas(idUsuario);
     }
+    @GetMapping("/citasCreadasParaElAgente")
+    public List<CitaDTO> citasCreadasParaElAgente(Integer idUsuario) {
+        return citaService.findCitasCreadasParaElAgente(idUsuario);
+    }
     @GetMapping(value = "/download-pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<ByteArrayResource> downloadPdf(@RequestParam int idCita) {
         HttpHeaders headers = new HttpHeaders();

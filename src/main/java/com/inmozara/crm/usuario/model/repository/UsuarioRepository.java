@@ -24,5 +24,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
     @Query("SELECT u FROM usuarios u  WHERE u.nombre = 'DEFECTO_ADMIN' OR u.apellido = 'DEFECTO_ADMIN' OR u.email = 'DEFECTO_ADMIN@DEFECTO_ADMIN.COM' ")
     Optional<Usuario> obtenerUsuarioPorDefecto();
     Optional<Usuario> findByUsername(String username);
-
 }
