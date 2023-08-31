@@ -18,7 +18,6 @@ public class EstadoContratoDTO {
     private Long idestadoContrato;
     @NotEmpty(message = "El estado del contrato no puede ser vacio")
     private String estado;
-    @NotEmpty(message = "La fecha de creacion del estado del contrato no puede ser vacia")
     private Date fechaCreacion;
     private Date fechaModificacion;
     private String modificado;

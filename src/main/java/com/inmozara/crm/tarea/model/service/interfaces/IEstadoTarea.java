@@ -1,4 +1,4 @@
-package com.inmozara.crm.tarea.service.interfaces;
+package com.inmozara.crm.tarea.model.service.interfaces;
 
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.utils.IService;

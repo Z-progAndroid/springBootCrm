@@ -2,8 +2,8 @@ package com.inmozara.crm.tarea.controller;
 
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.tarea.model.dto.TareaDTO;
-import com.inmozara.crm.tarea.service.TareaService;
-import com.inmozara.crm.tarea.service.interfaces.ITarea;
+import com.inmozara.crm.tarea.model.service.TareaService;
+import com.inmozara.crm.tarea.model.service.interfaces.ITarea;
 import com.inmozara.crm.utils.excel.TareaExcel;
 import com.inmozara.crm.utils.excel.dto.DatosExportacionDTO;
 import jakarta.validation.Valid;
