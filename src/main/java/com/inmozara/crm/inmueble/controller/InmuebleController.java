@@ -59,6 +59,10 @@ public class InmuebleController implements IInmueble {
     public List<InmuebleDTO> findAllSinRelaciones() {
         return inmuebleService.findAllSinRelaciones();
     }
+    @GetMapping("/findAllDisponibles")
+    public List<InmuebleDTO> findAllDisponibles() {
+        return inmuebleService.findAllDisponibles();
+    }
 
     @PostMapping("/search")
     public List<InmuebleDTO> search(@RequestBody InmuebleDTO search) {

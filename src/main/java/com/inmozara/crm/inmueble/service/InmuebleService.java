@@ -83,6 +83,15 @@ public class InmuebleService implements IInmueble {
                 .map(this::inmuebleToInmuebleDTO)
                 .collect(Collectors.toList());
     }
+    public List<InmuebleDTO> findAllDisponibles() {
+        List<Inmueble> inmuebles = inmuebleRepository.findAllDisponibles();
+        if (inmuebles.isEmpty())
+            throw new RecursoNoEncontrado("No hay inmuebles en la base de datos");
+        return inmuebles
+                .stream()
+                .map(this::inmuebleToInmuebleDTO)
+                .collect(Collectors.toList());
+    }
 
     public List<InmuebleDTO> search(InmuebleDTO search) {
         List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder()

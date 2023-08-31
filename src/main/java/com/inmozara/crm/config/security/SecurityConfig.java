@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 "/api_v1/crm/inmueble/search",
                                 "/api_v1/crm/inmueble/searchSinRelaciones",
                                 "/api_v1/crm/inmueble/download-pdf",
+                                "/api_v1/crm/inmueble/findAllDisponibles",
                                 "/api_v1/crm/inmueble",
                                 "/api_v1/crm/estado-contrato/all",
                                 "/api_v1/crm/tipo-contrato/all",

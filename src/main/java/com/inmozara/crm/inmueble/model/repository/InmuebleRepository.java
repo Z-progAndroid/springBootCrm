@@ -55,5 +55,7 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
 
     @Query("SELECT i FROM INMUEBLES i WHERE i.usuario.idUsuario = :idUsuario AND estadoInmueble.idEstadoInmueble IN(1,2 ,3 ,4 ,5)")
     List<Inmueble> findInmueblesByUsuarioId(@Param("idUsuario") Long idUsuario);
+    @Query("SELECT i FROM INMUEBLES i WHERE estadoInmueble.idEstadoInmueble IN(1)")
+    List<Inmueble> findAllDisponibles();
 
 }
