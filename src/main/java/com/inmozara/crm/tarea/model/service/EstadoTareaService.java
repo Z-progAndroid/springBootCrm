@@ -1,4 +1,4 @@
-package com.inmozara.crm.tarea.service;
+package com.inmozara.crm.tarea.model.service;
 
 import com.inmozara.crm.config.MensajeDTO;
 import com.inmozara.crm.excepcion.RecursoNoEncontrado;
@@ -6,7 +6,7 @@ import com.inmozara.crm.tarea.model.EstadoTarea;
 import com.inmozara.crm.tarea.model.dto.EstadoTareaDTO;
 import com.inmozara.crm.tarea.model.repository.EstadoTareaRepository;
 import com.inmozara.crm.tarea.model.repository.TareaRepository;
-import com.inmozara.crm.tarea.service.interfaces.IEstadoTarea;
+import com.inmozara.crm.tarea.model.service.interfaces.IEstadoTarea;
 import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;

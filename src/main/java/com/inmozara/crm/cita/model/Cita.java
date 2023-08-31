@@ -37,11 +37,11 @@ public class Cita {
     private String modificado;
     //Relaciones
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_TIPO_CITA")
     private TipoCita tipoCita;
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ESTADO_CITA")
     private EstadoCita estadoCita;
     @ToString.Exclude

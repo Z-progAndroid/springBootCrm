@@ -62,7 +62,7 @@ public class GraficosService {
                         .collect(Collectors.groupingBy(contrato -> contrato.getEstadoContrato().getEstado(), Collectors.counting())))
                 .ifPresent(graficoDTO::setContratos);
 
-        Optional.ofNullable(inmuebleRepository.findAll()
+        Optional.ofNullable(inmuebleRepository.findInmueblesByUsuarioId((long) idUsuario)
                         .stream()
                         .collect(Collectors.groupingBy(inmueble -> inmueble.getEstadoInmueble().getEstado(), Collectors.counting())))
                 .ifPresent(graficoDTO::setInmuebles);

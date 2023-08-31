@@ -59,6 +59,10 @@ public class InmuebleController implements IInmueble {
     public List<InmuebleDTO> findAllSinRelaciones() {
         return inmuebleService.findAllSinRelaciones();
     }
+    @GetMapping("/findAllDisponibles")
+    public List<InmuebleDTO> findAllDisponibles() {
+        return inmuebleService.findAllDisponibles();
+    }
 
     @PostMapping("/search")
     public List<InmuebleDTO> search(@RequestBody InmuebleDTO search) {
@@ -87,6 +91,7 @@ public class InmuebleController implements IInmueble {
                 .estado(HttpStatus.OK.value())
                 .build());
     }
+
     @GetMapping(value = "/download-pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<ByteArrayResource> downloadPdf(@RequestParam Long idInmueble) {
         HttpHeaders headers = new HttpHeaders();
@@ -114,5 +119,10 @@ public class InmuebleController implements IInmueble {
                 .contentLength(outputStream.size())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
+    }
+
+    @GetMapping(value = "/obtenerInmueblesPorUsuario")
+    public List<InmuebleDTO> obtenerInmueblesPorUsuario(Long idUsuario) {
+        return inmuebleService.obtenerInmueblesPorUsuario(idUsuario);
     }
 }

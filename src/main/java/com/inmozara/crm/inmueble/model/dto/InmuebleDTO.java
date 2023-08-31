@@ -63,4 +63,5 @@ public class InmuebleDTO {
     private String pais;
     private String provincia;
     private String tipoInmueble;
+    private boolean noEliminado;
 }

@@ -40,4 +40,5 @@ public class ContratoDTO {
     @NotNull(message = "El cliente no puede ser nulo")
     private int cliente;
     private String estadoContrato;
+    private boolean noestadoEliminado;
 }

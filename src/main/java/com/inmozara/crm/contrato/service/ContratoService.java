@@ -116,6 +116,7 @@ public class ContratoService implements IContrato {
     public List<ContratoDTO> findAllByParams(ContratoDTO contratoDTO) {
         List<Contrato> contratos = contratoRepository.findAll(ContratoSearch.builder()
                 .contrato(ObjectMapperUtils.map(contratoDTO, Contrato.class))
+                .noestadoEliminado(Optional.of(contratoDTO.isNoestadoEliminado()).orElse(false))
                 .build());
         if (contratos.isEmpty()) {
             throw new RecursoNoEncontrado("No hay contratos con los parametros enviados");
@@ -167,5 +168,13 @@ public class ContratoService implements IContrato {
                     .generarPdf();
         }
         throw new PdfGeneracionException("No se ha encontrado el pdf por el tipo de contrato " + contrato.getTipoContrato().getTipo());
+    }
+
+    public List<ContratoDTO> obtenerContratosPorUsuario(int idUsuario) {
+        List<Contrato> contratos = contratoRepository.obtenerContratosPorUsuario(idUsuario);
+        if (contratos.isEmpty()) {
+            throw new RecursoNoEncontrado("No hay contratos");
+        }
+        return ObjectMapperUtils.mapAll(contratos, ContratoDTO.class);
     }
 }

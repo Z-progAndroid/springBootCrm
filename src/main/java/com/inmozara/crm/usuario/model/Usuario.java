@@ -6,7 +6,11 @@ import com.inmozara.crm.inmueble.model.Inmueble;
 import com.inmozara.crm.tarea.model.Tarea;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity(name = "usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_USUARIO")
@@ -46,11 +50,11 @@ public class Usuario {
     private String modificado;
     //Relaciones
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ESTADO_USUARIO")
     private EstadoUsuario estadoUsuario;
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ROL")
     private Rol rol;
     @ToString.Exclude
@@ -66,4 +70,30 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Tarea> tareas;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(String.valueOf(rol.getRol()))
+                , new SimpleGrantedAuthority(String.valueOf(estadoUsuario.getEstadoUsuario()))
+                , new SimpleGrantedAuthority(String.valueOf(getIdUsuario())));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

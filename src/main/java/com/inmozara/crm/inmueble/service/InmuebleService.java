@@ -83,10 +83,20 @@ public class InmuebleService implements IInmueble {
                 .map(this::inmuebleToInmuebleDTO)
                 .collect(Collectors.toList());
     }
+    public List<InmuebleDTO> findAllDisponibles() {
+        List<Inmueble> inmuebles = inmuebleRepository.findAllDisponibles();
+        if (inmuebles.isEmpty())
+            throw new RecursoNoEncontrado("No hay inmuebles en la base de datos");
+        return inmuebles
+                .stream()
+                .map(this::inmuebleToInmuebleDTO)
+                .collect(Collectors.toList());
+    }
 
     public List<InmuebleDTO> search(InmuebleDTO search) {
         List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder()
                 .inmueble(ObjectMapperUtils.map(search, Inmueble.class))
+                .noestadoEliminado(Optional.of(search.isNoEliminado()).orElse(false))
                 .build());
 
         if (inmuebles.isEmpty()) {
@@ -98,6 +108,7 @@ public class InmuebleService implements IInmueble {
     public List<InmuebleDTO> searchSinRelaciones(InmuebleDTO search) {
         List<Inmueble> inmuebles = inmuebleRepository.findAll(InmuebleSearch.builder()
                 .inmueble(ObjectMapperUtils.map(search, Inmueble.class))
+                .noestadoEliminado(Optional.of(search.isNoEliminado()).orElse(false))
                 .build());
 
         if (inmuebles.isEmpty()) {
@@ -165,6 +176,13 @@ public class InmuebleService implements IInmueble {
                 .estado(HttpStatus.OK.value())
                 .fecha(UtilsDates.now())
                 .build();
+    }
+
+    public List<InmuebleDTO> obtenerInmueblesPorUsuario(Long idUsuario) {
+        List<Inmueble> inmuebles = inmuebleRepository.findInmueblesByUsuarioId(idUsuario);
+        if (inmuebles.isEmpty())
+            throw new RecursoNoEncontrado("No se encontraron los inmuebles del usuarios");
+        return ObjectMapperUtils.mapAll(inmuebles, InmuebleDTO.class);
     }
 
 }

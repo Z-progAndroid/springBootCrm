@@ -286,6 +286,8 @@ public class ObjectMapperUtils {
                 map().setIdEstadoCita(source.getEstadoCita().getIdEstadoCita());
                 map().setIdInmueble(source.getInmueble().getIdInmueble());
                 map().setIdUsuarioCliente(source.getCliente().getIdUsuario());
+                map().setEstadoCita(source.getEstadoCita().getEstadoCita());
+                map().setTipoCita(source.getTipoCita().getTipoCita());
             }
         };
     }

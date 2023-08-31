@@ -52,7 +52,10 @@ public interface InmuebleRepository extends JpaRepository<Inmueble, Long>, JpaSp
             "i.imagen4 = CASE WHEN :fieldName = 'imagen4' THEN :bytes ELSE i.imagen4 END " +
             "WHERE i.idInmueble = :idInmueble")
     void actualizarImagen(@Param("idInmueble") Long idInmueble, @Param("fieldName") String fieldName, @Param("bytes") byte[] bytes);
-    @Query("SELECT i FROM INMUEBLES i WHERE i.usuario.idUsuario = :idUsuario")
+
+    @Query("SELECT i FROM INMUEBLES i WHERE i.usuario.idUsuario = :idUsuario AND estadoInmueble.idEstadoInmueble IN(1,2 ,3 ,4 ,5)")
     List<Inmueble> findInmueblesByUsuarioId(@Param("idUsuario") Long idUsuario);
+    @Query("SELECT i FROM INMUEBLES i WHERE estadoInmueble.idEstadoInmueble IN(1)")
+    List<Inmueble> findAllDisponibles();
 
 }

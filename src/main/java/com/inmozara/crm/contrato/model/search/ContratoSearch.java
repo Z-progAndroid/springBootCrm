@@ -12,6 +12,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class ContratoSearch implements Specification<Contrato>, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private Contrato contrato;
-
+    private boolean noestadoEliminado;
     @Override
     public Predicate toPredicate(Root<Contrato> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
@@ -71,6 +72,9 @@ public class ContratoSearch implements Specification<Contrato>, Serializable {
         }
         if (contrato != null && contrato.getCliente() != null && contrato.getCliente().getIdUsuario() != 0) {
             predicates.add(cb.equal(root.get("cliente").get("idUsuario"), contrato.getCliente().getIdUsuario()));
+        }
+        if(noestadoEliminado){
+            predicates.add(cb.in(root.get("estadoContrato").get("idEstadoContrato")).value(Arrays.asList(1 ,2, 3, 4, 5, 6)));
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }

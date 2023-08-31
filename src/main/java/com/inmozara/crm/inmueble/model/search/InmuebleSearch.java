@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -21,6 +22,7 @@ public class InmuebleSearch implements Specification<Inmueble>, Serializable {
 
 
     private Inmueble inmueble;
+    private boolean noestadoEliminado;
 
     @Override
     public Predicate toPredicate(Root<Inmueble> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -76,6 +78,9 @@ public class InmuebleSearch implements Specification<Inmueble>, Serializable {
         }
         if (inmueble != null && inmueble.getUsuario() != null && inmueble.getUsuario().getIdUsuario() != 0) {
             predicates.add(cb.equal(root.get("usuario").get("idUsuario"), inmueble.getUsuario().getIdUsuario()));
+        }
+        if(noestadoEliminado){
+            predicates.add(cb.in(root.get("estadoInmueble").get("idEstadoInmueble")).value(Arrays.asList(1, 2, 3, 4, 5)));
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }

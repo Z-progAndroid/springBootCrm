@@ -45,7 +45,7 @@ public class EstadoUsuarioService implements IEstadoUsuario {
         usuarioRepository.actualizarUsuariosPorEstado(EstadoUsuario.builder().idEstadoUsuario(idEstadoUsuario).build(), EstadoUsuario.builder().idEstadoUsuario(0).build());
         estadoUsuarioRepository.deleteById(idEstadoUsuario);
         return MensajeDTO.builder()
-                .mensaje("Estado del usuario eliminado correctamente con el id: " + idEstadoUsuario)
+                .mensaje("Estado del usuario eliminado correctamente")
                 .estado(HttpStatus.OK.value())
                 .fecha(UtilsDates.now())
                 .build();

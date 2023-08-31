@@ -87,4 +87,8 @@ public class ContratoController implements IContrato {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
+    @GetMapping(value = "/obtenerContratosPorUsuario")
+    public List<ContratoDTO> obtenerContratosPorUsuario(int idUsuario) {
+        return contratoService.obtenerContratosPorUsuario(idUsuario);
+    }
 }

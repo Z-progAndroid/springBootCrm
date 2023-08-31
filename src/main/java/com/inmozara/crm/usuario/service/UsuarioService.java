@@ -14,9 +14,13 @@ import com.inmozara.crm.utils.ObjectMapperUtils;
 import com.inmozara.crm.utils.UtilsDates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService implements IUsuario {
@@ -33,10 +37,13 @@ public class UsuarioService implements IUsuario {
     private ContratoRepository contratoRepository;
     @Autowired
     private InmuebleRepository inmuebleRepository;
-
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     @Override
     public UsuarioDTO save(UsuarioDTO usuarioDTO) {
         Usuario usuario = ObjectMapperUtils.map(usuarioDTO, Usuario.class);
+        usuario.setPassword(passwordEncoder().encode(usuario.getPassword()));
         Usuario usuario1 = usuarioRepository.save(usuario);
         return ObjectMapperUtils.map(usuario1, UsuarioDTO.class);
     }
@@ -78,6 +85,10 @@ public class UsuarioService implements IUsuario {
         if (usuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron usuarios");
         }
+        usuarios = usuarios
+                .stream()
+                .filter(usuario -> !usuario.getNombre().equalsIgnoreCase("DEFECTO_ADMIN"))
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }
 
@@ -88,8 +99,12 @@ public class UsuarioService implements IUsuario {
                 .usuario(usuario)
                 .build());
         if (usuarios.isEmpty()) {
-            throw new RecursoNoEncontrado("No se encontraron usuarios por los parametros ingresados");
+            throw new RecursoNoEncontrado("No se encontraron usuarios por los parametros");
         }
+        usuarios = usuarios
+                .stream()
+                .filter(usuario1 -> !usuario1.getNombre().equalsIgnoreCase("DEFECTO_ADMIN"))
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }
 
@@ -98,13 +113,26 @@ public class UsuarioService implements IUsuario {
         if (usuarios.isEmpty()) {
             throw new RecursoNoEncontrado("No se encontraron usuarios con rol de administrador o agente");
         }
+        usuarios = usuarios
+                .stream()
+                .filter(usuario1 -> !usuario1.getNombre().equalsIgnoreCase("DEFECTO_ADMIN"))
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
     }
+
     public List<UsuarioDTO> findAllUsuarios() {
         List<Usuario> usuarios = usuarioRepository.obtenerUsuarios();
         if (usuarios.isEmpty()) {
-            throw new RecursoNoEncontrado("No se encontraron usuarios con rol de usuarios");
+            throw new RecursoNoEncontrado("No se encontraron usuarios con rol de usuario");
         }
+        usuarios = usuarios
+                .stream()
+                .filter(usuario1 -> !usuario1.getNombre().equalsIgnoreCase("DEFECTO_ADMIN"))
+                .collect(Collectors.toList());
         return ObjectMapperUtils.mapAll(usuarios, UsuarioDTO.class);
+    }
+
+    public Optional<Usuario> findByUsername(String username) {
+        return usuarioRepository.findByUsername(username);
     }
 }
